@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Droppy Drop</string>
+    <string name="play">Play</string>
+    <string name="scores">Scores</string>
+    <string name="options">Options</string>
+    <string name="credits">Credits</string>
+    <string name="appNameLogo">Droppy Drop Logo</string>
 </resources>
