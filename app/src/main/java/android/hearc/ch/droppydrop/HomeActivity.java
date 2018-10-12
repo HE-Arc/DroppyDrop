@@ -48,8 +48,14 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // TODO popup credits
                 AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this).create();
-                alertDialog.setTitle("Alert");
-                alertDialog.setMessage("Alert message to be shown");
+                alertDialog.setTitle("Credits");
+                alertDialog.setMessage("Android game for a student project !\n" +
+                        "It has been developped at HE-Arc, Neuchâtel by :\n" +
+                        " - Biloni Kim Aurore\n" +
+                        " - Goloviatinski Sergiy\n" +
+                        " - Srdjenovic Luca\n" +
+                        "\n" +
+                        "Fall 2018");
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                         new DialogInterface.OnClickListener() {
                             @Override
