@@ -44,10 +44,10 @@ public class ScoreActivity extends AppCompatActivity {
     }
 
     private void loadBestScore() {
-        scoreAdapter.add("Ola");
-        scoreAdapter.add("Hello");
-        scoreAdapter.add("Ciao");
-        scoreAdapter.add("Hallo");
-        scoreAdapter.add("Si amiga");
+        scoreAdapter.add(new Score(2000, "Joueur 1").toString());
+        scoreAdapter.add(new Score(2300, "Joueur 2").toString());
+        scoreAdapter.add(new Score(4500, "Joueur 3").toString());
+        scoreAdapter.add(new Score(1290, "Joueur 4").toString());
+        scoreAdapter.add(new Score(999, "Joueur 5").toString());
     }
 }

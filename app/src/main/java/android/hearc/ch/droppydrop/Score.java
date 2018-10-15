@@ -1,17 +1,21 @@
 package android.hearc.ch.droppydrop;
 
-import java.util.Date;
-
 public class Score {
 
     private int value;
     private String username;
-    private Date date;
 
-    public Score(int value, String username, Date date)
+    public Score(int value, String username)
     {
         this.value = value;
         this.username = username;
-        this.date = (Date) date.clone();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(username).append("\t");
+        builder.append(value).append(" pts").append("\t");
+        return  builder.toString();
     }
 }

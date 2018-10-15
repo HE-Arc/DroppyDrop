@@ -7,24 +7,33 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import android.widget.TextView;
 
 public class ScoreAdapter extends BaseAdapter {
 
     private Context context;
     private List<String> stringList;
+    private Set<Score> scoreSet;
 
     public ScoreAdapter(Context context) {
         super();
 
         this.context = context;
         stringList = new ArrayList<String>();
+        scoreSet = new HashSet<Score>();
     }
 
     public void add(String value) {
         stringList.add(value);
         notifyDataSetChanged();
+    }
+
+    public void add(Score score) {
+        scoreSet.add(score);
     }
 
     @Override
