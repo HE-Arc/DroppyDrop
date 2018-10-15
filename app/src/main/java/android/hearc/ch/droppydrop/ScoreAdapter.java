@@ -46,8 +46,8 @@ public class ScoreAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ScoreHolder holder;
 
-        if(context == null){
-            convertView = LayoutInflater.from(context).inflate(null, parent, false);
+        if(convertView == null){
+            convertView = LayoutInflater.from(context).inflate(R.layout.string_row, parent, false);
             holder = new ScoreHolder();
             holder.valueTextView = (TextView) convertView.findViewById(R.id.valueTextView);
             convertView.setTag(holder);

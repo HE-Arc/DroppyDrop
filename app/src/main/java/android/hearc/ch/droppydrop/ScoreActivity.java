@@ -11,7 +11,7 @@ public class ScoreActivity extends AppCompatActivity {
     private static final String TAG = ScoreActivity.class.getSimpleName();
 
     private ListView scoreListView;
-    private BaseAdapter adapter;
+    private ScoreAdapter scoreAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,19 @@ public class ScoreActivity extends AppCompatActivity {
     private void setUpViews() {
         Log.d(TAG, "Setting up views...");
 
-        //
+        scoreAdapter = new ScoreAdapter(this);
+        scoreListView.setAdapter(scoreAdapter);
+
+        loadBestScore();
+
+        Log.d(TAG, "Setting up views -> done");
+    }
+
+    private void loadBestScore() {
+        scoreAdapter.add("Ola");
+        scoreAdapter.add("Hello");
+        scoreAdapter.add("Ciao");
+        scoreAdapter.add("Hallo");
+        scoreAdapter.add("Si amiga");
     }
 }
