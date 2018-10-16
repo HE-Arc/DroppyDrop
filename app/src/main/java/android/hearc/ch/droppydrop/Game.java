@@ -2,8 +2,11 @@ package android.hearc.ch.droppydrop;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.Rect;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -13,8 +16,13 @@ import android.graphics.Paint;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+/**
+ * source :
+ *  - https://medium.com/mindorks/android-custom-views-tutorial-part-2-custom-attributes-3adde12c846d
+ */
 public class Game extends View {
 
+    private Rect rect;
     private Paint backgroundPaint;
     private Paint paintDrop;
 
@@ -22,13 +30,13 @@ public class Game extends View {
 
     public Game(Context context) {
         super(context);
-        init();
+        init(null);
     }
 
     public Game(Context context, AttributeSet attrs) {
         super(context, attrs);
         Log.i("GAME", "is in game constructor");
-        init();
+        init(null);
     }
 
     @Override
@@ -42,26 +50,29 @@ public class Game extends View {
         return false;
     }
 
-    private void init() {
+    private void init(@Nullable AttributeSet set) {
         // TODO draw base level design
         backgroundPaint = new Paint();
-        backgroundPaint.setColor(0xFFFFFF);
-
-        paintDrop = new Paint();
-        paintDrop.setColor(0xFF0000);
-
+        paintDrop = new Paint(Paint.ANTI_ALIAS_FLAG);
         p = new Point(0,0);
 
-        invalidate();
+        backgroundPaint.setColor(0xFFFFFF);
+        paintDrop.setColor(getContext().getColor(R.color.colorPrimary));
+
+        if(set == null) return;
+
+        TypedArray ta = getContext().obtainStyledAttributes(set, R.styleable.Game);
+        // assign custom attribs
+        ta.recycle();
     }
 
-    @Override
+    /*@Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         Log.i("GAME", "is in game onMeasure");
         // TODO implements onMeasure : size min & max
 
         setMeasuredDimension(300, 300);
-    }
+    }*/
 
     @Override
     protected void onDraw(Canvas canvas){
@@ -72,12 +83,8 @@ public class Game extends View {
         /*if(canvas!=null)
             Log.i("GAME", "onDraw: canevas not null");*/
 
-        //canvas.save();
-
         //TODO draw drop at the center
-        canvas.drawCircle(p.x, p.y, 50, paintDrop);
-
-        //canvas.restore();
+        canvas.drawCircle(p.x, p.y, 100, paintDrop);
     }
 
 }
