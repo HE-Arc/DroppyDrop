@@ -28,6 +28,8 @@ public class Game extends View {
 
     private Point p;
 
+    private AccelerometerPointer accPointer;
+
     public Game(Context context) {
         super(context);
         init(null);
@@ -36,6 +38,7 @@ public class Game extends View {
     public Game(Context context, AttributeSet attrs) {
         super(context, attrs);
         Log.i("GAME", "is in game constructor");
+        accPointer = new AccelerometerPointer(context);
         init(null);
     }
 
