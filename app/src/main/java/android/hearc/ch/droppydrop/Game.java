@@ -22,6 +22,8 @@ import android.widget.LinearLayout;
  */
 public class Game extends View {
 
+    private static final String TAG = "GAME"; //Game.class.getSimpleName();
+
     private Rect rect;
     private Paint backgroundPaint;
     private Paint paintDrop;
@@ -32,19 +34,23 @@ public class Game extends View {
 
     public Game(Context context) {
         super(context);
+
+        int h = this.getMeasuredHeight();
+        int w = this.getMeasuredWidth();
+        Log.i(TAG, "Game: h: " + h + "");
         init(null);
     }
 
     public Game(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Log.i("GAME", "is in game constructor");
+        Log.i(TAG, "is in game constructor");
         accPointer = new AccelerometerPointer(context);
         init(null);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.i("GAME", "touch the game");
+        Log.i(TAG, "touch the game");
 
         if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
             p = new Point((int) event.getX(), (int) event.getY());
@@ -69,20 +75,21 @@ public class Game extends View {
         ta.recycle();
     }
 
-    /*@Override
+    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         Log.i("GAME", "is in game onMeasure");
         // TODO implements onMeasure : size min & max
-
-        setMeasuredDimension(300, 300);
-    }*/
+        final int newHeight= MeasureSpec.getSize(heightMeasureSpec);
+        final int newWidth= MeasureSpec.getSize(widthMeasureSpec);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
 
     @Override
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
 
-        Log.i("GAME", "is in game onDraw");
-        Log.i("GAME", p.toString());
+        //Log.i(TAG, "is in game onDraw");
+        //Log.i(TAG, p.toString());
         /*if(canvas!=null)
             Log.i("GAME", "onDraw: canevas not null");*/
 

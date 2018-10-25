@@ -14,7 +14,7 @@ import android.util.Log;
  */
 public class AccelerometerPointer implements SensorEventListener {
 
-    private static final String TAG = "GAME";//AccelerometerPointer.class.getSimpleName();
+    private static final String TAG = "GAME"; //AccelerometerPointer.class.getSimpleName();
 
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
@@ -31,6 +31,8 @@ public class AccelerometerPointer implements SensorEventListener {
         senSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
+
+
     }
 
     @Override
@@ -42,7 +44,7 @@ public class AccelerometerPointer implements SensorEventListener {
             float y = sensorEvent.values[1];
             float z = sensorEvent.values[2];
 
-            Log.i(TAG, "onSensorChanged: values :" + x + ' ' + y + ' ' + z);
+            //Log.i(TAG, "onSensorChanged: values :" + x + ' ' + y + ' ' + z);
         }
     }
 
