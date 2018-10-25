@@ -23,7 +23,11 @@ public class AccelerometerPointer implements SensorEventListener {
     private Point acceleration;
     private Point pointer;
 
-    public AccelerometerPointer(Context context) {
+    float lastX;
+    float lastY;
+    float lastZ;
+
+    public AccelerometerPointer(Context context, int heigt, int width) {
         super();
 
         Log.i(TAG, "AccelerometerPointer: is in constructor");
@@ -32,7 +36,9 @@ public class AccelerometerPointer implements SensorEventListener {
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
 
-
+        origin = new Point();
+        acceleration = new Point();
+        pointer = new Point();
     }
 
     @Override
@@ -44,12 +50,39 @@ public class AccelerometerPointer implements SensorEventListener {
             float y = sensorEvent.values[1];
             float z = sensorEvent.values[2];
 
-            //Log.i(TAG, "onSensorChanged: values :" + x + ' ' + y + ' ' + z);
+
+            float diffX = x - lastX;
+            float diffY = y - lastY;
+            float diffZ = z - lastZ;
+
+            pointer.x += diffY;
+            pointer.y += diffZ;
+
+            lastX = x;
+            lastY = y;
+            lastZ = z;
+
+            Log.i(TAG, "onSensorChanged: x: " + diffX + " y: "+ diffY + " z: "+ diffZ);
         }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    /**
+     * Reset the pointer to the center of the screen
+     * @param height
+     * @param width
+     */
+    public void resetPointer(int height, int width)
+    {
+        origin.x = width /2;
+        origin.y = height /2;
+
+        pointer.x = width/2;
+        pointer.y = height/2;
+        Log.i(TAG, "AccelerometerPointer: origin: " + origin.toString());
     }
 }

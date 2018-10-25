@@ -1,9 +1,7 @@
 package android.hearc.ch.droppydrop;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
@@ -13,8 +11,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 /**
  * source :
@@ -32,31 +28,20 @@ public class Game extends View {
 
     private AccelerometerPointer accPointer;
 
-    public Game(Context context) {
-        super(context);
-
-        int h = this.getMeasuredHeight();
-        int w = this.getMeasuredWidth();
-        Log.i(TAG, "Game: h: " + h + "");
-        init(null);
-    }
-
     public Game(Context context, AttributeSet attrs) {
         super(context, attrs);
         Log.i(TAG, "is in game constructor");
-        accPointer = new AccelerometerPointer(context);
+
+        int h = this.getMeasuredHeight();
+        int w = this.getMeasuredWidth();
+
+        accPointer = new AccelerometerPointer(context, h, w);
+
         init(null);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        Log.i(TAG, "touch the game");
-
-        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-            p = new Point((int) event.getX(), (int) event.getY());
-        }
-        invalidate();
-        return false;
+    public Game(Context context) {
+        this(context, null);
     }
 
     private void init(@Nullable AttributeSet set) {
@@ -82,6 +67,19 @@ public class Game extends View {
         final int newHeight= MeasureSpec.getSize(heightMeasureSpec);
         final int newWidth= MeasureSpec.getSize(widthMeasureSpec);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        accPointer.resetPointer(newHeight, newWidth);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        Log.i(TAG, "touch the game");
+
+        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
+            p = new Point((int) event.getX(), (int) event.getY());
+        }
+        invalidate();
+        return false;
     }
 
     @Override
