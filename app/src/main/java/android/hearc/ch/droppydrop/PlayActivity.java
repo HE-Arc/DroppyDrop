@@ -8,7 +8,7 @@ public class PlayActivity extends AppCompatActivity {
 
     private static final String TAG = PlayActivity.class.getSimpleName();
 
-    private Game game;
+    private GameManager gameManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -16,9 +16,9 @@ import android.graphics.Paint;
  * source :
  *  - https://medium.com/mindorks/android-custom-views-tutorial-part-2-custom-attributes-3adde12c846d
  */
-public class Game extends View {
+public class GameManager extends View {
 
-    private static final String TAG = "GAME"; //Game.class.getSimpleName();
+    private static final String TAG = "GAME"; //GameManager.class.getSimpleName();
 
     private Rect rect;
     private Paint backgroundPaint;
@@ -28,7 +28,7 @@ public class Game extends View {
 
     private AccelerometerPointer accPointer;
 
-    public Game(Context context, AttributeSet attrs) {
+    public GameManager(Context context, AttributeSet attrs) {
         super(context, attrs);
         Log.i(TAG, "is in game constructor");
 
@@ -40,7 +40,7 @@ public class Game extends View {
         init(null);
     }
 
-    public Game(Context context) {
+    public GameManager(Context context) {
         this(context, null);
     }
 
@@ -55,7 +55,7 @@ public class Game extends View {
 
         if(set == null) return;
 
-        TypedArray ta = getContext().obtainStyledAttributes(set, R.styleable.Game);
+        TypedArray ta = getContext().obtainStyledAttributes(set, R.styleable.GameManager);
         // assign custom attribs
         ta.recycle();
     }
