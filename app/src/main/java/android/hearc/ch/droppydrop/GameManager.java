@@ -2,15 +2,12 @@ package android.hearc.ch.droppydrop;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 
 public class GameManager extends View {
 
@@ -45,7 +42,6 @@ public class GameManager extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         Log.i(TAG, "is in onMeasure");
-        // TODO implements onMeasure : size min & max
         final int newHeight= MeasureSpec.getSize(heightMeasureSpec);
         final int newWidth= MeasureSpec.getSize(widthMeasureSpec);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);

@@ -3,4 +3,7 @@
     <declare-styleable name="GameManager">
         <!-- custom game attrib -->
     </declare-styleable>
+    <declare-styleable name="Level">
+        <!-- custom game attrib -->
+    </declare-styleable>
 </resources>

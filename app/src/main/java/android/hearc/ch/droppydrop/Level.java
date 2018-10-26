@@ -67,12 +67,6 @@ public class Level extends View {
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
 
-        //Log.i(TAG, "is in game onDraw");
-        //Log.i(TAG, p.toString());
-        /*if(canvas!=null)
-            Log.i("GAME", "onDraw: canevas not null");*/
-
-        //TODO draw drop at the center
         canvas.drawCircle(p.x, p.y, 100, paintDrop);
     }
 }
