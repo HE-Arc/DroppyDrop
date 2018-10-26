@@ -20,12 +20,6 @@ public class GameManager extends View {
 
     private static final String TAG = "GAME"; //GameManager.class.getSimpleName();
 
-    private Rect rect;
-    private Paint backgroundPaint;
-    private Paint paintDrop;
-
-    private Point p;
-
     private AccelerometerPointer accPointer;
 
     public GameManager(Context context, AttributeSet attrs) {
@@ -45,14 +39,6 @@ public class GameManager extends View {
     }
 
     private void init(@Nullable AttributeSet set) {
-        // TODO draw base level design
-        backgroundPaint = new Paint();
-        paintDrop = new Paint(Paint.ANTI_ALIAS_FLAG);
-        p = new Point(0,0);
-
-        backgroundPaint.setColor(0xFFFFFF);
-        paintDrop.setColor(getContext().getColor(R.color.colorPrimary));
-
         if(set == null) return;
 
         TypedArray ta = getContext().obtainStyledAttributes(set, R.styleable.GameManager);
@@ -62,7 +48,7 @@ public class GameManager extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.i("GAME", "is in game onMeasure");
+        Log.i(TAG, "is in onMeasure");
         // TODO implements onMeasure : size min & max
         final int newHeight= MeasureSpec.getSize(heightMeasureSpec);
         final int newWidth= MeasureSpec.getSize(widthMeasureSpec);
@@ -74,25 +60,12 @@ public class GameManager extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         Log.i(TAG, "touch the game");
-
-        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-            p = new Point((int) event.getX(), (int) event.getY());
-        }
-        invalidate();
         return false;
     }
 
     @Override
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
-
-        //Log.i(TAG, "is in game onDraw");
-        //Log.i(TAG, p.toString());
-        /*if(canvas!=null)
-            Log.i("GAME", "onDraw: canevas not null");*/
-
-        //TODO draw drop at the center
-        canvas.drawCircle(p.x, p.y, 100, paintDrop);
     }
 
 }
