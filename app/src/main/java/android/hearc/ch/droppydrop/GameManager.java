@@ -12,10 +12,6 @@ import android.view.View;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-/**
- * source :
- *  - https://medium.com/mindorks/android-custom-views-tutorial-part-2-custom-attributes-3adde12c846d
- */
 public class GameManager extends View {
 
     private static final String TAG = "GAME"; //GameManager.class.getSimpleName();
