@@ -14,6 +14,7 @@ public class GameManager extends View {
     private static final String TAG = "GAME"; //GameManager.class.getSimpleName();
 
     private AccelerometerPointer accPointer;
+    private Level level;
 
     public GameManager(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -23,6 +24,7 @@ public class GameManager extends View {
         int w = this.getMeasuredWidth();
 
         accPointer = new AccelerometerPointer(context, h, w);
+        level = new Level(context);
 
         init(null);
     }
@@ -52,6 +54,14 @@ public class GameManager extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         Log.i(TAG, "touch the game");
+
+        // TODO show on pause menu
+        if(level.addPoint(accPointer.getPointer())){
+            Log.i(TAG, "onTouchEvent: succesfully add a point");
+        } else {
+            Log.e(TAG, "onTouchEvent: cannot add point");
+        }
+        invalidate();
         return false;
     }
 
@@ -59,5 +69,4 @@ public class GameManager extends View {
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
     }
-
 }

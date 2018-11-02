@@ -14,7 +14,7 @@ import android.util.Log;
  */
 public class AccelerometerPointer implements SensorEventListener {
 
-    private static final String TAG = "GAME"; //AccelerometerPointer.class.getSimpleName();
+    private static final String TAG = "ACC"; //AccelerometerPointer.class.getSimpleName();
 
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
@@ -62,7 +62,7 @@ public class AccelerometerPointer implements SensorEventListener {
             lastY = y;
             lastZ = z;
 
-            Log.i(TAG, "onSensorChanged: x: " + diffX + " y: "+ diffY + " z: "+ diffZ);
+            //Log.i(TAG, "onSensorChanged: x: " + diffX + " y: "+ diffY + " z: "+ diffZ);
         }
     }
 
@@ -83,6 +83,11 @@ public class AccelerometerPointer implements SensorEventListener {
 
         pointer.x = width/2;
         pointer.y = height/2;
-        Log.i(TAG, "AccelerometerPointer: origin: " + origin.toString());
+        //Log.i(TAG, "AccelerometerPointer: origin: " + origin.toString());
+    }
+
+    public Point getPointer() {
+        Log.i(TAG, "getPointer: " + pointer.toString());
+        return pointer;
     }
 }

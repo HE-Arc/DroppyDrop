@@ -11,27 +11,37 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * source :
  *  - https://medium.com/mindorks/android-custom-views-tutorial-part-2-custom-attributes-3adde12c846d
  */
 public class Level extends View {
 
-    private static final String TAG = Level.class.getSimpleName();
+    private static final String TAG = "LEVEL"; // Level.class.getSimpleName();
 
     private Paint paintDrop;
-    private Point p;
+    private List<Point> points;
 
-    public Level(Context context, @Nullable AttributeSet attrs) {
+    public Level(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        points = new LinkedList<>();
 
         init(attrs);
     }
 
+    public Level(Context context)
+    {
+        this(context, null);
+    }
+
     private void init(@Nullable AttributeSet set) {
+
         // TODO draw base level design
         paintDrop = new Paint(Paint.ANTI_ALIAS_FLAG);
-        p = new Point(0,0);
 
         paintDrop.setColor(getContext().getColor(R.color.colorPrimary));
 
@@ -46,27 +56,26 @@ public class Level extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         Log.i("GAME", "is in game onMeasure");
-        // TODO implements onMeasure : size min & max
         final int newHeight= MeasureSpec.getSize(heightMeasureSpec);
         final int newWidth= MeasureSpec.getSize(widthMeasureSpec);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        Log.i(TAG, "touch the game");
-
-        if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-            p = new Point((int) event.getX(), (int) event.getY());
-        }
-        invalidate();
-        return false;
-    }
-
-    @Override
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
+        Log.i(TAG, "onDraw");
+        for (Point p : points) {
+            canvas.drawCircle(p.x, p.y, 100, paintDrop);
+        }
+    }
 
-        canvas.drawCircle(p.x, p.y, 100, paintDrop);
+    public boolean addPoint(Point p){
+        // TODO can add the point ? Does it touch a dead zone ?
+        if(points != null){
+            points.add(p);
+            return true;
+        }
+        return false;
     }
 }
