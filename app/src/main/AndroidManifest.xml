@@ -16,7 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PlayActivity" />
+        <activity android:name=".PlayActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".ScoreActivity" />
         <activity android:name=".LevelActivity" />
         <activity android:name=".OptionsActivity"></activity>
