@@ -6,4 +6,7 @@
     <declare-styleable name="Level">
         <!-- custom game attrib -->
     </declare-styleable>
+    <declare-styleable name="GMLayout">
+        <!-- custom game attrib -->
+    </declare-styleable>
 </resources>
