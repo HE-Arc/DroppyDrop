@@ -31,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v){
                 Log.i("home", "click on play");
                 // TODO show LevelActivity
-                Intent intent = new Intent(HomeActivity.this, PlayActivity.class);
+                Intent intent = new Intent(HomeActivity.this, LevelActivity.class);
                 startActivity(intent);
             }
         });
