@@ -8,13 +8,13 @@
     android:orientation="vertical"
     tools:context=".PlayActivity">
 
-    <android.hearc.ch.droppydrop.GMLayout
+    <android.hearc.ch.droppydrop.GameManagerLayout
         android:id="@+id/game"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:visibility="visible">
 
-    </android.hearc.ch.droppydrop.GMLayout>
+    </android.hearc.ch.droppydrop.GameManagerLayout>
 
 </LinearLayout>
