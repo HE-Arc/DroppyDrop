@@ -2,36 +2,38 @@ package android.hearc.ch.droppydrop;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.Nullable;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
-import android.graphics.Canvas;
+import android.widget.RelativeLayout;
 
-public class GameManager extends View {
+public class GameManagerLayout extends RelativeLayout {
 
     private static final String TAG = "GAME"; //GameManager.class.getSimpleName();
 
     private AccelerometerPointer accPointer;
+    private Level level;
 
-    public GameManager(Context context, AttributeSet attrs) {
+    public GameManagerLayout(Context context) {
+        this(context, null);
+    }
+
+    public GameManagerLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Log.i(TAG, "is in game constructor");
 
         int h = this.getMeasuredHeight();
         int w = this.getMeasuredWidth();
 
         accPointer = new AccelerometerPointer(context, h, w);
+        level = new Level(context);
 
-        init(null);
+        init(attrs);
     }
 
-    public GameManager(Context context) {
-        this(context, null);
-    }
-
-    private void init(@Nullable AttributeSet set) {
+    private void init(AttributeSet set)
+    {
+        addView(level);
         if(set == null) return;
 
         TypedArray ta = getContext().obtainStyledAttributes(set, R.styleable.GameManager);
@@ -52,6 +54,14 @@ public class GameManager extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         Log.i(TAG, "touch the game");
+
+        // TODO show on pause menu
+        if(level.addPoint(accPointer.getPointer())){
+            Log.i(TAG, "onTouchEvent: succesfully add a point");
+            level.invalidate();
+        } else {
+            Log.e(TAG, "onTouchEvent: cannot add point");
+        }
         return false;
     }
 
@@ -59,5 +69,4 @@ public class GameManager extends View {
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
     }
-
 }
