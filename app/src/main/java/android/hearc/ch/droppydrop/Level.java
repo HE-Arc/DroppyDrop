@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,12 +24,15 @@ public class Level extends View {
     private static final String TAG = "LEVEL"; // Level.class.getSimpleName();
 
     private Paint paintDrop;
+    private static final int LINE_SIZE = 30;
+    private static final int CIRCLE_SIZE = 15;
     private List<Point> points;
+    private Point startLine, endLine;
 
     public Level(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        points = new LinkedList<>();
+        points = new ArrayList<>();
 
         init(attrs);
     }
@@ -44,6 +48,7 @@ public class Level extends View {
         paintDrop = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         paintDrop.setColor(getContext().getColor(R.color.colorPrimary));
+        paintDrop.setStrokeWidth(LINE_SIZE);
 
         if(set == null) return;
 
@@ -65,16 +70,20 @@ public class Level extends View {
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
         Log.i(TAG, "onDraw");
-        for (Point p : points) {
-            canvas.drawCircle(p.x, p.y, 100, paintDrop);
+        for(int i=1; i < points.size() && points.size() > 1; i++)
+        {
+            startLine = points.get(i-1);
+            endLine = points.get(i);
+
+            canvas.drawLine(startLine.x, startLine.y, endLine.x, endLine.y, paintDrop);
+            canvas.drawCircle(startLine.x, startLine.y, CIRCLE_SIZE, paintDrop);
         }
     }
 
     public boolean addPoint(Point p){
         // TODO can add the point ? Does it touch a dead zone ?
         if(points != null){
-            return points.add(p);
-            //return true;
+            return points.add(new Point(p));
         }
         return false;
     }

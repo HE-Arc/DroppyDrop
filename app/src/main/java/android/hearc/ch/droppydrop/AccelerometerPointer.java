@@ -23,10 +23,6 @@ public class AccelerometerPointer implements SensorEventListener {
     private Point acceleration;
     private Point pointer;
 
-    float lastX;
-    float lastY;
-    float lastZ;
-
     public AccelerometerPointer(Context context, int heigt, int width) {
         super();
 
@@ -50,17 +46,8 @@ public class AccelerometerPointer implements SensorEventListener {
             float y = sensorEvent.values[1];
             float z = sensorEvent.values[2];
 
-
-            float diffX = x - lastX;
-            float diffY = y - lastY;
-            float diffZ = z - lastZ;
-
             pointer.x -= x;
             pointer.y += y;
-
-            lastX = x;
-            lastY = y;
-            lastZ = z;
 
             //Log.i(TAG, "onSensorChanged: x: " + diffX + " y: "+ diffY + " z: "+ diffZ);
         }

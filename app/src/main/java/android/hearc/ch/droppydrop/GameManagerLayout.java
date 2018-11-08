@@ -42,7 +42,7 @@ public class GameManagerLayout extends RelativeLayout {
                 } else {
                     Log.e(TAG, "onTouchEvent: cannot add point");
                 }
-                accHandler.postDelayed(this, 100);
+                accHandler.postDelayed(this, 10);
             }
         };
         getPointerRunnable.run();
