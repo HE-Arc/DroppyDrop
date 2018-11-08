@@ -8,11 +8,9 @@ import android.graphics.Point;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -44,19 +42,20 @@ public class Level extends View {
     }
 
     private void init(@Nullable AttributeSet set) {
-
-        // TODO draw base level design
+        // Trace painting tool
         paintDrop = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintDrop.setColor(getContext().getColor(R.color.colorPrimary));
         paintDrop.setStrokeWidth(LINE_SIZE);
 
+        // Pointer painting tools
         paintPointer = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintPointer.setColor(getContext().getColor(R.color.colorPrimaryDark));
         paintPointer.setStrokeWidth(CIRCLE_SIZE);
 
         if(set == null) return;
 
-        //TODO get attrs with level id
+        // TODO get attrs with level id
+        // TODO dead zone reader from attribs
         /*TypedArray ta = getContext().obtainStyledAttributes(set, R.styleable.GameManager);
         // assign custom attribs
         ta.recycle();*/
@@ -79,14 +78,21 @@ public class Level extends View {
             startLine = points.get(i-1);
             endLine = points.get(i);
 
+            // Paint a line between each points
             canvas.drawLine(startLine.x, startLine.y, endLine.x, endLine.y, paintDrop);
+            // Paint a dot to make it looks round
             canvas.drawCircle(startLine.x, startLine.y, CIRCLE_SIZE, paintDrop);
         }
+
+        //TODO draw dead zone
+
+        // Paint the last point for the pointer position
         canvas.drawCircle(endLine.x, endLine.y, CIRCLE_SIZE, paintPointer);
     }
 
     public boolean addPoint(Point p){
         // TODO can add the point ? Does it touch a dead zone ?
+        // TODO does a point have the same position ?
         if(points != null){
             return points.add(new Point(p));
         }

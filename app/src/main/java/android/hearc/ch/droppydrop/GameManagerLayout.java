@@ -32,8 +32,10 @@ public class GameManagerLayout extends RelativeLayout {
         level = new Level(context);
 
         // Timer
+        // TODO as a class or function -> that provide start and stop
         accHandler = new Handler();
         getPointerRunnable = new Runnable() {
+            // TODO can we make it as a service ?
             @Override
             public void run() {
                 if(level.addPoint(accPointer.getPointer())){
