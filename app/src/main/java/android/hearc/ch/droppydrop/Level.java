@@ -24,6 +24,7 @@ public class Level extends View {
     private static final String TAG = "LEVEL"; // Level.class.getSimpleName();
 
     private Paint paintDrop;
+    private Paint paintPointer;
     private static final int LINE_SIZE = 30;
     private static final int CIRCLE_SIZE = 15;
     private List<Point> points;
@@ -46,9 +47,12 @@ public class Level extends View {
 
         // TODO draw base level design
         paintDrop = new Paint(Paint.ANTI_ALIAS_FLAG);
-
         paintDrop.setColor(getContext().getColor(R.color.colorPrimary));
         paintDrop.setStrokeWidth(LINE_SIZE);
+
+        paintPointer = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintPointer.setColor(getContext().getColor(R.color.colorPrimaryDark));
+        paintPointer.setStrokeWidth(CIRCLE_SIZE);
 
         if(set == null) return;
 
@@ -78,6 +82,7 @@ public class Level extends View {
             canvas.drawLine(startLine.x, startLine.y, endLine.x, endLine.y, paintDrop);
             canvas.drawCircle(startLine.x, startLine.y, CIRCLE_SIZE, paintDrop);
         }
+        canvas.drawCircle(endLine.x, endLine.y, CIRCLE_SIZE, paintPointer);
     }
 
     public boolean addPoint(Point p){
