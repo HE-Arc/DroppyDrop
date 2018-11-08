@@ -55,7 +55,7 @@ public class Level extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.i("GAME", "is in game onMeasure");
+        Log.i(TAG, "is in game onMeasure");
         final int newHeight= MeasureSpec.getSize(heightMeasureSpec);
         final int newWidth= MeasureSpec.getSize(widthMeasureSpec);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -73,8 +73,8 @@ public class Level extends View {
     public boolean addPoint(Point p){
         // TODO can add the point ? Does it touch a dead zone ?
         if(points != null){
-            points.add(p);
-            return true;
+            return points.add(p);
+            //return true;
         }
         return false;
     }

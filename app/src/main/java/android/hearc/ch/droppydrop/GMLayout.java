@@ -14,7 +14,6 @@ public class GMLayout extends RelativeLayout {
 
     private AccelerometerPointer accPointer;
     private Level level;
-    private Button button;
 
     public GMLayout(Context context) {
         this(context, null);
@@ -29,16 +28,12 @@ public class GMLayout extends RelativeLayout {
         accPointer = new AccelerometerPointer(context, h, w);
         level = new Level(context);
 
-        button = new Button(context);
-        button.setText("test");
-
         init(attrs);
     }
 
     private void init(AttributeSet set)
     {
-        this.addView(level);
-        addView(button);
+        addView(level);
         if(set == null) return;
 
         TypedArray ta = getContext().obtainStyledAttributes(set, R.styleable.GameManager);
@@ -63,6 +58,7 @@ public class GMLayout extends RelativeLayout {
         // TODO show on pause menu
         if(level.addPoint(accPointer.getPointer())){
             Log.i(TAG, "onTouchEvent: succesfully add a point");
+            level.invalidate();
         } else {
             Log.e(TAG, "onTouchEvent: cannot add point");
         }
