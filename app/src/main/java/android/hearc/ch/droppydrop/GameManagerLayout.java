@@ -3,6 +3,7 @@ package android.hearc.ch.droppydrop;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -10,9 +11,11 @@ import android.widget.RelativeLayout;
 
 public class GameManagerLayout extends RelativeLayout {
 
-    private static final String TAG = "GAME"; //GameManager.class.getSimpleName();
+    private static final String TAG = "GAME"; //GameManagerLayout.class.getSimpleName();
 
     private AccelerometerPointer accPointer;
+    private Handler accHandler;
+    private Runnable getPointerRunnable;
     private Level level;
 
     public GameManagerLayout(Context context) {
@@ -27,6 +30,22 @@ public class GameManagerLayout extends RelativeLayout {
 
         accPointer = new AccelerometerPointer(context, h, w);
         level = new Level(context);
+
+        accHandler = new Handler();
+        getPointerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if(level.addPoint(accPointer.getPointer())){
+                    Log.i(TAG, "onTouchEvent: succesfully add a point");
+                    level.invalidate();
+                } else {
+                    Log.e(TAG, "onTouchEvent: cannot add point");
+                }
+
+                accHandler.postDelayed(this, 100);
+            }
+        };
+        getPointerRunnable.run();
 
         init(attrs);
     }
@@ -56,12 +75,6 @@ public class GameManagerLayout extends RelativeLayout {
         Log.i(TAG, "touch the game");
 
         // TODO show on pause menu
-        if(level.addPoint(accPointer.getPointer())){
-            Log.i(TAG, "onTouchEvent: succesfully add a point");
-            level.invalidate();
-        } else {
-            Log.e(TAG, "onTouchEvent: cannot add point");
-        }
         return false;
     }
 
