@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="GameManager">
+    <declare-styleable name="Level">
         <!-- custom game attrib -->
     </declare-styleable>
-    <declare-styleable name="Level">
+    <declare-styleable name="GameManagerLayout">
         <!-- custom game attrib -->
     </declare-styleable>
 </resources>
