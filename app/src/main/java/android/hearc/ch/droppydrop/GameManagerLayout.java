@@ -31,6 +31,7 @@ public class GameManagerLayout extends RelativeLayout {
         accPointer = new AccelerometerPointer(context, h, w);
         level = new Level(context);
 
+        // Timer
         accHandler = new Handler();
         getPointerRunnable = new Runnable() {
             @Override
@@ -41,7 +42,6 @@ public class GameManagerLayout extends RelativeLayout {
                 } else {
                     Log.e(TAG, "onTouchEvent: cannot add point");
                 }
-
                 accHandler.postDelayed(this, 100);
             }
         };
@@ -55,7 +55,7 @@ public class GameManagerLayout extends RelativeLayout {
         addView(level);
         if(set == null) return;
 
-        TypedArray ta = getContext().obtainStyledAttributes(set, R.styleable.GameManager);
+        TypedArray ta = getContext().obtainStyledAttributes(set, R.styleable.GameManagerLayout);
         // assign custom attribs
         ta.recycle();
     }

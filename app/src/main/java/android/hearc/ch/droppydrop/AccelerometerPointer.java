@@ -55,8 +55,8 @@ public class AccelerometerPointer implements SensorEventListener {
             float diffY = y - lastY;
             float diffZ = z - lastZ;
 
-            pointer.x += diffY;
-            pointer.y += diffZ;
+            pointer.x -= x;
+            pointer.y += y;
 
             lastX = x;
             lastY = y;
