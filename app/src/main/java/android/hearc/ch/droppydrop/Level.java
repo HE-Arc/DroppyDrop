@@ -38,6 +38,8 @@ public class Level extends View {
     private Rect levelRect;
     private Paint paintlvlRect;
 
+    private VibratorManager vibratorManager;
+
     public Level(Context context, AttributeSet attrs) {
         super(context, attrs);
         DisplayMetrics metrics = new DisplayMetrics();
@@ -45,7 +47,7 @@ public class Level extends View {
         windowManager.getDefaultDisplay().getMetrics(metrics);
 
         DEVICE_DENSITY_DPI = metrics.densityDpi;
-
+        vibratorManager=new VibratorManager(this.getContext());
         points = new ArrayList<>();
 
         init(attrs);
@@ -104,38 +106,36 @@ public class Level extends View {
         canvas.drawRect(levelRect, paintlvlRect);
 
         Log.i(TAG, "onDraw");
-        for(int i=1; i < points.size() && points.size() > 1; i++)
-        {
-            startLine = points.get(i-1);
-            endLine = points.get(i);
+        if(points.size()>1) {
+            for (int i = 1; i < points.size() && points.size() > 1; i++) {
+                startLine = points.get(i - 1);
+                endLine = points.get(i);
 
-            // Paint a line between each points
-            canvas.drawLine(startLine.x, startLine.y, endLine.x, endLine.y, paintDrop);
-            // Paint a dot to make it looks round
-            canvas.drawCircle(startLine.x, startLine.y, CIRCLE_SIZE, paintDrop);
+                // Paint a line between each points
+                canvas.drawLine(startLine.x, startLine.y, endLine.x, endLine.y, paintDrop);
+                // Paint a dot to make it looks round
+                canvas.drawCircle(startLine.x, startLine.y, CIRCLE_SIZE, paintDrop);
+            }
+
+
+            // Paint the last point for the pointer position
+            canvas.drawCircle(endLine.x, endLine.y, CIRCLE_SIZE, paintPointer);
+
         }
-
-
-
-        // Paint the last point for the pointer position
-        canvas.drawCircle(endLine.x, endLine.y, CIRCLE_SIZE, paintPointer);
-
-
     }
 
     public boolean addPoint(Point p){
         // TODO can add the point ? Does it touch a dead zone ?
         // TODO does a point have the same position ?
-        if(points != null){
-            if(p.x+CIRCLE_SIZE>levelRect.right || p.y+CIRCLE_SIZE>levelRect.bottom ||p.x-CIRCLE_SIZE <levelRect.left ||p.y-CIRCLE_SIZE<levelRect.bottom)
+        if(points != null && p.x!=0 && p.y!=0){
+            if(p.x>levelRect.right || p.y>levelRect.bottom || p.x <levelRect.left ||p.y<levelRect.top)
             {
-                
-                return false;
+
+                vibratorManager.startVibrator();
+
             }
-            else
-            {
-                return points.add(new Point(p));
-            }
+
+            return points.add(new Point(p));
         }
         return false;
     }
