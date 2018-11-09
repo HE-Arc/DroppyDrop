@@ -84,4 +84,5 @@ public class GameManagerLayout extends RelativeLayout {
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
     }
+
 }

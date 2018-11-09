@@ -3,12 +3,16 @@ package android.hearc.ch.droppydrop;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +27,24 @@ public class Level extends View {
 
     private Paint paintDrop;
     private Paint paintPointer;
+
     private static final int LINE_SIZE = 30;
     private static final int CIRCLE_SIZE = 15;
     private List<Point> points;
     private Point startLine, endLine;
 
+    private int DEVICE_DENSITY_DPI;
+
+    private Rect levelRect;
+    private Paint paintlvlRect;
+
     public Level(Context context, AttributeSet attrs) {
         super(context, attrs);
+        DisplayMetrics metrics = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager)this.getContext().getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(metrics);
+
+        DEVICE_DENSITY_DPI = metrics.densityDpi;
 
         points = new ArrayList<>();
 
@@ -52,7 +67,19 @@ public class Level extends View {
         paintPointer.setColor(getContext().getColor(R.color.colorPrimaryDark));
         paintPointer.setStrokeWidth(CIRCLE_SIZE);
 
+
+
+        paintlvlRect = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintlvlRect.setStyle(Paint.Style.STROKE);
+        paintlvlRect.setColor(Color.BLACK);
+        paintlvlRect.setStrokeWidth(10);
+
+        int borderDistance=convertDpToPixel(100);
+        levelRect= new Rect(borderDistance, borderDistance, 3*borderDistance, 6*borderDistance);
+
         if(set == null) return;
+
+
 
         // TODO get attrs with level id
         // TODO dead zone reader from attribs
@@ -72,6 +99,10 @@ public class Level extends View {
     @Override
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
+
+        //TODO draw dead zone
+        canvas.drawRect(levelRect, paintlvlRect);
+
         Log.i(TAG, "onDraw");
         for(int i=1; i < points.size() && points.size() > 1; i++)
         {
@@ -84,18 +115,33 @@ public class Level extends View {
             canvas.drawCircle(startLine.x, startLine.y, CIRCLE_SIZE, paintDrop);
         }
 
-        //TODO draw dead zone
+
 
         // Paint the last point for the pointer position
         canvas.drawCircle(endLine.x, endLine.y, CIRCLE_SIZE, paintPointer);
+
+
     }
 
     public boolean addPoint(Point p){
         // TODO can add the point ? Does it touch a dead zone ?
         // TODO does a point have the same position ?
         if(points != null){
-            return points.add(new Point(p));
+            if(p.x+CIRCLE_SIZE>levelRect.right || p.y+CIRCLE_SIZE>levelRect.bottom ||p.x-CIRCLE_SIZE <levelRect.left ||p.y-CIRCLE_SIZE<levelRect.bottom)
+            {
+                
+                return false;
+            }
+            else
+            {
+                return points.add(new Point(p));
+            }
         }
         return false;
     }
+
+    private int convertDpToPixel(float dp) {
+        return (int) (dp * (DEVICE_DENSITY_DPI / 160f));
+    }
+
 }
