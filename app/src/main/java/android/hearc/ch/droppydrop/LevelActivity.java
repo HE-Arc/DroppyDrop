@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.hearc.ch.droppydrop.Models.LevelModel;
 import android.media.Image;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,7 @@ import java.util.List;
 public class LevelActivity extends AppCompatActivity {
 
     private List<Button> levelButtons;
+    private List<LevelModel> levelModels;
 
 
     @Override
@@ -37,6 +39,7 @@ public class LevelActivity extends AppCompatActivity {
 
 
         levelButtons= new ArrayList<Button>();
+        levelModels=new ArrayList<LevelModel>();
 
         int buttonsPerRow=3;
         int buttonCounter=0;
@@ -56,14 +59,23 @@ public class LevelActivity extends AppCompatActivity {
                 for (int x = 0; x < buttonsPerRow; x++) {
 
                         Button button = new Button(this);
+                        levelModels.add(new LevelModel(this,buttonCounter));
 
+                        String levelName=levelModels.get(buttonCounter).LevelName;
 
-                        button.setText(getResources().getStringArray(R.array.names)[buttonCounter++]);
-
+                        button.setText(levelName);
+                        buttonCounter++;
 
                         button.setOnClickListener(new Button.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+                                int levelId=levelButtons.indexOf(view);
+
+                                int difficulty=levelModels.get(levelId).Difficulty;
+                                int dropColor=levelModels.get(levelId).DropColorInt;
+                                int imageId=levelModels.get(levelId).ImageId;
+
+
                                 TableRow levelInfoRow = (TableRow)findViewById(R.id.levelInfoRow);
                                 levelInfoRow.setVisibility(View.VISIBLE);
                                 TableRow playLevel = (TableRow)findViewById(R.id.playLevelButtonRow);
@@ -72,8 +84,7 @@ public class LevelActivity extends AppCompatActivity {
                                 levelImageRow.setVisibility(View.VISIBLE);
 
                                 TextView levelInfo=(TextView)findViewById(R.id.levelInfo);
-                                int difficulty=getResources().getIntArray(R.array.difficulties)[levelButtons.indexOf(view)];
-                                int dropColor=getResources().obtainTypedArray(R.array.dropColors).getColor(levelButtons.indexOf(view),0);
+
 
                                 String beforeDropColorString="Difficulty: "+difficulty+"\nDrop color: ";
 
@@ -84,7 +95,7 @@ public class LevelActivity extends AppCompatActivity {
 
 
                                 ImageView levelImage =(ImageView)findViewById(R.id.levelImage);
-                                levelImage.setImageResource(getResources().obtainTypedArray(R.array.images).getResourceId(levelButtons.indexOf(view),-1));
+                                levelImage.setImageResource(imageId);
 
                             }
                         });
