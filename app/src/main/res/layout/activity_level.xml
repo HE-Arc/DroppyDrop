@@ -44,7 +44,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_weight="1"
-
                 android:scaleType="fitCenter"
                 app:srcCompat="@android:color/holo_green_dark" />
         </TableRow>

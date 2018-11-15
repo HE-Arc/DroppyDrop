@@ -20,7 +20,7 @@ public class VibratorManager{
     }
 
     public void startVibrator() {
-        vibrator.vibrate(pattern, 0);
+        vibrator.vibrate(500);
     }
 
     public void stopVibrator()
