@@ -4,7 +4,7 @@
     <string name="scores">Scores</string>
     <string name="options">Options</string>
     <string name="credits">Credits</string>
-    <string name="appNameLogo">Droppy Drop Logo</string>
+    <string name="app_name_logo">Droppy Drop Logo</string>
     <string name="score_icon">score_icon</string>
     <string name="score_tab">Tableau des scores</string>
 </resources>
