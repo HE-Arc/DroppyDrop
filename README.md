@@ -1,7 +1,7 @@
-# androidHE-Arc
+# DroppyDrop
 Android project for the Android course
 
-[[https://github.com/HE-Arc/DroppyDrop/wiki/ressources/images/Droppy%20Drop.png]]
+![Logo](https://github.com/HE-Arc/DroppyDrop/wiki/ressources/images/Droppy%20Drop.png)
 
 
 Here is all the documentation about our android game. You can check the following pages :
