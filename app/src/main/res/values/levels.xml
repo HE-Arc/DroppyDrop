@@ -9,10 +9,10 @@
     </string-array>
     <string-array name="images">
         <item>@drawable/lvl1</item>
-        <item>@drawable/lvl1</item>
-        <item>@drawable/lvl1</item>
-        <item>@drawable/lvl1</item>
-        <item>@drawable/lvl1</item>
+        <item>@drawable/lvl2</item>
+        <item>@drawable/lvl3</item>
+        <item>@drawable/lvl4</item>
+        <item>@drawable/lvl5</item>
     </string-array>
     <integer-array name="difficulties">
         <item>1</item>
@@ -22,29 +22,19 @@
         <item>3</item>
     </integer-array>
     <string-array name="dropColors">
-        <item>@color/red</item>
-        <item>@color/green</item>
-        <item>@color/blue</item>
-        <item>@color/fuscia</item>
-        <item>@color/yellow</item>
+        <item>@color/colorRed</item>
+        <item>@color/colorGreen</item>
+        <item>@color/colorBlue</item>
+        <item>@color/colorMagenta</item>
+        <item>@color/colorYellow</item>
     </string-array>
     <string-array name="trackColors">
-        <item>@color/darkerRed</item>
-        <item>@color/darkerGreen</item>
-        <item>@color/darkerBlue</item>
-        <item>@color/darkerFuscia</item>
-        <item>@color/darkerYellow</item>
+        <item>@color/colorDarkRed</item>
+        <item>@color/colorDarkGreen</item>
+        <item>@color/colorDarkBlue</item>
+        <item>@color/colorDarkMagenta</item>
+        <item>@color/colorDarkYellow</item>
     </string-array>
 
-    <color name="red">#FF0000</color>
-    <color name="green">#00FF00</color>
-    <color name="blue">#0000FF</color>
-    <color name="fuscia">#FF00FF</color>
-    <color name="yellow">#FFFF00</color>
 
-    <color name="darkerRed">#AA0000</color>
-    <color name="darkerGreen">#00AA00</color>
-    <color name="darkerBlue">#0000AA</color>
-    <color name="darkerFuscia">#AA00AA</color>
-    <color name="darkerYellow">#AAAA00</color>
 </resources>
