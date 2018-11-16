@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -31,18 +32,24 @@ public class LevelActivity extends AppCompatActivity {
         setContentView(R.layout.activity_level);
 
 
-        levelButtons= new ArrayList<Button>();
-        levelModels=new ArrayList<LevelModel>();
+        levelButtons = new ArrayList<Button>();
+        levelModels = new ArrayList<LevelModel>();
 
-        int buttonsPerRow=3;
-        int buttonCounter=0;
-        int levelCount=getResources().getStringArray(R.array.names).length;
+        int buttonsPerRow = 3;
+        int buttonCounter = 0;
+        int levelCount = getResources().getStringArray(R.array.levels).length;
+        List<LevelModel> levelModels = LevelModel.getAllLevelModel(this);
+        /*for(LevelModel lm : levelModels)
+        {
+            Log.i("LevelActivity", "onCreate: " + lm.toString());
+        }*/
+        //LevelModel lvl = new LevelModel(this, "level_1");
 
 
         TableLayout table = (TableLayout) findViewById(R.id.levelTableLayout);
 
 
-        for (int i = 0; i < Math.ceil(levelCount/(double)buttonsPerRow); i++) {
+        /*for (int i = 0; i < Math.ceil(levelCount/(double)buttonsPerRow); i++) {
 
             TableRow tr = new TableRow(this);
             LinearLayout linearLayout = new LinearLayout(this);
@@ -109,8 +116,8 @@ public class LevelActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-            }
-        }
-
+            }*/
+    }
+}
 
 
