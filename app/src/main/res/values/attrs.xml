@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="Level">
-        <!-- custom game attrib -->
         <attr name="id" format="integer"/>
         <attr name="name" format="string"/>
         <attr name="image" format="reference"/>
@@ -10,7 +9,6 @@
         <attr name="track_color" format="reference"/>
     </declare-styleable>
     <declare-styleable name="GameManagerLayout">
-        <!-- custom game attrib -->
         <attr name="level_id" format="integer"/>
     </declare-styleable>
 </resources>

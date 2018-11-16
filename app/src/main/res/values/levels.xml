@@ -1,43 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="levels">
-        <item>@array/names</item>
-        <item>@array/images</item>
-        <item>@array/difficulties</item>
-        <item>@array/dropColors</item>
+    <array name="level_1">
+        <item name="id">1</item>
+        <item name="image">@drawable/lvl1</item>
+        <item name="difficulty">1</item>
+        <item name="drop_color">@color/colorRed</item>
+        <item name="tracker_color">@color/colorDarkRed</item>
     </array>
-    <string-array name="names">
-        <item>"Level 1"</item>
-        <item>"Level 2"</item>
-        <item>"Level 3"</item>
-        <item>"Level 4"</item>
-        <item>"Final level"</item>
-    </string-array>
-    <string-array name="images">
-        <item>@drawable/lvl1</item>
-        <item>@drawable/lvl1</item>
-        <item>@drawable/lvl1</item>
-        <item>@drawable/lvl1</item>
-        <item>@drawable/lvl1</item>
-    </string-array>
-    <integer-array name="difficulties">
-        <item>1</item>
-        <item>1</item>
-        <item>2</item>
-        <item>2</item>
-        <item>3</item>
-    </integer-array>
-    <string-array name="dropColors">
-        <item>@color/red</item>
-        <item>@color/green</item>
-        <item>@color/blue</item>
-        <item>@color/fuscia</item>
-        <item>@color/yellow</item>
-    </string-array>
-
-    <color name="red">#FF0000</color>
-    <color name="green">#00FF00</color>
-    <color name="blue">#0000FF</color>
-    <color name="fuscia">#FF00FF</color>
-    <color name="yellow">#FFFF00</color>
+    <array name="level_2">
+        <item name="id">2</item>
+        <item name="image">@drawable/lvl1</item>
+        <item name="difficulty">2</item>
+        <item name="drop_color">@color/colorGreen</item>
+        <item name="tracker_color">@color/colorDarkGreen</item>
+    </array>
+    <array name="level_3">
+        <item name="id">3</item>
+        <item name="image">@drawable/lvl1</item>
+        <item name="difficulty">3</item>
+        <item name="drop_color">@color/colorBlue</item>
+        <item name="tracker_color">@color/colorDarkBlue</item>
+    </array>
+    <array name="level_4">
+        <item name="id">4</item>
+        <item name="image">@drawable/lvl1</item>
+        <item name="difficulty">4</item>
+        <item name="drop_color">@color/colorMagenta</item>
+        <item name="tracker_color">@color/colorDarkMagenta</item>
+    </array>
+    <array name="level_5">
+        <item name="id">5</item>
+        <item name="image">@drawable/lvl1</item>
+        <item name="difficulty">5</item>
+        <item name="drop_color">@color/colorYellow</item>
+        <item name="tracker_color">@color/colorDarkYellow</item>
+    </array>
 </resources>
