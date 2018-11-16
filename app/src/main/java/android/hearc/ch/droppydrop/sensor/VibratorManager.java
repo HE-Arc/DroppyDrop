@@ -1,4 +1,4 @@
-package android.hearc.ch.droppydrop;
+package android.hearc.ch.droppydrop.sensor;
 
 import android.content.Context;
 import android.os.Vibrator;

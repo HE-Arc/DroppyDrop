@@ -3,6 +3,8 @@ package android.hearc.ch.droppydrop;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.hearc.ch.droppydrop.game.Level.LevelActivity;
+import android.hearc.ch.droppydrop.score.ScoreActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;

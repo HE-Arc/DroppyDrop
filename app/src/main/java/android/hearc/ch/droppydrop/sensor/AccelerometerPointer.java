@@ -1,8 +1,7 @@
-package android.hearc.ch.droppydrop;
+package android.hearc.ch.droppydrop.sensor;
 
 import android.content.Context;
 import android.graphics.Point;
-import android.graphics.PointF;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,7 +19,6 @@ public class AccelerometerPointer implements SensorEventListener {
     private Sensor senAccelerometer;
 
     private Point origin;
-    private Point acceleration;
     private Point pointer;
 
     public AccelerometerPointer(Context context, int heigt, int width) {
@@ -33,7 +31,6 @@ public class AccelerometerPointer implements SensorEventListener {
         senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
 
         origin = new Point();
-        acceleration = new Point();
         pointer = new Point();
     }
 

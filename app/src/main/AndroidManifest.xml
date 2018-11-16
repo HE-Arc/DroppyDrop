@@ -18,10 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PlayActivity"
+        <activity android:name=".game.PlayActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ScoreActivity" />
-        <activity android:name=".LevelActivity"
+        <activity android:name=".score.ScoreActivity" />
+        <activity android:name=".game.Level.LevelActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".OptionsActivity"></activity>
     </application>

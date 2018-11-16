@@ -1,4 +1,4 @@
-package android.hearc.ch.droppydrop.Models;
+package android.hearc.ch.droppydrop.models;
 
 import android.content.Context;
 import android.hearc.ch.droppydrop.R;

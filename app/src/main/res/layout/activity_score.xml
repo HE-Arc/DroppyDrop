@@ -6,7 +6,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:visibility="visible"
-    tools:context=".ScoreActivity">
+    tools:context=".score.ScoreActivity">
 
     <ImageView
         android:id="@+id/scoreImageView"

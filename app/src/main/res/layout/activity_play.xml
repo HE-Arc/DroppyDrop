@@ -6,15 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".PlayActivity">
+    tools:context=".game.PlayActivity">
 
-    <android.hearc.ch.droppydrop.GameManagerLayout
+    <android.hearc.ch.droppydrop.game.GameManagerLayout
         android:id="@+id/game"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:visibility="visible">
 
-    </android.hearc.ch.droppydrop.GameManagerLayout>
+    </android.hearc.ch.droppydrop.game.GameManagerLayout>
 
 </LinearLayout>

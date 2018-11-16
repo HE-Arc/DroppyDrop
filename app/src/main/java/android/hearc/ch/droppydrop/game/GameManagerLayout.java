@@ -1,8 +1,11 @@
-package android.hearc.ch.droppydrop;
+package android.hearc.ch.droppydrop.game;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.hearc.ch.droppydrop.sensor.AccelerometerPointer;
+import android.hearc.ch.droppydrop.game.Level.Level;
+import android.hearc.ch.droppydrop.R;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;

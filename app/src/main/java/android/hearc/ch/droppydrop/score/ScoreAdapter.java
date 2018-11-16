@@ -1,6 +1,7 @@
-package android.hearc.ch.droppydrop;
+package android.hearc.ch.droppydrop.score;
 
 import android.content.Context;
+import android.hearc.ch.droppydrop.R;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

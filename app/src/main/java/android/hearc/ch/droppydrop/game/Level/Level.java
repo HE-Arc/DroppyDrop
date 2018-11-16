@@ -1,12 +1,13 @@
-package android.hearc.ch.droppydrop;
+package android.hearc.ch.droppydrop.game.Level;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.hearc.ch.droppydrop.R;
+import android.hearc.ch.droppydrop.sensor.VibratorManager;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -15,7 +16,6 @@ import android.view.View;
 import android.view.WindowManager;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.List;
 
 /**

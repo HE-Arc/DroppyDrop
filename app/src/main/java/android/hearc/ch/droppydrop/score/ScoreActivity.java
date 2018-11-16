@@ -1,8 +1,8 @@
-package android.hearc.ch.droppydrop;
+package android.hearc.ch.droppydrop.score;
 
+import android.hearc.ch.droppydrop.R;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.util.Log;
 
