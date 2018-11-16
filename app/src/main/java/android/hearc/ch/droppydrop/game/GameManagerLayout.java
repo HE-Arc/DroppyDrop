@@ -29,12 +29,25 @@ public class GameManagerLayout extends RelativeLayout {
     public GameManagerLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+
+
+    }
+
+    public void init(Context context,int selectedLevel,AttributeSet set)
+    {
+        LevelModel levelModel=new LevelModel(context,selectedLevel);
+
+        level = new Level(context,levelModel);
+        addView(level);
+
+        //if(set == null) return;
+
         int h = this.getMeasuredHeight();
         int w = this.getMeasuredWidth();
 
 
         accPointer = new AccelerometerPointer(context, h, w);
-        level = new Level(context,new LevelModel(context,0));
+
 
         // Timer
         // TODO as a class or function -> that provide start and stop
@@ -54,13 +67,6 @@ public class GameManagerLayout extends RelativeLayout {
         };
         getPointerRunnable.run();
 
-        init(attrs);
-    }
-
-    private void init(AttributeSet set)
-    {
-        addView(level);
-        if(set == null) return;
 
         TypedArray ta = getContext().obtainStyledAttributes(set, R.styleable.GameManagerLayout);
         // assign custom attribs
@@ -74,7 +80,7 @@ public class GameManagerLayout extends RelativeLayout {
         final int newWidth= MeasureSpec.getSize(widthMeasureSpec);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        accPointer.resetPointer(newHeight, newWidth);
+        if (accPointer!=null)accPointer.resetPointer(newHeight, newWidth);
     }
 
     @Override

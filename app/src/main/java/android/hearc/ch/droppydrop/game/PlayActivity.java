@@ -15,5 +15,8 @@ public class PlayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_play);
+
+        GameManagerLayout game=(GameManagerLayout) findViewById(R.id.game);
+        game.init(this,getIntent().getIntExtra("selectedLevel", 0),null);
     }
 }

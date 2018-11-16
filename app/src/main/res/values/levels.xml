@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="levels">
-        <item>@array/names</item>
-        <item>@array/images</item>
-        <item>@array/difficulties</item>
-        <item>@array/dropColors</item>
-    </array>
     <string-array name="names">
         <item>"Level 1"</item>
         <item>"Level 2"</item>
@@ -36,10 +30,10 @@
     </string-array>
     <string-array name="trackColors">
         <item>@color/darkerRed</item>
-        <item>@color/green</item>
-        <item>@color/blue</item>
-        <item>@color/fuscia</item>
-        <item>@color/yellow</item>
+        <item>@color/darkerGreen</item>
+        <item>@color/darkerBlue</item>
+        <item>@color/darkerFuscia</item>
+        <item>@color/darkerYellow</item>
     </string-array>
 
     <color name="red">#FF0000</color>

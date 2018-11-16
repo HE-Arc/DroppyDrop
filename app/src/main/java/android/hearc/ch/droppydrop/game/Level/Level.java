@@ -70,6 +70,7 @@ public class Level extends View {
 
 
 
+
         paintlvlRect = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintlvlRect.setStyle(Paint.Style.STROKE);
         paintlvlRect.setColor(Color.BLACK);
@@ -111,14 +112,14 @@ public class Level extends View {
                 endLine = points.get(i);
 
                 // Paint a line between each points
-                canvas.drawLine(startLine.x, startLine.y, endLine.x, endLine.y, paintDrop);
+                canvas.drawLine(startLine.x, startLine.y, endLine.x, endLine.y, paintTrack);
                 // Paint a dot to make it looks round
-                canvas.drawCircle(startLine.x, startLine.y, CIRCLE_SIZE, paintDrop);
+                canvas.drawCircle(startLine.x, startLine.y, CIRCLE_SIZE, paintTrack);
             }
 
 
             // Paint the last point for the pointer position
-            canvas.drawCircle(endLine.x, endLine.y, CIRCLE_SIZE, paintTrack);
+            canvas.drawCircle(endLine.x, endLine.y, CIRCLE_SIZE, paintDrop);
 
         }
     }
