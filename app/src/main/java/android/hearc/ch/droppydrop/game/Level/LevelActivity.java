@@ -2,7 +2,6 @@ package android.hearc.ch.droppydrop.game.Level;
 
 import android.content.Intent;
 import android.hearc.ch.droppydrop.game.PlayActivity;
-import android.hearc.ch.droppydrop.models.LevelModel;
 import android.hearc.ch.droppydrop.R;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

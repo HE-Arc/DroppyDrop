@@ -1,4 +1,4 @@
-package android.hearc.ch.droppydrop.models;
+package android.hearc.ch.droppydrop.game.Level;
 
 import android.content.Context;
 import android.hearc.ch.droppydrop.R;
