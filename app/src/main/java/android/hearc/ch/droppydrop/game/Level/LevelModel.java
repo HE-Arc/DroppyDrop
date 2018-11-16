@@ -2,11 +2,16 @@ package android.hearc.ch.droppydrop.game.Level;
 
 import android.content.Context;
 import android.hearc.ch.droppydrop.R;
+import android.util.AttributeSet;
+
+import java.text.AttributedCharacterIterator;
 
 public class LevelModel {
 
     public int Difficulty;
     public int DropColorInt;
+    public int TrackColorInt;
+
     public String LevelName;
     public int ImageId;
 
@@ -19,6 +24,9 @@ public class LevelModel {
         this.LevelName= context.getResources().getStringArray(R.array.names)[levelId];
         this.Difficulty=context.getResources().getIntArray(R.array.difficulties)[levelId];
         this.DropColorInt=context.getResources().obtainTypedArray(R.array.dropColors).getColor(levelId,0);
+        this.TrackColorInt=context.getResources().obtainTypedArray(R.array.trackColors).getColor(levelId,0);
         this.ImageId=context.getResources().obtainTypedArray(R.array.images).getResourceId(levelId,-1);
     }
+
+
 }

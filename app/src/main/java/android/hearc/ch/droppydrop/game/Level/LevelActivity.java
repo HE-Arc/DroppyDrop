@@ -23,6 +23,7 @@ public class LevelActivity extends AppCompatActivity {
 
     private List<Button> levelButtons;
     private List<LevelModel> levelModels;
+    private int selectedLevel;
 
 
     @Override
@@ -63,6 +64,7 @@ public class LevelActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
                                 int levelId=levelButtons.indexOf(view);
+                                selectedLevel=levelId;
 
                                 int difficulty=levelModels.get(levelId).Difficulty;
                                 int dropColor=levelModels.get(levelId).DropColorInt;
@@ -106,6 +108,7 @@ public class LevelActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         //We have to find a way to pass the level information
                         Intent intent = new Intent(LevelActivity.this, PlayActivity.class);
+                        intent.putExtra("selectedLevel",selectedLevel);
                         startActivity(intent);
                     }
                 });

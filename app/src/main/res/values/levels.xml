@@ -34,10 +34,23 @@
         <item>@color/fuscia</item>
         <item>@color/yellow</item>
     </string-array>
+    <string-array name="trackColors">
+        <item>@color/darkerRed</item>
+        <item>@color/green</item>
+        <item>@color/blue</item>
+        <item>@color/fuscia</item>
+        <item>@color/yellow</item>
+    </string-array>
 
     <color name="red">#FF0000</color>
     <color name="green">#00FF00</color>
     <color name="blue">#0000FF</color>
     <color name="fuscia">#FF00FF</color>
     <color name="yellow">#FFFF00</color>
+
+    <color name="darkerRed">#AA0000</color>
+    <color name="darkerGreen">#00AA00</color>
+    <color name="darkerBlue">#0000AA</color>
+    <color name="darkerFuscia">#AA00AA</color>
+    <color name="darkerYellow">#AAAA00</color>
 </resources>

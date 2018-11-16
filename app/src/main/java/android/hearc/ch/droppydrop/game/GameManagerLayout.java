@@ -3,6 +3,7 @@ package android.hearc.ch.droppydrop.game;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.hearc.ch.droppydrop.game.Level.LevelModel;
 import android.hearc.ch.droppydrop.sensor.AccelerometerPointer;
 import android.hearc.ch.droppydrop.game.Level.Level;
 import android.hearc.ch.droppydrop.R;
@@ -31,8 +32,9 @@ public class GameManagerLayout extends RelativeLayout {
         int h = this.getMeasuredHeight();
         int w = this.getMeasuredWidth();
 
+
         accPointer = new AccelerometerPointer(context, h, w);
-        level = new Level(context);
+        level = new Level(context,new LevelModel(context,0));
 
         // Timer
         // TODO as a class or function -> that provide start and stop
