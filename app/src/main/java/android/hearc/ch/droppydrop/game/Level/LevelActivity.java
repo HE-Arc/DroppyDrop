@@ -26,6 +26,7 @@ public class LevelActivity extends AppCompatActivity {
     private List<LevelModel> levelModels;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +38,10 @@ public class LevelActivity extends AppCompatActivity {
 
         int buttonsPerRow = 3;
         int buttonCounter = 0;
-        int levelCount = getResources().getStringArray(R.array.levels).length;
-        List<LevelModel> levelModels = LevelModel.getAllLevelModel(this);
+
+        levelModels = LevelModel.getAllLevelModel(this);
+        int levelCount = levelModels.size();
+
         /*for(LevelModel lm : levelModels)
         {
             Log.i("LevelActivity", "onCreate: " + lm.toString());
@@ -49,7 +52,7 @@ public class LevelActivity extends AppCompatActivity {
         TableLayout table = (TableLayout) findViewById(R.id.levelTableLayout);
 
 
-        /*for (int i = 0; i < Math.ceil(levelCount/(double)buttonsPerRow); i++) {
+        for (int i = 0; i < Math.ceil(levelCount/(double)buttonsPerRow); i++) {
 
             TableRow tr = new TableRow(this);
             LinearLayout linearLayout = new LinearLayout(this);
@@ -116,8 +119,8 @@ public class LevelActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-            }*/
+            }
     }
-}
+
 
 

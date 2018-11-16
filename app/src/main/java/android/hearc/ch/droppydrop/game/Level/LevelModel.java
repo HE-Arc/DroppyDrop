@@ -1,6 +1,7 @@
 package android.hearc.ch.droppydrop.game.Level;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.hearc.ch.droppydrop.R;
 import android.util.Log;
 
@@ -21,23 +22,36 @@ public class LevelModel {
 
     private Context context;
 
-    public LevelModel(Context context, int reference)
+    public LevelModel(Context context, int levelId)
     {
         this.context=context;
         //String[] array =
         //Log.i(TAG, "LevelModel: " + obj.getClass().getSimpleName());
         //this.id = context.getResources().obtainTypedArray(reference).getResources();
-        //this.LevelName = context.getResources().getStringArray(R.array.names)[levelId];
-        this.ImageId= context.getResources().obtainTypedArray(reference).getResourceId(image,-1);
-        this.Difficulty=context.getResources().getIntArray(R.array.difficulties)[levelId];
-        this.DropColorInt=context.getResources().obtainTypedArray(R.array.dropColors).getColor(levelId,0);
+
+
+        int firstLevelAdress=0x7f020000; // dsl mdr
+
+
+        this.LevelName = context.getResources().obtainTypedArray(firstLevelAdress+levelId).getString(0);
+        this.ImageId= context.getResources().obtainTypedArray(firstLevelAdress+levelId).getResourceId(1,0);
+        this.Difficulty=context.getResources().obtainTypedArray(firstLevelAdress+levelId).getInteger(2,0);
+        this.DropColorInt=context.getResources().obtainTypedArray(firstLevelAdress+levelId).getColor(3,0);
+        this.TrackerColorInt=context.getResources().obtainTypedArray(firstLevelAdress+levelId).getColor(4,0);
 
     }
 
     public static List<LevelModel> getAllLevelModel(Context context)
     {
+
         List<LevelModel> models = new ArrayList<>();
-        models.add(new LevelModel(context, R.array.level_1));
-        return  null;
+
+        int levelCount = context.getResources().getStringArray(R.array).length;
+        for(int i=0;i<levelCount;i++)
+        {
+            models.add(new LevelModel(context, i));
+        }
+
+        return  models;
     }
 }

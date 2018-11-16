@@ -1,38 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- note xmlns:custom and android.hearc.ch.droppydrop -->
 <resources>
     <array name="level_1">
-        <item name="id">1</item>
+        <item name="name">Lvl1</item>
         <item name="image">@drawable/lvl1</item>
         <item name="difficulty">1</item>
         <item name="drop_color">@color/colorRed</item>
         <item name="tracker_color">@color/colorDarkRed</item>
     </array>
     <array name="level_2">
-        <item name="id">2</item>
+        <item name="name">Level 2</item>
         <item name="image">@drawable/lvl1</item>
         <item name="difficulty">2</item>
         <item name="drop_color">@color/colorGreen</item>
         <item name="tracker_color">@color/colorDarkGreen</item>
     </array>
     <array name="level_3">
-        <item name="id">3</item>
+        <item name="name">Lvl 3</item>
         <item name="image">@drawable/lvl1</item>
         <item name="difficulty">3</item>
         <item name="drop_color">@color/colorBlue</item>
         <item name="tracker_color">@color/colorDarkBlue</item>
     </array>
     <array name="level_4">
-        <item name="id">4</item>
+        <item name="name">Fourth level</item>
         <item name="image">@drawable/lvl1</item>
         <item name="difficulty">4</item>
         <item name="drop_color">@color/colorMagenta</item>
         <item name="tracker_color">@color/colorDarkMagenta</item>
     </array>
     <array name="level_5">
-        <item name="id">5</item>
+        <item name="name">Final level</item>
         <item name="image">@drawable/lvl1</item>
         <item name="difficulty">5</item>
         <item name="drop_color">@color/colorYellow</item>
         <item name="tracker_color">@color/colorDarkYellow</item>
     </array>
+
 </resources>
