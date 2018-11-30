@@ -11,4 +11,5 @@
     <string name="vibration">Vibration</string>
     <string name="username">Username</string>
     <string name="default_username">Player</string>
+    <string name="save">Save</string>
 </resources>

@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:max="5"
+            android:max="4"
             android:progress="1" />
     </TableRow>
 
@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:max="5"
+            android:max="4"
             android:progress="1" />
     </TableRow>
 
@@ -69,5 +69,19 @@
         <EditText
             android:id="@+id/username_editText"
             android:layout_weight="2" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/save" />
     </TableRow>
 </TableLayout>
