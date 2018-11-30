@@ -8,8 +8,6 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.hearc.ch.droppydrop.R;
 import android.hearc.ch.droppydrop.sensor.VibratorManager;
-import android.support.annotation.Nullable;
-import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +25,7 @@ public class Level extends View {
     private static final String TAG = "LEVEL"; // Level.class.getSimpleName();
 
     private Paint paintDrop;
-    private Paint paintPointer;
+    private Paint paintTrack;
 
     private static final int LINE_SIZE = 30;
     private static final int CIRCLE_SIZE = 15;
@@ -41,8 +39,8 @@ public class Level extends View {
 
     private VibratorManager vibratorManager;
 
-    public Level(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public Level(Context context, LevelModel level) {
+        super(context);
         DisplayMetrics metrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager)this.getContext().getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(metrics);
@@ -51,7 +49,7 @@ public class Level extends View {
         vibratorManager=new VibratorManager(this.getContext());
         points = new ArrayList<>();
 
-        init(attrs);
+        init(level);
     }
 
     public Level(Context context)
@@ -59,16 +57,17 @@ public class Level extends View {
         this(context, null);
     }
 
-    private void init(@Nullable AttributeSet set) {
+    private void init(LevelModel level) {
         // Trace painting tool
         paintDrop = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintDrop.setColor(getContext().getColor(R.color.colorPrimary));
+        paintDrop.setColor(level.DropColorInt);
         paintDrop.setStrokeWidth(LINE_SIZE);
 
         // Pointer painting tools
-        paintPointer = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintPointer.setColor(getContext().getColor(R.color.colorPrimaryDark));
-        paintPointer.setStrokeWidth(CIRCLE_SIZE);
+        paintTrack = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintTrack.setColor(level.TrackColorInt);
+        paintTrack.setStrokeWidth(CIRCLE_SIZE);
+
 
 
 
@@ -80,7 +79,7 @@ public class Level extends View {
         int borderDistance=convertDpToPixel(100);
         levelRect= new Rect(borderDistance, borderDistance, 3*borderDistance, 6*borderDistance);
 
-        if(set == null) return;
+
 
 
 
@@ -113,14 +112,14 @@ public class Level extends View {
                 endLine = points.get(i);
 
                 // Paint a line between each points
-                canvas.drawLine(startLine.x, startLine.y, endLine.x, endLine.y, paintDrop);
+                canvas.drawLine(startLine.x, startLine.y, endLine.x, endLine.y, paintTrack);
                 // Paint a dot to make it looks round
-                canvas.drawCircle(startLine.x, startLine.y, CIRCLE_SIZE, paintDrop);
+                canvas.drawCircle(startLine.x, startLine.y, CIRCLE_SIZE, paintTrack);
             }
 
 
             // Paint the last point for the pointer position
-            canvas.drawCircle(endLine.x, endLine.y, CIRCLE_SIZE, paintPointer);
+            canvas.drawCircle(endLine.x, endLine.y, CIRCLE_SIZE, paintDrop);
 
         }
     }

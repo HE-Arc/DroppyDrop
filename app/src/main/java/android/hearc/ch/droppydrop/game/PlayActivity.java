@@ -13,6 +13,10 @@ public class PlayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "OnCreate");
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_play);
+
+        GameManagerLayout game=(GameManagerLayout) findViewById(R.id.game);
+        game.init(this,getIntent().getIntExtra("selectedLevel", 0),null);
     }
 }
