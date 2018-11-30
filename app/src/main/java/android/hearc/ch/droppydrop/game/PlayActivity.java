@@ -1,22 +1,22 @@
 package android.hearc.ch.droppydrop.game;
 
-import android.hearc.ch.droppydrop.R;
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.annotation.Nullable;
+import android.view.Window;
+import android.view.WindowManager;
 
-public class PlayActivity extends AppCompatActivity {
-
-    private static final String TAG = PlayActivity.class.getSimpleName();
+public class PlayActivity extends Activity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "OnCreate");
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_play);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        GameManagerLayout game=(GameManagerLayout) findViewById(R.id.game);
-        game.init(this,getIntent().getIntExtra("selectedLevel", 0),null);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        int levelId=getIntent().getIntExtra("selectedLevel", 0);
+
+        setContentView(new GameView(this,levelId));
     }
 }
