@@ -7,4 +7,8 @@
     <string name="app_name_logo">Droppy Drop Logo</string>
     <string name="score_icon">score_icon</string>
     <string name="score_tab">Tableau des scores</string>
+    <string name="sensibility">Sensibility</string>
+    <string name="vibration">Vibration</string>
+    <string name="username">Username</string>
+    <string name="default_username">Player</string>
 </resources>
