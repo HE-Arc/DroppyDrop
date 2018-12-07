@@ -2,7 +2,6 @@ package android.hearc.ch.droppydrop.game.Level;
 
 import android.content.Intent;
 import android.hearc.ch.droppydrop.game.PlayActivity;
-import android.hearc.ch.droppydrop.game.old_PlayActivity;
 import android.hearc.ch.droppydrop.R;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -70,7 +69,7 @@ public class LevelActivity extends AppCompatActivity {
                                 int difficulty=levelModels.get(levelId).Difficulty;
                                 int dropColor=levelModels.get(levelId).DropColorInt;
                                 int imageId=levelModels.get(levelId).ImageId;
-
+                                int trackColor=levelModels.get(levelId).TrackColorInt;
 
                                 TableRow levelInfoRow = (TableRow)findViewById(R.id.levelInfoRow);
                                 levelInfoRow.setVisibility(View.VISIBLE);
@@ -85,7 +84,7 @@ public class LevelActivity extends AppCompatActivity {
                                 String beforeDropColorString="Difficulty: "+difficulty+"\nDrop color: ";
 
                                 Spannable spanna = new SpannableString(beforeDropColorString+"    ");
-                                spanna.setSpan(new BackgroundColorSpan(dropColor),beforeDropColorString.length(), beforeDropColorString.length()+4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                spanna.setSpan(new BackgroundColorSpan(trackColor),beforeDropColorString.length(), beforeDropColorString.length()+4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                                 levelInfo.setText(spanna);
 

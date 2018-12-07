@@ -20,8 +20,7 @@ import java.util.List;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread thread;
-    private AccelerometerPointer accPointer;
-    private Handler accHandler;
+
     private Context context;
 
 
@@ -79,19 +78,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
-    public AccelerometerPointer getAccPointer() {
-        return accPointer;
-    }
+
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        if (accPointer==null)
-            accPointer = new AccelerometerPointer(context, height, width);
+        if (thread.accPointer==null)
+            thread.accPointer = new AccelerometerPointer(context, height, width);
         else
-            accPointer.resetPointer(height, width);
+            thread.accPointer.resetPointer(height, width);
 
-        if(accHandler==null)
-            accHandler = new Handler();
+
     }
 
     @Override
@@ -101,7 +97,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         final int newWidth= MeasureSpec.getSize(widthMeasureSpec);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        if (accPointer!=null)accPointer.resetPointer(newHeight, newWidth);
+
     }
 
     @Override
@@ -140,22 +136,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             //+ check pour pas dessiner le "1er trait qui part du coin en haut à gauche au milieu"
             //+ check pour pas redessiner sur endroit où c'est déjà dessiné
             Log.i(TAG, "onDraw");
-            if(points.size()>1) {
-                for (int i = 1; i < points.size() && points.size() > 1; i++) {
-                    startLine = points.get(i - 1);
-                    endLine = points.get(i);
+                if(points.size()>1) {
+                    for (int i = 1; i < points.size()-1; i++) {
+                        startLine = points.get(i - 1);
 
-                    // Paint a line between each points
-                    canvas.drawLine(startLine.x, startLine.y, endLine.x, endLine.y, paintTrack);
-                    // Paint a dot to make it looks round
-                    canvas.drawCircle(startLine.x, startLine.y, CIRCLE_SIZE, paintTrack);
+
+                        // Paint a line between each points
+                        //canvas.drawLine(startLine.x, startLine.y, endLine.x, endLine.y, paintTrack);
+                        // Paint a dot to make it looks round
+                        canvas.drawCircle(startLine.x, startLine.y, CIRCLE_SIZE, paintTrack);
+                    }
+
+                    endLine = points.get(points.size() - 1);
+                    // Paint the last point for the pointer position
+                    canvas.drawCircle(endLine.x, endLine.y, CIRCLE_SIZE, paintDrop);
+
                 }
-
-
-                // Paint the last point for the pointer position
-                canvas.drawCircle(endLine.x, endLine.y, CIRCLE_SIZE, paintDrop);
-
-            }
         }
     }
 
