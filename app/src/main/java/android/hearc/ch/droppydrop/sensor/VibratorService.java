@@ -30,7 +30,7 @@ public class VibratorService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "Mon service Stopped", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Mon service Stopped", Toast.LENGTH_LONG).show();
         Log.d(TAG, "onStart");
         vibratorManager.startVibrator();
         return START_STICKY;
