@@ -24,6 +24,9 @@
         <activity android:name=".game.Level.LevelActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".OptionsActivity"></activity>
+        <service android:name=".sensor.VibratorService" android:enabled="true"
+            >
+        </service>
     </application>
 
 </manifest>
