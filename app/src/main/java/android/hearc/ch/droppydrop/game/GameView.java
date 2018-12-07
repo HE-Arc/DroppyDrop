@@ -15,6 +15,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -31,7 +33,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final int LINE_SIZE = 30;
     private static final int CIRCLE_SIZE = 15;
-    private List<Point> points;
+    private LinkedList<Point> points;
     private Point startLine, endLine;
 
     private int DEVICE_DENSITY_DPI;
@@ -39,15 +41,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Rect levelRect;
     private Paint paintlvlRect;
 
+    private Point lastPoint;
+
     private VibratorManager vibratorManager;
 
     public GameView(Context context,int levelId) {
         super(context);
         this.context=context;
+        lastPoint=new Point(-1,-1);
+        getHolder().setKeepScreenOn(true);
+        getHolder().setFixedSize(720,1480);
         getHolder().addCallback(this);
 
         vibratorManager=new VibratorManager(this.getContext());
-        points = new ArrayList<>();
+        points = new LinkedList<>();
 
         LevelModel level= new LevelModel(context,levelId);
 
@@ -69,24 +76,21 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         paintlvlRect.setColor(Color.BLACK);
         paintlvlRect.setStrokeWidth(10);
 
-        int borderDistance=250;
+        int borderDistance=150;
         levelRect= new Rect(borderDistance, borderDistance, 3*borderDistance, 6*borderDistance);
 
         thread = new MainThread(getHolder(), this);
         setFocusable(true);
 
-
     }
-
 
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         if (thread.accPointer==null)
-            thread.accPointer = new AccelerometerPointer(context, height, width);
+            thread.accPointer = new AccelerometerPointer(getContext(), height, width);
         else
             thread.accPointer.resetPointer(height, width);
-
 
     }
 
@@ -96,7 +100,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         final int newHeight= MeasureSpec.getSize(heightMeasureSpec);
         final int newWidth= MeasureSpec.getSize(widthMeasureSpec);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
 
     }
 
@@ -137,20 +140,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             //+ check pour pas redessiner sur endroit où c'est déjà dessiné
             Log.i(TAG, "onDraw");
                 if(points.size()>1) {
-                    for (int i = 1; i < points.size()-1; i++) {
-                        startLine = points.get(i - 1);
+                    Iterator it = points.iterator();
 
+                    while(it.hasNext() ){
 
-                        // Paint a line between each points
-                        //canvas.drawLine(startLine.x, startLine.y, endLine.x, endLine.y, paintTrack);
-                        // Paint a dot to make it looks round
-                        canvas.drawCircle(startLine.x, startLine.y, CIRCLE_SIZE, paintTrack);
+                        Point p=(Point)it.next();
+                        Log.i(TAG,"DRAW PIX ON "+p.x+";"+p.y);
+                        canvas.drawCircle(p.x, p.y, CIRCLE_SIZE, paintTrack);
+                        //this.getDrawingCache().getPixel(p.x,p.y);
                     }
-
-                    endLine = points.get(points.size() - 1);
-                    // Paint the last point for the pointer position
-                    canvas.drawCircle(endLine.x, endLine.y, CIRCLE_SIZE, paintDrop);
-
+                    canvas.drawCircle(points.getLast().x, points.getLast().y, CIRCLE_SIZE, paintDrop);
                 }
         }
     }
@@ -158,15 +157,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean addPoint(Point p){
         // TODO can add the point ? Does it touch a dead zone ?
         // TODO does a point have the same position ?
+        boolean ret=false;
         if(points != null && p.x!=0 && p.y!=0){
             if(p.x>levelRect.right || p.y>levelRect.bottom || p.x <levelRect.left ||p.y<levelRect.top)
             {
                 vibratorManager.startVibrator();
             }
-
-            return points.add(new Point(p));
+            if(lastPoint.x!=p.x && lastPoint.y!=p.y)
+            {
+                points.add(new Point(p));
+                ret=true;
+            }
+            lastPoint.x=p.x;
+            lastPoint.y=p.y;
         }
-        return false;
+
+        return ret;
     }
 
 

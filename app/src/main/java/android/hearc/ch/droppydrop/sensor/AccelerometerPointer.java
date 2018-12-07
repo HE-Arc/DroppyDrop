@@ -62,12 +62,13 @@ public class AccelerometerPointer implements SensorEventListener {
      */
     public void resetPointer(int height, int width)
     {
+
         origin.x = width /2;
         origin.y = height /2;
 
         pointer.x = width/2;
         pointer.y = height/2;
-        //Log.i(TAG, "AccelerometerPointer: origin: " + origin.toString());
+        Log.i(TAG, "AccelerometerPointer: origin: " + origin.toString());
     }
 
     public Point getPointer() {

@@ -37,8 +37,11 @@ public class MainThread extends Thread {
                 synchronized(surfaceHolder) {
                     if(gameView.addPoint(accPointer.getPointer())){
                         //gameView.invalidate();
+                        Log.i(TAG, "onTouchEvent: succesfully add a point");
                         this.gameView.update();
                         this.gameView.draw(canvas);
+                    }else{
+                        Log.e(TAG, "onTouchEvent: cannot add point");
                     }
                 }
             } catch (Exception e) {} finally {
