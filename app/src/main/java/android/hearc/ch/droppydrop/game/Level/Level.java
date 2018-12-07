@@ -143,7 +143,7 @@ public class Level extends View {
             else
             {
                 //mcontext.stopService(intent);
-                vibratorManager.startVibrator();
+                vibratorManager.stopVibrator();
             }
 
             return points.add(new Point(p));
