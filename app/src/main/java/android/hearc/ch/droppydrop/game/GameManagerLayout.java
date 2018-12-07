@@ -57,10 +57,10 @@ public class GameManagerLayout extends RelativeLayout {
             @Override
             public void run() {
                 if(level.addPoint(accPointer.getPointer())){
-                    Log.i(TAG, "onTouchEvent: succesfully add a point");
+                    //Log.i(TAG, "onTouchEvent: succesfully add a point");
                     level.invalidate();
                 } else {
-                    Log.e(TAG, "onTouchEvent: cannot add point");
+                    //Log.e(TAG, "onTouchEvent: cannot add point");
                 }
                 accHandler.postDelayed(this, 10);
             }
@@ -94,6 +94,10 @@ public class GameManagerLayout extends RelativeLayout {
     @Override
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
+    }
+
+    public void destroy() {
+        System.exit( 0 );
     }
 
 }
