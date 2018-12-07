@@ -1,6 +1,7 @@
 package android.hearc.ch.droppydrop.game.Level;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,6 +9,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.hearc.ch.droppydrop.R;
 import android.hearc.ch.droppydrop.sensor.VibratorManager;
+import android.hearc.ch.droppydrop.sensor.VibratorService;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -36,7 +38,7 @@ public class Level extends View {
 
     private Rect levelRect;
     private Paint paintlvlRect;
-
+    Context mcontext;
     private VibratorManager vibratorManager;
 
     public Level(Context context, LevelModel level) {
@@ -48,6 +50,8 @@ public class Level extends View {
         DEVICE_DENSITY_DPI = metrics.densityDpi;
         vibratorManager=new VibratorManager(this.getContext());
         points = new ArrayList<>();
+
+        mcontext = context;
 
         init(level);
     }
@@ -127,12 +131,19 @@ public class Level extends View {
     public boolean addPoint(Point p){
         // TODO can add the point ? Does it touch a dead zone ?
         // TODO does a point have the same position ?
+        Intent intent = new Intent(this.getContext(), VibratorService.class);
         if(points != null && p.x!=0 && p.y!=0){
             if(p.x>levelRect.right || p.y>levelRect.bottom || p.x <levelRect.left ||p.y<levelRect.top)
             {
-
+                //mcontext.startService(intent);
                 vibratorManager.startVibrator();
 
+
+            }
+            else
+            {
+                //mcontext.stopService(intent);
+                vibratorManager.stopVibrator();
             }
 
             return points.add(new Point(p));
