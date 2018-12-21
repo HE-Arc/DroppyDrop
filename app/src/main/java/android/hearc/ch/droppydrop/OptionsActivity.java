@@ -4,28 +4,92 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class OptionsActivity extends AppCompatActivity {
 
 
+    public static SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_options);
 
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         loadAndDisplayPreferences();
 
-        Button saveButton = findViewById(R.id.saveButton);
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        // Sensibility
+        SeekBar sensibilitySeekBar = findViewById(R.id.sensibility_seekBar);
+        sensibilitySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onClick(View view) {
-                savePreferences();
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                // nothing to do
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // nothing to do
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                int newSensibility = seekBar.getProgress();
+                editor.putInt(getString(R.string.sensibility), newSensibility);
+                editor.apply();
+            }
+        });
+
+        // Vibration
+        SeekBar vibrationSeekBar = findViewById(R.id.vibration_seekBar);
+        vibrationSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                // nothing to do
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // nothing to do
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                int newVibration = seekBar.getProgress();
+                editor.putInt(getString(R.string.vibration), newVibration);
+                editor.apply();
+            }
+        });
+
+        EditText usernameEditText = findViewById(R.id.username_editText);
+
+        usernameEditText.addTextChangedListener(new TextWatcher() {
+
+            public void onTextChanged(CharSequence c, int start, int before, int count) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                String newUsername = c.toString();
+                editor.putString(getString(R.string.username), newUsername);
+
+                editor.apply();
+            }
+
+            public void beforeTextChanged(CharSequence c, int start, int count, int after) {
+                // nothing to be done
+            }
+
+            public void afterTextChanged(Editable c) {
+                // nothing to be done
             }
         });
     }
@@ -33,7 +97,6 @@ public class OptionsActivity extends AppCompatActivity {
     private void loadAndDisplayPreferences()
     {
         // https://developer.android.com/training/data-storage/shared-preferences
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Sensibility
         int default_sensibility = 3;
@@ -54,26 +117,4 @@ public class OptionsActivity extends AppCompatActivity {
         usernameEditText.setText(username);
     }
 
-    private void savePreferences()
-    {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPref.edit();
-
-        // Sensibility
-        SeekBar sensibilitySeekBar = findViewById(R.id.sensibility_seekBar);
-        int newSensibility = sensibilitySeekBar.getProgress();
-        editor.putInt(getString(R.string.sensibility), newSensibility);
-
-        // Vibration
-        SeekBar vibrationSeekBar = findViewById(R.id.vibration_seekBar);
-        int newVibration = vibrationSeekBar.getProgress();
-        editor.putInt(getString(R.string.vibration), newVibration);
-
-        // Username
-        EditText usernameEditText = findViewById(R.id.username_editText);
-        String newUsername = usernameEditText.getText().toString();
-        editor.putString(getString(R.string.username), newUsername);
-
-        editor.apply();
-    }
 }
