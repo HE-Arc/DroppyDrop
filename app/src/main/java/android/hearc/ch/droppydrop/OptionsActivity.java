@@ -1,6 +1,7 @@
 package android.hearc.ch.droppydrop;
 
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 public class OptionsActivity extends AppCompatActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,30 +33,30 @@ public class OptionsActivity extends AppCompatActivity {
     private void loadAndDisplayPreferences()
     {
         // https://developer.android.com/training/data-storage/shared-preferences
-        SharedPreferences sharedPref = getPreferences(this.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Sensibility
         int default_sensibility = 3;
-        int sensibility = sharedPref.getInt(getString(R.string.sensibility), default_sensibility);
+        int sensibility = sharedPreferences.getInt(getString(R.string.sensibility), default_sensibility);
         SeekBar sensibilitySeekBar = findViewById(R.id.sensibility_seekBar);
         sensibilitySeekBar.setProgress(sensibility);
 
         // Vibration
         int default_vibration = 3;
-        int vibration = sharedPref.getInt(getString(R.string.vibration), default_vibration);
+        int vibration = sharedPreferences.getInt(getString(R.string.vibration), default_vibration);
         SeekBar vibrationSeekBar = findViewById(R.id.vibration_seekBar);
         vibrationSeekBar.setProgress(vibration);
 
         // Username
         String default_username = getResources().getString(R.string.default_username);
-        String username = sharedPref.getString(getString(R.string.username), default_username);
+        String username = sharedPreferences.getString(getString(R.string.username), default_username);
         EditText usernameEditText = findViewById(R.id.username_editText);
         usernameEditText.setText(username);
     }
 
     private void savePreferences()
     {
-        SharedPreferences sharedPref = getPreferences(this.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPref.edit();
 
         // Sensibility
@@ -71,6 +74,6 @@ public class OptionsActivity extends AppCompatActivity {
         String newUsername = usernameEditText.getText().toString();
         editor.putString(getString(R.string.username), newUsername);
 
-        editor.commit();
+        editor.apply();
     }
 }
