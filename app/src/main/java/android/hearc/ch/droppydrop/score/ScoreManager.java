@@ -76,6 +76,15 @@ public class ScoreManager {
     }
 
     /**
+     * Get the best scores of all level
+     * @return Map<Integer, List<Score>>
+     */
+    public Map<Integer, List<Score>> getAllScores()
+    {
+        return scoresMap;
+    }
+
+    /**
      * Read the scores and store them in the instance
      */
     private void readScores()

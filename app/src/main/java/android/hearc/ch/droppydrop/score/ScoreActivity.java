@@ -6,17 +6,23 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.util.Log;
 
+import java.util.List;
+import java.util.Map;
+
 public class ScoreActivity extends AppCompatActivity {
 
     private static final String TAG = ScoreActivity.class.getSimpleName();
 
     private ListView scoreListView;
     private ScoreAdapter scoreAdapter;
+    private ScoreManager scoreManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
+
+        this.scoreManager = ScoreManager.getInstance(this);
 
         retriveView();
         setUpViews();
@@ -37,17 +43,30 @@ public class ScoreActivity extends AppCompatActivity {
 
         scoreAdapter = new ScoreAdapter(this);
         scoreListView.setAdapter(scoreAdapter);
-
+        addFalseScore();
         loadBestScore();
 
         Log.d(TAG, "Setting up views -> done");
     }
 
+    private void addFalseScore()
+    {
+        scoreManager.saveScore(new Score(1, 2000, "Joueur 1"));
+        scoreManager.saveScore(new Score(1, 2300, "Joueur 2"));
+        scoreManager.saveScore(new Score(1, 4500, "Joueur 3"));
+        scoreManager.saveScore(new Score(1, 1290, "Joueur 4"));
+        scoreManager.saveScore(new Score(1, 999, "Joueur 5"));
+
+    }
+
     private void loadBestScore() {
-        scoreAdapter.add(new Score(1, 2000, "Joueur 1").toString());
-        scoreAdapter.add(new Score(1, 2300, "Joueur 2").toString());
-        scoreAdapter.add(new Score(1, 4500, "Joueur 3").toString());
-        scoreAdapter.add(new Score(1, 1290, "Joueur 4").toString());
-        scoreAdapter.add(new Score(1, 999, "Joueur 5").toString());
+
+        for (Map.Entry<Integer, List<Score>> entry : scoreManager.getAllScores().entrySet())
+        {
+            for(Score score : entry.getValue())
+            {
+                scoreAdapter.add(score.toString());
+            }
+        }
     }
 }
