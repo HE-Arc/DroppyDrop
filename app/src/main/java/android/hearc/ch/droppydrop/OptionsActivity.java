@@ -1,6 +1,7 @@
 package android.hearc.ch.droppydrop;
 
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 public class OptionsActivity extends AppCompatActivity {
 
+
     public static SharedPreferences sharedPreferences;
 
     @Override
@@ -22,7 +24,7 @@ public class OptionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_options);
 
-        OptionsActivity.sharedPreferences = getPreferences(this.MODE_PRIVATE);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         loadAndDisplayPreferences();
 
@@ -41,10 +43,10 @@ public class OptionsActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                SharedPreferences.Editor editor = OptionsActivity.sharedPreferences.edit();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
                 int newSensibility = seekBar.getProgress();
                 editor.putInt(getString(R.string.sensibility), newSensibility);
-                editor.commit();
+                editor.apply();
             }
         });
 
@@ -63,10 +65,10 @@ public class OptionsActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                SharedPreferences.Editor editor = OptionsActivity.sharedPreferences.edit();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
                 int newVibration = seekBar.getProgress();
                 editor.putInt(getString(R.string.vibration), newVibration);
-                editor.commit();
+                editor.apply();
             }
         });
 
@@ -75,11 +77,11 @@ public class OptionsActivity extends AppCompatActivity {
         usernameEditText.addTextChangedListener(new TextWatcher() {
 
             public void onTextChanged(CharSequence c, int start, int before, int count) {
-                SharedPreferences.Editor editor = OptionsActivity.sharedPreferences.edit();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
                 String newUsername = c.toString();
                 editor.putString(getString(R.string.username), newUsername);
 
-                editor.commit();
+                editor.apply();
             }
 
             public void beforeTextChanged(CharSequence c, int start, int count, int after) {
@@ -95,24 +97,24 @@ public class OptionsActivity extends AppCompatActivity {
     private void loadAndDisplayPreferences()
     {
         // https://developer.android.com/training/data-storage/shared-preferences
-        SharedPreferences sharedPref = OptionsActivity.sharedPreferences;
 
         // Sensibility
         int default_sensibility = 3;
-        int sensibility = sharedPref.getInt(getString(R.string.sensibility), default_sensibility);
+        int sensibility = sharedPreferences.getInt(getString(R.string.sensibility), default_sensibility);
         SeekBar sensibilitySeekBar = findViewById(R.id.sensibility_seekBar);
         sensibilitySeekBar.setProgress(sensibility);
 
         // Vibration
         int default_vibration = 3;
-        int vibration = sharedPref.getInt(getString(R.string.vibration), default_vibration);
+        int vibration = sharedPreferences.getInt(getString(R.string.vibration), default_vibration);
         SeekBar vibrationSeekBar = findViewById(R.id.vibration_seekBar);
         vibrationSeekBar.setProgress(vibration);
 
         // Username
         String default_username = getResources().getString(R.string.default_username);
-        String username = sharedPref.getString(getString(R.string.username), default_username);
+        String username = sharedPreferences.getString(getString(R.string.username), default_username);
         EditText usernameEditText = findViewById(R.id.username_editText);
         usernameEditText.setText(username);
     }
+
 }

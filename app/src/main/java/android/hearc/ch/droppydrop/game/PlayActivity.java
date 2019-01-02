@@ -30,6 +30,5 @@ public class PlayActivity extends AppCompatActivity {
         this.finish();
         this.stopService(new Intent(this, VibratorService.class));
         game.destroy();
-
     }
 }
