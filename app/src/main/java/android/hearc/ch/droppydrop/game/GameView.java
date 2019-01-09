@@ -79,7 +79,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         mainThread = new MainThread(getHolder(), this);
         setFocusable(true);
-        setWillNotDraw(false);
+
 
     }
 
@@ -115,48 +115,52 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        Log.i(TAG, "is in game onMeasure");
+        final int newHeight= MeasureSpec.getSize(heightMeasureSpec);
+        final int newWidth= MeasureSpec.getSize(widthMeasureSpec);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(widthMeasureSpec,heightMeasureSpec);
+    }
+
     public void update() { //game logic
 
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    public void draw(Canvas canvas) { //rendering
+        super.draw(canvas);
+            if(canvas!=null) {
 
-        setMeasuredDimension(widthMeasureSpec,heightMeasureSpec);
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
+                //Point newPoint=pointsQueue.poll();
 
-    @Override
-    public void onDraw(Canvas canvas) { //rendering
-        super.onDraw(canvas);
+                //if(newPoint!=null)
+                //    points.add(newPoint);
 
-
-            //Point newPoint=pointsQueue.poll();
-
-            //if(newPoint!=null)
-            //    points.add(newPoint);
-            Log.i("ONDRAW","0");
-            canvas.drawColor(Color.WHITE);
-            //TODO draw dead zone
-            canvas.drawRect(levelRect, paintlvlRect);
-            //TODO:
-            //check si il y a bien les lignes qui se dessinnent entre chaque point ?
-            //+ check pour pas dessiner le "1er trait qui part du coin en haut à gauche au milieu"
-            //+ check pour pas redessiner sur endroit où c'est déjà dessiné
-            //Log.i(TAG, "onDraw");
-                if(points.size()>1) {
+                canvas.drawColor(Color.WHITE);
+                //TODO draw dead zone
+                canvas.drawRect(levelRect, paintlvlRect);
+                //TODO:
+                //check si il y a bien les lignes qui se dessinnent entre chaque point ?
+                //+ check pour pas dessiner le "1er trait qui part du coin en haut à gauche au milieu"
+                //+ check pour pas redessiner sur endroit où c'est déjà dessiné
+                //Log.i(TAG, "onDraw");
+                if (points.size() > 1) {
                     //Iterator it = points.iterator();
 
                     //while(it.hasNext() ){ //try to optimise by iterating on a linkedlist
-                    for(int i=1;i<points.size()-1;i++){
-                        Point p=points.elementAt(i);
+                    for (int i = 1; i < points.size() - 1; i++) {
+                        Point p = points.elementAt(i);
+                        Point lastP=points.elementAt(i-1);
                         //Log.i(TAG,"DRAW PIX ON "+p.x+";"+p.y);
                         canvas.drawCircle(p.x, p.y, CIRCLE_SIZE, paintTrack);
+                        canvas.drawLine(lastP.x, lastP.y, p.x, p.y, paintTrack);
                         //this.getDrawingCache().getPixel(p.x,p.y);
                     }
                     canvas.drawCircle(points.lastElement().x, points.lastElement().y, CIRCLE_SIZE, paintDrop);
                 }
-
+            }
     }
 
     public void addPoint(Point p){

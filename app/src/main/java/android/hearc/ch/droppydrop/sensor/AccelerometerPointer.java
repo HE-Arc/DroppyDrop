@@ -29,7 +29,7 @@ public class AccelerometerPointer implements SensorEventListener {
 
         senSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
+        senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_GAME);
 
         origin = new Point();
         pointer = new Point();
@@ -83,10 +83,10 @@ public class AccelerometerPointer implements SensorEventListener {
 
     public Point getPointer() {
         Log.i(TAG, "getPointer: " + pointer.toString());
-        synchronized (pointer){
+
             Point pointerCopy=new Point(pointer);
             return pointerCopy;
-        }
+
 
     }
 }

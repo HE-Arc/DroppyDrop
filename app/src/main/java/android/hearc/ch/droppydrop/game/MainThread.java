@@ -43,7 +43,6 @@ public class MainThread extends Thread {
             long sleepTimeMs = (long) (1000f/ fps - elapsedTimeMs);
 
             try {
-
                 canvas = this.surfaceHolder.lockCanvas();
                 if (canvas == null) {
                     Thread.sleep(1);
@@ -63,16 +62,14 @@ public class MainThread extends Thread {
                         //gameView.invalidate();
                         //Log.i(TAG, "onTouchEvent: succesfully add a point");
                         //this.gameView.update();
-                        this.gameView.postInvalidate();
-                        //this.gameView.draw(canvas);
-                        //this.gameView.draw(canvas); //not sure if it's good to have this here
+
+                        this.gameView.draw(canvas); //not sure if it's good to have this here
                     }
 
                 //}
                 //lastPoint.x = actualPoint.x;
                 //lastPoint.y = actualPoint.y;
             } catch (Exception e) {
-
             } finally {
                 if (canvas != null) {
                     try {
