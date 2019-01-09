@@ -67,7 +67,7 @@ public class LevelActivity extends AppCompatActivity {
                                 selectedLevel=levelId;
 
                                 int difficulty=levelModels.get(levelId).Difficulty;
-                                int dropColor=levelModels.get(levelId).DropColorInt;
+
                                 int imageId=levelModels.get(levelId).ImageId;
                                 int trackColor=levelModels.get(levelId).TrackColorInt;
 
