@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".game.PlayActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".score.ScoreActivity" />
         <activity android:name=".game.Level.LevelActivity"
             android:screenOrientation="portrait" />

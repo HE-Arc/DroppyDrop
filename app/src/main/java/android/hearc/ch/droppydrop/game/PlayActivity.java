@@ -1,27 +1,28 @@
 package android.hearc.ch.droppydrop.game;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.hearc.ch.droppydrop.R;
-import android.hearc.ch.droppydrop.sensor.VibratorService;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.annotation.Nullable;
+import android.view.Window;
 import android.view.WindowManager;
+import android.hearc.ch.droppydrop.sensor.VibratorService;
 
-public class PlayActivity extends AppCompatActivity {
+public class PlayActivity extends Activity {
 
-    private static final String TAG = PlayActivity.class.getSimpleName();
-    private GameManagerLayout game;
+    private GameView game;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "OnCreate");
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        setContentView(R.layout.activity_play);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        game=(GameManagerLayout) findViewById(R.id.game);
-        game.init(this,getIntent().getIntExtra("selectedLevel", 0),null);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        int levelId = getIntent().getIntExtra("selectedLevel", 0);
+        game = new GameView(this, levelId);
+        setContentView(game);
     }
 
     @Override
