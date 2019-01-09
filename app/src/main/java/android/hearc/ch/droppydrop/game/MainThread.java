@@ -26,7 +26,7 @@ public class MainThread extends Thread {
         this.gameView = gameView;
         lastPoint = new Point(-1, -1);
         previousTime=System.currentTimeMillis();;
-        fps=60;
+        fps=30; //try to adjust for maximum comfort, we could use this for the difficulty
 
     }
 
@@ -55,20 +55,15 @@ public class MainThread extends Thread {
 
                 }
                 Point actualPoint = accPointer.getPointer();
-                //if (actualPoint.x != lastPoint.x && actualPoint.y != lastPoint.y) {
                     synchronized (surfaceHolder) {
 
                         gameView.addPoint(actualPoint);
-                        //gameView.invalidate();
-                        //Log.i(TAG, "onTouchEvent: succesfully add a point");
-                        //this.gameView.update();
 
-                        this.gameView.draw(canvas); //not sure if it's good to have this here
+                        this.gameView.update();
+
+                        this.gameView.draw(canvas);
                     }
 
-                //}
-                //lastPoint.x = actualPoint.x;
-                //lastPoint.y = actualPoint.y;
             } catch (Exception e) {
             } finally {
                 if (canvas != null) {
@@ -82,11 +77,7 @@ public class MainThread extends Thread {
                     }
                 }
             }
-            try {
-                sleep(30); //try to tweak this ?
-            }catch(Exception e){
 
-            }
         }
     }
 }

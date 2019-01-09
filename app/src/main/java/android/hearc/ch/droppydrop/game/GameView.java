@@ -11,9 +11,11 @@ import android.hearc.ch.droppydrop.game.Level.LevelModel;
 import android.hearc.ch.droppydrop.sensor.AccelerometerPointer;
 import android.hearc.ch.droppydrop.sensor.VibratorManager;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -25,37 +27,42 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private MainThread mainThread;
 
-    private Context context;
 
     private static final String TAG = "LEVEL"; // Level.class.getSimpleName();
 
     private Paint paintDrop;
     private Paint paintTrack;
 
-    private static final int LINE_SIZE = 30;
-    private static final int CIRCLE_SIZE = 15;
+    private int LINE_SIZE ;
+    private int CIRCLE_SIZE ;
     private Vector<Point> points;
-    private Point startLine, endLine;
 
     private int DEVICE_DENSITY_DPI;
 
     private Rect levelRect;
     private Paint paintlvlRect;
-    //private Vector<Point> pointsQueue;
 
     private VibratorManager vibratorManager;
 
     public GameView(Context context,int levelId) {
         super(context);
-        this.context=context;
 
         getHolder().setKeepScreenOn(true);
-        //getHolder().setFixedSize(720,1480);
+
         getHolder().addCallback(this);
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager)this.getContext().getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(metrics);
+
+        DEVICE_DENSITY_DPI = metrics.densityDpi;
+
+        CIRCLE_SIZE=convertDpToPixel(5);
+        LINE_SIZE=convertDpToPixel(10);
+
 
         vibratorManager=new VibratorManager(this.getContext());
         points = new Vector<Point>();
-        //pointsQueue=new LinkedBlockingQueue<Point>();
 
         LevelModel level= new LevelModel(context,levelId);
 
@@ -74,7 +81,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         paintlvlRect.setColor(Color.BLACK);
         paintlvlRect.setStrokeWidth(10);
 
-        int borderDistance=150;
+        int borderDistance=convertDpToPixel(75);
         levelRect= new Rect(borderDistance, borderDistance, 3*borderDistance, 6*borderDistance);
 
         mainThread = new MainThread(getHolder(), this);
@@ -117,9 +124,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.i(TAG, "is in game onMeasure");
-        final int newHeight= MeasureSpec.getSize(heightMeasureSpec);
-        final int newWidth= MeasureSpec.getSize(widthMeasureSpec);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         setMeasuredDimension(widthMeasureSpec,heightMeasureSpec);
     }
@@ -133,29 +137,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
             if(canvas!=null) {
 
-                //Point newPoint=pointsQueue.poll();
-
-                //if(newPoint!=null)
-                //    points.add(newPoint);
-
                 canvas.drawColor(Color.WHITE);
                 //TODO draw dead zone
                 canvas.drawRect(levelRect, paintlvlRect);
                 //TODO:
-                //check si il y a bien les lignes qui se dessinnent entre chaque point ?
-                //+ check pour pas dessiner le "1er trait qui part du coin en haut à gauche au milieu"
-                //+ check pour pas redessiner sur endroit où c'est déjà dessiné
-                //Log.i(TAG, "onDraw");
-                if (points.size() > 1) {
-                    //Iterator it = points.iterator();
 
-                    //while(it.hasNext() ){ //try to optimise by iterating on a linkedlist
+                if (points.size() > 1) {
+
                     for (int i = 1; i < points.size() - 1; i++) {
                         Point p = points.elementAt(i);
                         Point lastP=points.elementAt(i-1);
-                        //Log.i(TAG,"DRAW PIX ON "+p.x+";"+p.y);
+
                         canvas.drawCircle(p.x, p.y, CIRCLE_SIZE, paintTrack);
-                        canvas.drawLine(lastP.x, lastP.y, p.x, p.y, paintTrack);
+                        if(i>1) //otherwise it is ugly
+                            canvas.drawLine(lastP.x, lastP.y, p.x, p.y, paintTrack);
                         //this.getDrawingCache().getPixel(p.x,p.y);
                     }
                     canvas.drawCircle(points.lastElement().x, points.lastElement().y, CIRCLE_SIZE, paintDrop);
@@ -177,6 +172,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-
+    private int convertDpToPixel(float dp) {
+        return (int) (dp * (DEVICE_DENSITY_DPI / 160f));
+    }
 
 }
