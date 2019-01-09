@@ -21,8 +21,9 @@ public class AccelerometerPointer implements SensorEventListener {
     private Point origin;
     private Point pointer;
 
-    public AccelerometerPointer(Context context, int heigt, int width) {
+    public AccelerometerPointer(Context context, int height, int width) {
         super();
+
 
         Log.i(TAG, "AccelerometerPointer: is in constructor");
 
@@ -32,21 +33,30 @@ public class AccelerometerPointer implements SensorEventListener {
 
         origin = new Point();
         pointer = new Point();
+
+        origin.x = width /2;
+        origin.y = height /2;
+
+        pointer.x = width/2;
+        pointer.y = height/2;
+
     }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
+
         Sensor mySensor = sensorEvent.sensor;
 
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = sensorEvent.values[0];
             float y = sensorEvent.values[1];
             float z = sensorEvent.values[2];
+            synchronized (pointer) {
+                pointer.x -= x;
+                pointer.y += y;
+            }
 
-            pointer.x -= x;
-            pointer.y += y;
-
-            //Log.i(TAG, "onSensorChanged: x: " + diffX + " y: "+ diffY + " z: "+ diffZ);
+            Log.i(TAG, "onSensorChanged: x: " + x + " y: "+ y + " z: "+ z);
         }
     }
 
@@ -73,6 +83,10 @@ public class AccelerometerPointer implements SensorEventListener {
 
     public Point getPointer() {
         Log.i(TAG, "getPointer: " + pointer.toString());
-        return pointer;
+        synchronized (pointer){
+            Point pointerCopy=new Point(pointer);
+            return pointerCopy;
+        }
+
     }
 }
