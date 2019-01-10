@@ -2,12 +2,17 @@ package android.hearc.ch.droppydrop.score;
 import android.content.Context;
 import android.hearc.ch.droppydrop.R;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -49,8 +54,9 @@ public class ScoreManager {
      */
     public void saveScore(Score score)
     {
+        Log.i("SCORE", "saveScore");
         List<Score> levelScores = scoresMap.get(score.level);
-        if(levelScores.size() > 0) {
+        if(levelScores != null) {
             for (int i = 0; i < levelScores.size(); i++) {
                 Score list_score = levelScores.get(i);
                 if (list_score.value < score.value)
@@ -60,7 +66,9 @@ public class ScoreManager {
                 levelScores.remove(3);
             }
         } else {
+            levelScores = new ArrayList<>();
             levelScores.add(score);
+            scoresMap.put(score.level, levelScores);
         }
         saveAll();  // can be optimized if we only change the value of the line
     }
@@ -89,17 +97,23 @@ public class ScoreManager {
      */
     private void readScores()
     {
-        File sdcard = Environment.getExternalStorageDirectory();
-        File scoreFile = new File(sdcard, ScoreManager.context.getResources().getString(R.string.score_file));
-
+        FileInputStream fis;
         try{
-            if(!isExternalStorageReadable())
+            fis = ScoreManager.context.openFileInput(ScoreManager.context.getResources().getString(R.string.score_file));
+
+            byte[] buffer = new byte[1024];
+            StringBuffer fileContent = new StringBuffer();
+            int n;
+            while ((n = fis.read(buffer)) != -1)
             {
-                throw new IOException();
+                fileContent.append(new String(buffer, 0, n));
             }
-            BufferedReader br = new BufferedReader(new FileReader(scoreFile));
-            String line;
-            while ((line = br.readLine()) != null)
+            fis.close();
+            String content = fileContent.toString();
+            String[] lines = content.split("\n");
+            Log.i("SCORE", "readScores: " + content);
+
+            for(String line : lines)
             {
                 // TODO Validation regex
                 String[] levelLine = line.split("////");
@@ -115,21 +129,21 @@ public class ScoreManager {
                 }
                 scoresMap.put(lvl, scores);
             }
-            br.close();
         } catch (IOException e) {
-            if(isExternalStorageWritable())
+            FileOutputStream fos;
+            try {
+                fos = ScoreManager.context.openFileOutput(ScoreManager.context.getResources().getString(R.string.score_file), Context.MODE_PRIVATE);
+                int levelCount = ScoreManager.context.getResources().getStringArray(R.array.names).length;
+                StringBuilder content = new StringBuilder();
+                for (int i = 1; i <= levelCount; i++) {
+                    content.append(i + "////\n"); // only save the level id
+                }
+                fos.write(content.toString().getBytes());
+            }
+            catch (IOException io)
             {
-                try {
-                    FileWriter fw = new FileWriter(scoreFile, false);
-                    int levelCount = ScoreManager.context.getResources().getStringArray(R.array.names).length;
-                    for (int i = 1; i <= levelCount; i++) {
-                        fw.write(i + "////\n"); // only save the level id
-                    }
-                }
-                catch (IOException io)
-                {
-                    // Not file can be written
-                }
+                // Not file can be written
+                Log.i("Score", "readAll: " + io.toString());
             }
         }
     }
@@ -138,26 +152,27 @@ public class ScoreManager {
      * Save all scores
      */
     public void saveAll(){
-        File sdcard = Environment.getExternalStorageDirectory();
-        File scoreFile = new File(sdcard, ScoreManager.context.getResources().getString(R.string.score_file));
+        Log.i("SCORE","saveAll");
 
-        if(isExternalStorageWritable()) {
-            try {
-                FileWriter fw = new FileWriter(scoreFile, false);
-                StringBuilder sb;
-                for (Map.Entry<Integer, List<Score>> entry: scoresMap.entrySet()) {
-                    sb = new StringBuilder();
-                    sb.append(entry.getKey()).append("////");
-                    for (Score score: entry.getValue()) {
-                        sb.append(score.value).append("//").append(score.username).append("///");
-                    }
-                    sb.append("\n");
-                    fw.write(sb.toString());
+        FileOutputStream fos;
+        try {
+            fos = ScoreManager.context.openFileOutput(ScoreManager.context.getResources().getString(R.string.score_file), Context.MODE_PRIVATE);
+            Log.i("SCORE", "saveAll: fos opened");
+            StringBuilder sb;
+            for (Map.Entry<Integer, List<Score>> entry: scoresMap.entrySet()) {
+                sb = new StringBuilder();
+                sb.append(entry.getKey()).append("////");
+                for (Score score: entry.getValue()) {
+                    sb.append(score.value).append("//").append(score.username).append("///");
                 }
+                sb.append("\n");
+                fos.write(sb.toString().getBytes());
             }
-            catch (IOException io) {
-                // No file can be written
-            }
+            fos.close();
+            Log.i("SCORE", "saveAll: fos closed");
+        }
+        catch (IOException io) {
+            Log.i("Score", "saveAll: " + io.toString());
         }
     }
 
