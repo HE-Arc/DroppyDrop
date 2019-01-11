@@ -7,6 +7,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Source : https://code.tutsplus.com/tutorials/using-the-accelerometer-on-android--mobile-22125
@@ -86,7 +87,15 @@ public class AccelerometerPointer implements SensorEventListener {
 
             Point pointerCopy=new Point(pointer);
             return pointerCopy;
-
-
     }
+
+    public void stopAccelerometerSensor(){
+        senSensorManager.unregisterListener(this);
+    }
+
+    public void resumeAccelerometerSensor() {
+        senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_GAME);
+    }
+
+
 }

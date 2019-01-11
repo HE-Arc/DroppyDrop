@@ -44,7 +44,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Rect levelRect;
     private Paint paintlvlRect;
 
-
     //Vibrator service
     Context mcontext;
     Intent intent;
@@ -94,6 +93,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         mcontext = context;
         intent = new Intent(this.getContext(), VibratorService.class);
+
 
     }
 
@@ -189,8 +189,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         return (int) (dp * (DEVICE_DENSITY_DPI / 160f));
     }
 
+    public void setOnPause() {
+        mainThread.setRunning(false);
+
+    }
+
+    public void setOnResume() {
+        mainThread.setRunning(true);
+        mainThread.start();
+    }
+
     public void destroy() {
         System.exit( 0 );
     }
+
 
 }
