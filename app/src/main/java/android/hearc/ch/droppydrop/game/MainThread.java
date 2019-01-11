@@ -58,7 +58,7 @@ public class MainThread extends Thread {
                 Point actualPoint = accPointer.getPointer();
                 synchronized (surfaceHolder) {
 
-                    gameView.addPoint(actualPoint);
+                    gameView.addPoint(actualPoint,canvas);
 
                     this.gameView.update();
 
