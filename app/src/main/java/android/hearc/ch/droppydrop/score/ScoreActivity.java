@@ -3,19 +3,15 @@ package android.hearc.ch.droppydrop.score;
 import android.hearc.ch.droppydrop.R;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 import android.util.Log;
-
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
 
 public class ScoreActivity extends AppCompatActivity {
 
     private static final String TAG = ScoreActivity.class.getSimpleName();
 
-    private ListView scoreListView;
-    private ScoreAdapter scoreAdapter;
+    private ExpandableListView scoreListView;
+    private ScoreExpandableAdapter scoreExpandableAdapter;
     private ScoreManager scoreManager;
 
     @Override
@@ -38,10 +34,10 @@ public class ScoreActivity extends AppCompatActivity {
     private void setUpViews() {
         Log.d(TAG, "Setting up views...");
 
-        scoreAdapter = new ScoreAdapter(this);
-        scoreListView.setAdapter(scoreAdapter);
         addFalseScore();
-        loadBestScore();
+
+        scoreExpandableAdapter = new ScoreExpandableAdapter(this, scoreManager);
+        scoreListView.setAdapter(scoreExpandableAdapter);
 
         Log.d(TAG, "Setting up views -> done");
     }
@@ -58,16 +54,5 @@ public class ScoreActivity extends AppCompatActivity {
         Log.i(TAG, "addFalseScore: 4 ok");
         scoreManager.saveScore(new Score(1, 999, "Joueur 5"));
         Log.i(TAG, "addFalseScore: 5 ok");
-    }
-
-    private void loadBestScore() {
-
-        for (Map.Entry<Integer, SortedSet<Score>> entry : scoreManager.getAllScores().entrySet())
-        {
-            for(Score score : entry.getValue())
-            {
-                scoreAdapter.add(score.toString());
-            }
-        }
     }
 }
