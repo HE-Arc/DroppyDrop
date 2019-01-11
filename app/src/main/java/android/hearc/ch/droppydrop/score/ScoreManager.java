@@ -1,35 +1,32 @@
 package android.hearc.ch.droppydrop.score;
 import android.content.Context;
 import android.hearc.ch.droppydrop.R;
-import android.os.Environment;
 import android.util.Log;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * ScoreManager Singleton
  */
 public class ScoreManager {
+    private final static String TAG = "SCORE";
+
     private static ScoreManager instance;
     private static Context context;
+    private static String filename;
 
-    private Map<Integer, List<Score>> scoresMap;
+    private Map<Integer, SortedSet<Score>> scoresMap;
 
     private ScoreManager(Context context)
     {
         ScoreManager.context = context;
+        ScoreManager.filename = ScoreManager.context.getResources().getString(R.string.score_file);
         this.scoresMap = new TreeMap<>();
         readScores();
     }
@@ -54,19 +51,15 @@ public class ScoreManager {
      */
     public void saveScore(Score score)
     {
-        Log.i("SCORE", "saveScore");
-        List<Score> levelScores = scoresMap.get(score.level);
-        if(levelScores != null) {
-            for (int i = 0; i < levelScores.size(); i++) {
-                Score list_score = levelScores.get(i);
-                if (list_score.value < score.value)
-                    levelScores.add(0, score);
-            }
+        Log.i(TAG, "saveScore");
+        SortedSet<Score> levelScores = scoresMap.get(score.level);
+        if(levelScores != null && levelScores.size() >= 1) {
+            levelScores.add(score);
             if(levelScores.size() > 3) {    // if we have more than 3 scores stored
-                levelScores.remove(3);
+                levelScores.remove(levelScores.last());
             }
         } else {
-            levelScores = new ArrayList<>();
+            levelScores = new TreeSet<>();
             levelScores.add(score);
             scoresMap.put(score.level, levelScores);
         }
@@ -76,18 +69,18 @@ public class ScoreManager {
     /**
      * Get the best scores for a level
      * @param level
-     * @return ArrayList<Score> scores
+     * @return SortedSet<Score> scores
      */
-    public List<Score> getScoresByLevel(int level)
+    public SortedSet<Score> getScoresByLevel(int level)
     {
-        return scoresMap.get(level);    // Return the array of the 3 best scores
+        return scoresMap.get(level);    // Return the sortedset of the 3 best scores
     }
 
     /**
      * Get the best scores of all level
      * @return Map<Integer, List<Score>>
      */
-    public Map<Integer, List<Score>> getAllScores()
+    public Map<Integer, SortedSet<Score>> getAllScores()
     {
         return scoresMap;
     }
@@ -97,9 +90,10 @@ public class ScoreManager {
      */
     private void readScores()
     {
+        FileOutputStream fos;
         FileInputStream fis;
         try{
-            fis = ScoreManager.context.openFileInput(ScoreManager.context.getResources().getString(R.string.score_file));
+            fis = ScoreManager.context.openFileInput(ScoreManager.filename);
 
             byte[] buffer = new byte[1024];
             StringBuffer fileContent = new StringBuffer();
@@ -111,34 +105,37 @@ public class ScoreManager {
             fis.close();
             String content = fileContent.toString();
             String[] lines = content.split("\n");
-            Log.i("SCORE", "readScores: " + content);
+            Log.i(TAG, "readScores: " + content);
 
             for(String line : lines)
             {
-                // TODO Validation regex
+                // Get level ID of the line
                 String[] levelLine = line.split("////");
-                Integer lvl = Integer.getInteger(levelLine[0]);
-                List<Score> scores = new LinkedList<>();
+                Integer lvl = Integer.parseInt(levelLine[0]);
+
+                SortedSet<Score> scores = new TreeSet<>();
                 if(levelLine.length > 1) {  // If scores have already been registerd
+                    // Separate best scores
                     String[] strScores = levelLine[1].split("///");
-                    for (String strScore : strScores) {
-                        if (strScore.length() > 1)    // TODO validation regex
-                            scores.add(Score.fromLine(lvl, strScore));
+                    for (String strScore : strScores) { // foreach scores registered
+                        if (strScore.length() > 1)
+                            scores.add(Score.parse(lvl, strScore));
                         // else endline
                     }
                 }
                 scoresMap.put(lvl, scores);
             }
+            Log.i(TAG, "readScores: has read all correctly");
         } catch (IOException e) {
-            FileOutputStream fos;
             try {
-                fos = ScoreManager.context.openFileOutput(ScoreManager.context.getResources().getString(R.string.score_file), Context.MODE_PRIVATE);
+                fos = ScoreManager.context.openFileOutput(ScoreManager.filename, Context.MODE_PRIVATE);
                 int levelCount = ScoreManager.context.getResources().getStringArray(R.array.names).length;
                 StringBuilder content = new StringBuilder();
                 for (int i = 1; i <= levelCount; i++) {
                     content.append(i + "////\n"); // only save the level id
                 }
                 fos.write(content.toString().getBytes());
+                fos.close();
             }
             catch (IOException io)
             {
@@ -152,14 +149,15 @@ public class ScoreManager {
      * Save all scores
      */
     public void saveAll(){
-        Log.i("SCORE","saveAll");
+
+        Log.i(TAG, "saveAll: " + ScoreManager.filename);
 
         FileOutputStream fos;
         try {
-            fos = ScoreManager.context.openFileOutput(ScoreManager.context.getResources().getString(R.string.score_file), Context.MODE_PRIVATE);
-            Log.i("SCORE", "saveAll: fos opened");
+            fos = ScoreManager.context.openFileOutput(ScoreManager.filename, Context.MODE_PRIVATE);
+            Log.i(TAG, "saveAll: fos opened");
             StringBuilder sb;
-            for (Map.Entry<Integer, List<Score>> entry: scoresMap.entrySet()) {
+            for (Map.Entry<Integer, SortedSet<Score>> entry: scoresMap.entrySet()) {
                 sb = new StringBuilder();
                 sb.append(entry.getKey()).append("////");
                 for (Score score: entry.getValue()) {
@@ -167,37 +165,13 @@ public class ScoreManager {
                 }
                 sb.append("\n");
                 fos.write(sb.toString().getBytes());
+                Log.i(TAG, "saveAll: fos has write");
             }
             fos.close();
-            Log.i("SCORE", "saveAll: fos closed");
+            Log.i(TAG, "saveAll: fos closed");
         }
         catch (IOException io) {
-            Log.i("Score", "saveAll: " + io.toString());
+            Log.i(TAG, "saveAll: " + io.toString());
         }
-    }
-
-    /**
-     * Verify if the external storage is writable
-     * @return boolean
-     */
-    private static boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Verify if the external storage is readable
-     * @return boolean
-     */
-    private static boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            return true;
-        }
-        return false;
     }
 }

@@ -1,6 +1,11 @@
 package android.hearc.ch.droppydrop.score;
 
-public class Score {
+import android.support.annotation.NonNull;
+import android.util.Log;
+
+import java.util.Arrays;
+
+public class Score implements Comparable<Score> {
 
     public int value;
     public String username;
@@ -17,10 +22,10 @@ public class Score {
      * Build a score from a string line
      * @param line like "intscore//username"
      */
-    public static Score fromLine(int level, String line)
+    public static Score parse(int level, String line)
     {
         String[] content = line.split("//");
-        return new Score(level, Integer.getInteger(content[0]), content[1]);
+        return new Score(level, Integer.parseInt(content[0]), content[1]);
     }
 
     @Override
@@ -30,5 +35,10 @@ public class Score {
         builder.append(username).append("\t");
         builder.append(value).append(" pts").append("\t");
         return  builder.toString();
+    }
+
+    @Override
+    public int compareTo(@NonNull Score other_score) {
+        return Integer.compare(value, other_score.value);
     }
 }

@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 
 public class ScoreActivity extends AppCompatActivity {
 
@@ -24,18 +25,14 @@ public class ScoreActivity extends AppCompatActivity {
 
         this.scoreManager = ScoreManager.getInstance(this);
 
-        retriveView();
+        retrieveView();
         setUpViews();
 
         // cup icon from : http://icons.iconarchive.com/icons/thesquid.ink/free-flat-sample/128/cup-icon.png
     }
 
-    private void retriveView() {
-        Log.i(TAG, "Retrieving views...");
-
+    private void retrieveView() {
         scoreListView = findViewById(R.id.scoreListView);
-
-        Log.i(TAG, "Retrieving views -> done");
     }
 
     private void setUpViews() {
@@ -52,16 +49,20 @@ public class ScoreActivity extends AppCompatActivity {
     private void addFalseScore()
     {
         scoreManager.saveScore(new Score(1, 2000, "Joueur 1"));
+        Log.i(TAG, "addFalseScore: 1 ok");
         scoreManager.saveScore(new Score(1, 2300, "Joueur 2"));
+        Log.i(TAG, "addFalseScore: 2 ok");
         scoreManager.saveScore(new Score(1, 4500, "Joueur 3"));
+        Log.i(TAG, "addFalseScore: 3 ok");
         scoreManager.saveScore(new Score(1, 1290, "Joueur 4"));
+        Log.i(TAG, "addFalseScore: 4 ok");
         scoreManager.saveScore(new Score(1, 999, "Joueur 5"));
-
+        Log.i(TAG, "addFalseScore: 5 ok");
     }
 
     private void loadBestScore() {
 
-        for (Map.Entry<Integer, List<Score>> entry : scoreManager.getAllScores().entrySet())
+        for (Map.Entry<Integer, SortedSet<Score>> entry : scoreManager.getAllScores().entrySet())
         {
             for(Score score : entry.getValue())
             {
