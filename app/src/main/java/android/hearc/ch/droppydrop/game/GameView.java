@@ -276,10 +276,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         return (int) (dp * (DEVICE_DENSITY_DPI / 160f));
     }
 
+    public void setOnPause() {
+        mainThread.setRunning(false);
+
+    }
+
+    public void setOnResume() {
+        mainThread.setRunning(true);
+        mainThread.start();
+    }
+
     public void destroy() {
         System.exit( 0 );
     }
-
 
 
 }

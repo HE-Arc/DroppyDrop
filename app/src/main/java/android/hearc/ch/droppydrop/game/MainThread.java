@@ -32,11 +32,16 @@ public class MainThread extends Thread {
     }
 
     public void setRunning(boolean isRunning) {
+        if (isRunning)
+            accPointer.resumeAccelerometerSensor();
+        else
+            accPointer.stopAccelerometerSensor();
         running = isRunning;
     }
 
     @Override
     public void run() {
+
         while (running) {
             canvas = null;
             long currentTimeMillis = System.currentTimeMillis();
@@ -56,6 +61,7 @@ public class MainThread extends Thread {
 
                 }
                 Point actualPoint = accPointer.getPointer();
+
                 synchronized (surfaceHolder) {
 
                     gameView.addPoint(actualPoint,canvas);
@@ -64,6 +70,7 @@ public class MainThread extends Thread {
 
                     this.gameView.draw(canvas);
                 }
+
 
             } catch (Exception e) {
             } finally {
