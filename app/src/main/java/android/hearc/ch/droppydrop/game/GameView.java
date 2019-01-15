@@ -65,6 +65,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private boolean doNotDrawNextLine;
 
+    private List<Integer> pixelList;
+
     public GameView(Context context, int levelId) {
         super(context);
 
@@ -127,6 +129,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         doNotDrawNextLine=false;
 
+        pixelList = new ArrayList<>();
 
     }
 
@@ -255,7 +258,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                         doNotDrawNextLine=false;
                     if (bitmap != null) {
 
-                        List<Integer> pixelList = new ArrayList<>();
+                        pixelList.clear();
 
                         if(p.y<lastPoint.y) {
                             if (p.x < lastPoint.x)
