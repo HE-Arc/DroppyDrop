@@ -30,8 +30,8 @@ public class MainThread extends Thread {
         this.gameView = gameView;
         lastPoint = new Point(-1, -1);
         previousTime = System.currentTimeMillis();
-        ;
-        fps = 30; //try to adjust for maximum comfort, we could use this for the difficulty
+
+        fps = 40; //try to adjust for maximum comfort, we could use this for the difficulty
 
         mPauseLock = new Object();
         mPaused = false;

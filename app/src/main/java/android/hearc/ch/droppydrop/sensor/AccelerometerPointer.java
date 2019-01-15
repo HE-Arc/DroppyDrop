@@ -97,5 +97,13 @@ public class AccelerometerPointer implements SensorEventListener {
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_GAME);
     }
 
+    public void setPointerX(int x) {
+        pointer.x = x;
+    }
+
+    public void setPointerY(int y) {
+        pointer.y = y;
+    }
+
 
 }
