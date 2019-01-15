@@ -32,7 +32,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Log.i("home", "click on play");
-                // TODO show LevelActivity
                 Intent intent = new Intent(HomeActivity.this, LevelActivity.class);
                 startActivity(intent);
             }
@@ -41,7 +40,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("home", "click on scores");
-                // TODO show ScoreActivity
                 Intent intent = new Intent(HomeActivity.this, ScoreActivity.class);
                 startActivity(intent);
             }
@@ -50,7 +48,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("home", "click on options");
-                // TODO show OptionsActivity
                 Intent intent = new Intent(HomeActivity.this, OptionsActivity.class);
                 startActivity(intent);
             }
@@ -59,7 +56,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("home", "click on credits");
-                // TODO popup credits
                 AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this).create();
                 alertDialog.setTitle("Credits");
                 alertDialog.setMessage("Android game for a student project !\n" +

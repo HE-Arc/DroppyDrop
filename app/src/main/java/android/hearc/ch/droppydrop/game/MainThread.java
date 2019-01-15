@@ -16,6 +16,10 @@ public class MainThread extends Thread {
     private long previousTime;
     private long fps;
 
+    //https://stackoverflow.com/questions/6776327/how-to-pause-resume-thread-in-android
+    private Object mPauseLock;
+    private boolean mPaused;
+
     private static final String TAG = "MainThread";
 
 
@@ -29,13 +33,27 @@ public class MainThread extends Thread {
         ;
         fps = 30; //try to adjust for maximum comfort, we could use this for the difficulty
 
+        mPauseLock = new Object();
+        mPaused = false;
+
+    }
+
+    public void onPause() {
+        synchronized (mPauseLock) {
+            mPaused = true;
+            accPointer.stopAccelerometerSensor();
+        }
+    }
+
+    public void onResume() {
+        synchronized (mPauseLock) {
+            mPaused = false;
+            mPauseLock.notifyAll();
+            accPointer.resumeAccelerometerSensor();
+        }
     }
 
     public void setRunning(boolean isRunning) {
-        if (isRunning)
-            accPointer.resumeAccelerometerSensor();
-        else
-            accPointer.stopAccelerometerSensor();
         running = isRunning;
     }
 
@@ -85,7 +103,15 @@ public class MainThread extends Thread {
                     }
                 }
             }
-
+            synchronized (mPauseLock) {
+                while (mPaused) {
+                    try {
+                        mPauseLock.wait();
+                    } catch (InterruptedException e) {
+                    }
+                }
+            }
         }
+
     }
 }

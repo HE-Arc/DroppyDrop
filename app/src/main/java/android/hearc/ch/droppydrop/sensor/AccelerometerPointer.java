@@ -30,16 +30,16 @@ public class AccelerometerPointer implements SensorEventListener {
 
         senSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_GAME);
+        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_GAME);
 
         origin = new Point();
         pointer = new Point();
 
-        origin.x = width /2;
-        origin.y = height /2;
+        origin.x = width / 2;
+        origin.y = height / 2;
 
-        pointer.x = width/2;
-        pointer.y = height/2;
+        pointer.x = width / 2;
+        pointer.y = height / 2;
 
     }
 
@@ -57,7 +57,7 @@ public class AccelerometerPointer implements SensorEventListener {
                 pointer.y += y;
             }
 
-            Log.i(TAG, "onSensorChanged: x: " + x + " y: "+ y + " z: "+ z);
+            //Log.i(TAG, "onSensorChanged: x: " + x + " y: "+ y + " z: "+ z);
         }
     }
 
@@ -68,33 +68,33 @@ public class AccelerometerPointer implements SensorEventListener {
 
     /**
      * Reset the pointer to the center of the screen
+     *
      * @param height
      * @param width
      */
-    public void resetPointer(int height, int width)
-    {
+    public void resetPointer(int height, int width) {
 
-        origin.x = width /2;
-        origin.y = height /2;
+        origin.x = width / 2;
+        origin.y = height / 2;
 
-        pointer.x = width/2;
-        pointer.y = height/2;
-        Log.i(TAG, "AccelerometerPointer: origin: " + origin.toString());
+        pointer.x = width / 2;
+        pointer.y = height / 2;
+        //Log.i(TAG, "AccelerometerPointer: origin: " + origin.toString());
     }
 
     public Point getPointer() {
-        Log.i(TAG, "getPointer: " + pointer.toString());
+        //Log.i(TAG, "getPointer: " + pointer.toString());
 
-            Point pointerCopy=new Point(pointer);
-            return pointerCopy;
+        Point pointerCopy = new Point(pointer);
+        return pointerCopy;
     }
 
-    public void stopAccelerometerSensor(){
+    public void stopAccelerometerSensor() {
         senSensorManager.unregisterListener(this);
     }
 
     public void resumeAccelerometerSensor() {
-        senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_GAME);
+        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_GAME);
     }
 
 

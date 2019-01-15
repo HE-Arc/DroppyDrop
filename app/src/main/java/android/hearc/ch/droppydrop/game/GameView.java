@@ -42,8 +42,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Paint paintDrop;
     private Paint paintTrack;
 
-    private int LINE_SIZE ;
-    private int CIRCLE_SIZE ;
+    private int LINE_SIZE;
+    private int CIRCLE_SIZE;
     private Vector<Point> points;
 
     private int DEVICE_DENSITY_DPI;
@@ -69,7 +69,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private float canvasToBmpWidthRatio;
     private float canvasToBmpHeightRatio;
 
-    public GameView(Context context,int levelId) {
+    public GameView(Context context, int levelId) {
         super(context);
 
         getHolder().setKeepScreenOn(true);
@@ -77,18 +77,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         getHolder().addCallback(this);
 
         DisplayMetrics metrics = new DisplayMetrics();
-        WindowManager windowManager = (WindowManager)this.getContext().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager) this.getContext().getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(metrics);
 
         DEVICE_DENSITY_DPI = metrics.densityDpi;
 
-        CIRCLE_SIZE=convertDpToPixel(5);
-        LINE_SIZE=convertDpToPixel(5);
+        CIRCLE_SIZE = convertDpToPixel(5);
+        LINE_SIZE = convertDpToPixel(5);
 
 
         points = new Vector<Point>();
 
-        level= new LevelModel(context,levelId);
+        level = new LevelModel(context, levelId);
 
         // Trace painting tool
         paintDrop = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -98,18 +98,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         // Pointer painting tools
         paintTrack = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintTrack.setColor(level.TrackColorInt);
-        paintTrack.setStrokeWidth(CIRCLE_SIZE*2);
+        paintTrack.setStrokeWidth(CIRCLE_SIZE * 2);
 
         paintlvlRect = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintlvlRect.setStyle(Paint.Style.STROKE);
         paintlvlRect.setColor(Color.BLACK);
         paintlvlRect.setStrokeWidth(LINE_SIZE);
 
-        viewWidth=0;
-        viewHeight=0;
+        viewWidth = 0;
+        viewHeight = 0;
 
-        int borderDistance=convertDpToPixel(75);
-        levelRect= new Rect(borderDistance, borderDistance, 3*borderDistance, 6*borderDistance);
+        int borderDistance = convertDpToPixel(75);
+        levelRect = new Rect(borderDistance, borderDistance, 3 * borderDistance, 6 * borderDistance);
 
         mainThread = new MainThread(getHolder(), this);
         setFocusable(true);
@@ -121,7 +121,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         image = getResources().getDrawable(level.ImageId, null);
 
-        pOffset=(int)(Math.sqrt(2)/2*CIRCLE_SIZE);
+        pOffset = (int) (Math.sqrt(2) / 2 * CIRCLE_SIZE);
 
     }
 
@@ -129,7 +129,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         mainThread.setRunning(false);
-        if (mainThread.accPointer==null)
+        if (mainThread.accPointer == null)
             mainThread.accPointer = new AccelerometerPointer(getContext(), height, width);
         else
             mainThread.accPointer.resetPointer(height, width);
@@ -160,16 +160,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(widthMeasureSpec,heightMeasureSpec);
-
-
-
-
+        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
 
     }
 
     @Override
-    protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld){
+    protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {
         super.onSizeChanged(xNew, yNew, xOld, yOld);
 
         viewWidth = xNew;
@@ -177,18 +173,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         image.setBounds(0, 0, xNew, yNew);
 
-        Bitmap b=((BitmapDrawable)image).getBitmap();
-        bitmap=Bitmap.createScaledBitmap(b,xNew,yNew,false);
+        Bitmap b = ((BitmapDrawable) image).getBitmap();
+        bitmap = Bitmap.createScaledBitmap(b, xNew, yNew, false);
 
-
-
-        //canvasToBmpWidthRatio=width/xNew;
-        //canvasToBmpHeightRatio=height/yNew;
-
-        //Log.i("BMPSIZE_xNew",String.valueOf(xNew));
-        //Log.i("BMPSIZE_yNew",String.valueOf(yNew));
-        //Log.i("BMPSIZE_width",String.valueOf(width));
-        //Log.i("BMPSIZE_height",String.valueOf(height));
     }
 
     public void update() { //game logic
@@ -198,73 +185,67 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) { //rendering
         super.draw(canvas);
-            if(canvas!=null) {
-                if(image!=null)
-                {
-                    image.draw(canvas);
-                }
-                else{
-                    canvas.drawColor(Color.MAGENTA);
-                }
-
-                if (points.size() > 1) {
-
-                    for (int i = 1; i < points.size() - 1; i++) {
-                        Point p = points.elementAt(i);
-                        Point lastP=points.elementAt(i-1);
-
-                        // Paint a line between each points
-                        if(i>1) //otherwise it is ugly
-                            canvas.drawLine(lastP.x, lastP.y, p.x, p.y, paintTrack);
-                        //this.getDrawingCache().getPixel(p.x,p.y);
-
-                        // Paint a dot to make it look round
-                        canvas.drawCircle(p.x, p.y, CIRCLE_SIZE, paintTrack);
-                    }
-                    // Paint the last point for the pointer position
-                    canvas.drawCircle(points.lastElement().x, points.lastElement().y, CIRCLE_SIZE, paintDrop);
-                }
+        if (canvas != null) {
+            if (image != null) {
+                image.draw(canvas);
+            } else {
+                canvas.drawColor(Color.MAGENTA);
             }
+
+            if (points.size() > 1) {
+
+                for (int i = 1; i < points.size() - 1; i++) {
+                    Point p = points.elementAt(i);
+                    Point lastP = points.elementAt(i - 1);
+
+                    // Paint a line between each points
+                    if (i > 1) //otherwise it is ugly
+                        canvas.drawLine(lastP.x, lastP.y, p.x, p.y, paintTrack);
+                    //this.getDrawingCache().getPixel(p.x,p.y);
+
+                    // Paint a dot to make it look round
+                    canvas.drawCircle(p.x, p.y, CIRCLE_SIZE, paintTrack);
+                }
+                // Paint the last point for the pointer position
+                canvas.drawCircle(points.lastElement().x, points.lastElement().y, CIRCLE_SIZE, paintDrop);
+            }
+        }
     }
 
 
-    private void checkCollision(List<Integer> pixelList,int threshold){
-        int pixelColor=pixelList.remove(0);
+    private void checkCollision(List<Integer> pixelList, int threshold) {
+        int pixelColor = pixelList.remove(0);
         int redValue = Color.red(pixelColor);
         int blueValue = Color.blue(pixelColor);
         int greenValue = Color.green(pixelColor);
 
-        if (redValue<threshold && blueValue<threshold && greenValue<threshold)
-        {
+        if (redValue < threshold && blueValue < threshold && greenValue < threshold) {
             mcontext.startService(intent);
-        }
-        else{
+        } else {
             mcontext.stopService(intent);
-            if(pixelList.size()>0)
-            {
+            if (pixelList.size() > 0) {
                 checkCollision(pixelList, threshold);
             }
 
         }
     }
 
-    public void addPoint(Point p,Canvas canvas){
+    public void addPoint(Point p, Canvas canvas) {
 
         synchronized (points) {
             if (points != null && p.x > 0 && p.y > 0) {
                 points.add(new Point(p));
-                if(bitmap!=null)
-                {
-                    int treshold=50;
+                if (bitmap != null) {
+                    int treshold = 50;
 
-                    List<Integer> pixelList=new ArrayList<>();
-                    pixelList.add(bitmap.getPixel(p.x,p.y));
+                    List<Integer> pixelList = new ArrayList<>();
+                    pixelList.add(bitmap.getPixel(p.x, p.y));
                     //pixelList.add(bitmap.getPixel(p.x-pOffset,p.y-pOffset));
                     //pixelList.add(bitmap.getPixel(p.x+pOffset,p.y-pOffset));
                     //pixelList.add(bitmap.getPixel(p.x-pOffset,p.y+pOffset));
                     //pixelList.add(bitmap.getPixel(p.x+pOffset,p.y+pOffset));
 
-                    checkCollision(pixelList,treshold);
+                    checkCollision(pixelList, treshold);
 
 
                 }
@@ -277,17 +258,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void setOnPause() {
-        mainThread.setRunning(false);
+        mainThread.onPause();
 
     }
 
     public void setOnResume() {
-        mainThread.setRunning(true);
-        mainThread.start();
+        mainThread.onResume();
     }
 
     public void destroy() {
-        System.exit( 0 );
+        System.exit(0);
     }
 
 
