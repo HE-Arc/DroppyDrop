@@ -21,6 +21,7 @@ public class ScoreActivity extends AppCompatActivity {
 
         this.scoreManager = ScoreManager.getInstance(this);
 
+
         retrieveView();
         setUpViews();
 

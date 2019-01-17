@@ -6,6 +6,8 @@ import android.util.Log;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeMap;
@@ -83,6 +85,30 @@ public class ScoreManager {
     public Map<Integer, SortedSet<Score>> getAllScores()
     {
         return scoresMap;
+    }
+
+    /**
+     * Get a specific score of a level and a rank
+     * @param level level number [1, nbLevel]
+     * @param rank [1, 3]
+     * @return Score or null
+     */
+    public Score getSpecificScore(int level, int rank)
+    {
+        SortedSet<Score> scoreSet = scoresMap.get(level);
+        if(scoreSet != null){
+            Iterator<Score> it = scoreSet.iterator();
+            Score score;
+            int i = 1;
+            while (it.hasNext())
+            {
+                score = it.next();
+                if (i == rank)
+                    return score;
+                i++;
+            }
+        }
+        return null;
     }
 
     /**
