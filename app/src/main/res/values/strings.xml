@@ -13,4 +13,6 @@
     <string name="default_username">Player</string>
     <string name="save">Save</string>
     <string name="score_file">scores.txt</string>
+    <string name="level_image">Level Image</string>
+    <string name="select_a_level">Select a level</string>
 </resources>

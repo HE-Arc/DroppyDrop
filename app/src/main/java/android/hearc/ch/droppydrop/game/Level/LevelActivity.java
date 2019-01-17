@@ -3,12 +3,15 @@ package android.hearc.ch.droppydrop.game.Level;
 import android.content.Intent;
 import android.hearc.ch.droppydrop.game.PlayActivity;
 import android.hearc.ch.droppydrop.R;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,12 +47,12 @@ public class LevelActivity extends AppCompatActivity {
 
         TableLayout table = (TableLayout) findViewById(R.id.levelTableLayout);
 
-
         for (int i = 0; i < Math.ceil(levelCount / (double) buttonsPerRow); i++) {
 
             TableRow tr = new TableRow(this);
             LinearLayout linearLayout = new LinearLayout(this);
             tr.addView(linearLayout);
+            linearLayout.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
             table.addView(tr, table.getChildCount() - 3);
 
             for (int x = 0; x < buttonsPerRow; x++) {
@@ -60,6 +63,8 @@ public class LevelActivity extends AppCompatActivity {
                 String levelName = levelModels.get(buttonCounter).LevelName;
 
                 button.setText(levelName);
+                button.setTypeface(ResourcesCompat.getFont(this, R.font.finland_rounded_thin));
+                button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
                 buttonCounter++;
 
                 button.setOnClickListener(new Button.OnClickListener() {
