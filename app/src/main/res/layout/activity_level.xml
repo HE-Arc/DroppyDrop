@@ -28,7 +28,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textAppearance="@android:style/TextAppearance.Material.Headline"
-                    tools:text="Select a level" />
+                    tools:text="Select a level"
+                    android:fontFamily="@font/mona_free"
+                    android:textSize="30sp" />
             </LinearLayout>
 
         </TableRow>
@@ -48,15 +50,12 @@
                 app:srcCompat="@android:color/holo_green_dark" />
         </TableRow>
 
-
         <TableRow
             android:id="@+id/levelInfoRow"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom|center">
-
-
             <TextView
                 android:id="@+id/levelInfo"
                 android:layout_width="match_parent"
@@ -64,12 +63,11 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:textAppearance="@android:style/TextAppearance.Material.Headline"
+                android:fontFamily="@font/mona_free"
+                android:textSize="30sp"
                 tools:text="" />
 
-
         </TableRow>
-
-
 
         <TableRow
             android:id="@+id/playLevelButtonRow"
@@ -82,6 +80,8 @@
                 android:id="@+id/playLevelButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/mona_free"
+                android:textSize="30sp"
                 android:text="Play" />
         </TableRow>
 

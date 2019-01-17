@@ -7,7 +7,8 @@
         android:id="@+id/lblPlayerName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="17dip"
+        android:fontFamily="@font/mona_free"
+        android:textSize="20sp"
         android:paddingTop="5dp"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
 
@@ -15,7 +16,8 @@
         android:id="@+id/lblScorePoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="17dip"
+        android:fontFamily="@font/mona_free"
+        android:textSize="20sp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
