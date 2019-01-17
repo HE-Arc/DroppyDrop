@@ -1,10 +1,14 @@
 package android.hearc.ch.droppydrop.game;
 
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.hearc.ch.droppydrop.R;
 import android.hearc.ch.droppydrop.sensor.AccelerometerPointer;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import android.widget.Toast;
 
 public class MainThread extends Thread {
     private SurfaceHolder surfaceHolder;
@@ -14,10 +18,15 @@ public class MainThread extends Thread {
     public AccelerometerPointer accPointer;
     private Point lastPoint;
     private long previousTime;
-    private long fps;
+    private int fps;
+
+    //https://stackoverflow.com/questions/6776327/how-to-pause-resume-thread-in-android
+    private Object mPauseLock;
+    private boolean mPaused;
 
     private static final String TAG = "MainThread";
 
+    private SharedPreferences sharedPreferences;
 
     public MainThread(SurfaceHolder surfaceHolder, GameView gameView) {
         super();
@@ -26,16 +35,34 @@ public class MainThread extends Thread {
         this.gameView = gameView;
         lastPoint = new Point(-1, -1);
         previousTime = System.currentTimeMillis();
-        ;
-        fps = 30; //try to adjust for maximum comfort, we could use this for the difficulty
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.gameView.getContext());
+
+        //fps = 40; //try to adjust for maximum comfort, we could use this for the difficulty
+        fps = sharedPreferences.getInt(this.gameView.getContext().getString(R.string.sensibility), 0) + 30;
+
+
+
+        mPauseLock = new Object();
+        mPaused = false;
 
     }
 
-    public void setRunning(boolean isRunning) {
-        if (isRunning)
-            accPointer.resumeAccelerometerSensor();
-        else
+    public void onPause() {
+        synchronized (mPauseLock) {
+            mPaused = true;
             accPointer.stopAccelerometerSensor();
+        }
+    }
+
+    public void onResume() {
+        synchronized (mPauseLock) {
+            mPaused = false;
+            mPauseLock.notifyAll();
+            accPointer.resumeAccelerometerSensor();
+        }
+    }
+
+    public void setRunning(boolean isRunning) {
         running = isRunning;
     }
 
@@ -85,7 +112,15 @@ public class MainThread extends Thread {
                     }
                 }
             }
-
+            synchronized (mPauseLock) {
+                while (mPaused) {
+                    try {
+                        mPauseLock.wait();
+                    } catch (InterruptedException e) {
+                    }
+                }
+            }
         }
+
     }
 }
