@@ -3,20 +3,15 @@ package android.hearc.ch.droppydrop.score;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.hearc.ch.droppydrop.R;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedSet;
-import java.util.stream.Collectors;
 
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
@@ -49,6 +44,7 @@ public class ScoreExpandableAdapter extends BaseExpandableListAdapter {
             listLevelHeader.add(0, levelHeader);
             SortedSet<Score> scores = entry.getValue();
             List<Score> listScore = new ArrayList<>(scores);
+            Collections.reverse(listScore);
             mapScoreChild.put(levelHeader, listScore);
         }
     }
@@ -73,13 +69,11 @@ public class ScoreExpandableAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String headerTitle = listLevelHeader.get(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group, null);
         }
 
-        TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.lblListHeader);
+        TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
 
@@ -90,12 +84,12 @@ public class ScoreExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.mapScoreChild.get(this.listLevelHeader.get(groupPosition)).size();
+        return mapScoreChild.get(listLevelHeader.get(groupPosition)).size();
     }
 
     @Override
     public Score getChild(int groupPosition, int childPosititon) {
-        return this.mapScoreChild.get(this.listLevelHeader.get(groupPosition)).get(childPosititon);
+        return mapScoreChild.get(listLevelHeader.get(groupPosition)).get(childPosititon);
     }
 
     @Override
@@ -105,18 +99,19 @@ public class ScoreExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        final String childText = getChild(groupPosition, childPosition).toString();
+        Score childScore = getChild(groupPosition, childPosition);
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item, null);
         }
 
-        TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.lblListItem);
+        TextView txtPlayerChild = (TextView) convertView.findViewById(R.id.lblPlayerName);
+        txtPlayerChild.setText(childScore.username);
 
-        txtListChild.setText(childText);
+        TextView txtValueChild = (TextView) convertView.findViewById(R.id.lblScorePoints);
+        txtValueChild.setText(childScore.value + " pts");
+
         return convertView;
     }
 
