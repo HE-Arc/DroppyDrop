@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Region;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.hearc.ch.droppydrop.game.Level.LevelModel;
@@ -185,7 +186,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(b, xNew, yNew, false);
         pixels = new int[viewWidth * viewHeight];
         scaledBitmap.getPixels(pixels, 0, viewWidth, 0, 0, viewWidth, viewHeight);
-        
+
         bitmap = createTransparentBitmapFromBitmap(scaledBitmap, Color.WHITE); //white pixels replaced with transparent ones
         bitmap.setHasAlpha(true);
         image = new BitmapDrawable(getContext().getResources(), bitmap);
@@ -201,6 +202,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void draw(Canvas canvas) { //rendering
+
+        //https://stackoverflow.com/questions/4028270/can-i-draw-outside-the-bounds-of-an-android-canvas
+        Rect newRect = canvas.getClipBounds();
+        newRect.inset(-circle_radius, -circle_radius);  //make the rect larger
+
+        canvas.clipRect (newRect, Region.Op.REPLACE);
         super.draw(canvas);
         if (canvas != null) {
             canvas.drawPaint(paintWhite);
@@ -267,16 +274,35 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
                         pixelList.clear();
 
-                        if (p.y < lastPoint.y) {
-                            if (p.x < lastPoint.x)
-                                pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y - collisionMargin)]);
-                            else
+                        if (p.y < lastPoint.y) { //if drop goes up
+                            if (p.x < lastPoint.x) {
+                                pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y - collisionMargin)]); // if drop goes left
+                                pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y)]);
+                                pixelList.add(pixels[xyToIndex(p.x, p.y - collisionMargin)]);
                                 pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y - collisionMargin)]);
-                        } else {
-                            if (p.x < lastPoint.x)
                                 pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y + collisionMargin)]);
-                            else
+                            } else {
+                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y - collisionMargin)]); // if drop goes right
+                                pixelList.add(pixels[xyToIndex(p.x, p.y - collisionMargin)]);
+                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y )]);
+                                pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y - collisionMargin)]);
                                 pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y + collisionMargin)]);
+
+                            }
+                        } else { //if drop goes down
+                            if (p.x < lastPoint.x) {
+                                pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y + collisionMargin)]); // if drop goes left
+                                pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y)]);
+                                pixelList.add(pixels[xyToIndex(p.x , p.y + collisionMargin)]);
+                                pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y - collisionMargin)]);
+                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y + collisionMargin)]);
+                            } else {
+                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y + collisionMargin)]); // if drop goes right
+                                pixelList.add(pixels[xyToIndex(p.x , p.y + collisionMargin)]);
+                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y )]);
+                                pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y + collisionMargin)]);
+                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y - collisionMargin)]);
+                            }
                         }
 
                         pixelList.add(pixels[xyToIndex(p.x, p.y)]);
@@ -285,22 +311,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
                     }
                 } else {
-                    if (p.y + circle_radius >= viewHeight) {
+                    if (p.y >= viewHeight) {
                         mainThread.accPointer.setPointerY(circle_radius);
                         drawLineBools.add(false); //to avoid draw a line across the screen
                         doNotDrawNextLine = true;
                     }
-                    if (p.y + circle_radius < 0) {
+                    if (p.y  < 0) {
                         mainThread.accPointer.setPointerY(viewHeight - circle_radius);
                         drawLineBools.add(false); //to avoid draw a line across the screen
                         doNotDrawNextLine = true;
                     }
-                    if (p.x + circle_radius < 0) {
+                    if (p.x  < 0) {
                         mainThread.accPointer.setPointerX(viewWidth - circle_radius);
                         drawLineBools.add(false); //to avoid draw a line across the screen
                         doNotDrawNextLine = true;
                     }
-                    if (p.x - circle_radius >= viewWidth) {
+                    if (p.x >= viewWidth) {
                         mainThread.accPointer.setPointerX(circle_radius);
                         drawLineBools.add(false); //to avoid draw a line across the screen
                         doNotDrawNextLine = true;
