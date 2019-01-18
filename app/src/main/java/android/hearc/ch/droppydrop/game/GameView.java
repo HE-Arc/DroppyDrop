@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.Region;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.hearc.ch.droppydrop.game.Level.LevelModel;
@@ -122,7 +121,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 //        image = getResources().getDrawable(level.ImageId, null);
 
 
-        collisionMargin = circle_radius - 1;
+        collisionMargin = circle_radius - 4;
 
         pixelColorCheckTreshold = 50;
 
@@ -202,18 +201,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void draw(Canvas canvas) { //rendering
-
-        //https://stackoverflow.com/questions/4028270/can-i-draw-outside-the-bounds-of-an-android-canvas
-        Rect newRect = canvas.getClipBounds();
-        newRect.inset(-circle_radius, -circle_radius);  //make the rect larger
-
-        canvas.clipRect (newRect, Region.Op.REPLACE);
         super.draw(canvas);
         if (canvas != null) {
             canvas.drawPaint(paintWhite);
             if (points.size() > 1) {
 
-                for (int i = 1; i < points.size() - 1; i++) {
+                for (int i = 1; i < points.size() ; i++) {
                     Point p = points.elementAt(i);
                     Point lastP = points.elementAt(i - 1);
 
@@ -311,22 +304,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
                     }
                 } else {
-                    if (p.y >= viewHeight) {
+                    if (p.y + circle_radius >= viewHeight) {
                         mainThread.accPointer.setPointerY(circle_radius);
                         drawLineBools.add(false); //to avoid draw a line across the screen
                         doNotDrawNextLine = true;
                     }
-                    if (p.y  < 0) {
+                    if (p.y - circle_radius < 0) {
                         mainThread.accPointer.setPointerY(viewHeight - circle_radius);
                         drawLineBools.add(false); //to avoid draw a line across the screen
                         doNotDrawNextLine = true;
                     }
-                    if (p.x  < 0) {
+                    if (p.x - circle_radius < 0) {
                         mainThread.accPointer.setPointerX(viewWidth - circle_radius);
                         drawLineBools.add(false); //to avoid draw a line across the screen
                         doNotDrawNextLine = true;
                     }
-                    if (p.x >= viewWidth) {
+                    if (p.x + circle_radius >= viewWidth) {
                         mainThread.accPointer.setPointerX(circle_radius);
                         drawLineBools.add(false); //to avoid draw a line across the screen
                         doNotDrawNextLine = true;
