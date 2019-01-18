@@ -8,73 +8,59 @@
     tools:context=".game.Level.LevelActivity">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/txtSelectLevel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:fontFamily="@font/mona_free"
+        android:textAlignment="center"
         android:textSize="30sp"
-        android:visibility="visible"
         tools:text="@string/select_a_level" />
 
     <TableLayout
+        android:id="@+id/levelTableLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_horizontal"
         android:layout_margin="5sp"
-        android:id="@+id/levelTableLayout">
-
-        <TableRow
-            android:visibility="gone"
-            android:id="@+id/levelImageRow"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center" >
-
-            <ImageView
-                android:id="@+id/levelImage"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:contentDescription="@string/level_image"
-                android:scaleType="fitCenter"
-                app:srcCompat="@android:color/holo_green_dark" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/levelInfoRow"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom|center">
-            <TextView
-                android:id="@+id/levelInfo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:textAppearance="@android:style/TextAppearance.Material.Headline"
-                android:fontFamily="@font/mona_free"
-                android:textSize="30sp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                tools:text="" />
-
-        </TableRow>
-        <TableRow
-            android:id="@+id/playLevelButtonRow"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom|center">
-
-            <Button
-                android:id="@+id/playLevelButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/mona_free"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:text="@string/play"
-                android:textSize="30sp" />
-        </TableRow>
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
     </TableLayout>
+
+    <ImageView
+        android:id="@+id/levelImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxHeight="@android:dimen/thumbnail_height"
+        android:layout_gravity="center_horizontal"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/level_image"
+        android:scaleType="centerInside"
+        app:srcCompat="@android:color/holo_green_dark" />
+
+    <TextView
+        android:id="@+id/levelInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="@font/mona_free"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textAppearance="@android:style/TextAppearance.Material.Headline"
+        android:textSize="30sp"
+        android:textAlignment="center"
+        tools:text="" />
+
+    <Button
+        android:id="@+id/playLevelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="@font/mona_free"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/play"
+        android:textSize="30sp" />
 
 </LinearLayout>

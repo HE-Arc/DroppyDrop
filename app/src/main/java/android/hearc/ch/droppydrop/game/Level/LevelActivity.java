@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -47,66 +49,72 @@ public class LevelActivity extends AppCompatActivity {
 
         TableLayout table = (TableLayout) findViewById(R.id.levelTableLayout);
 
+
         for (int i = 0; i < Math.ceil(levelCount / (double) buttonsPerRow); i++) {
 
+            // Add a new row
             TableRow tr = new TableRow(this);
-            LinearLayout linearLayout = new LinearLayout(this);
-            tr.addView(linearLayout);
-            linearLayout.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
-            table.addView(tr, table.getChildCount() - 3);
+            tr.setGravity(Gravity.CENTER_HORIZONTAL);
+            tr.setLayoutParams(new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams.MATCH_PARENT,
+                    TableLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+            table.addView(tr, table.getChildCount() - buttonsPerRow);
 
+            // Add 3 levels per row
             for (int x = 0; x < buttonsPerRow; x++) {
 
                 Button button = new Button(this);
+                button.setGravity(Gravity.CENTER);
+                button.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+                button.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
                 levelModels.add(new LevelModel(this, buttonCounter));
 
+                // set text
                 String levelName = levelModels.get(buttonCounter).LevelName;
-
+                Log.i("BUTTON", "onCreate: " + levelName + "/");
                 button.setText(levelName);
                 button.setTypeface(ResourcesCompat.getFont(this, R.font.finland_rounded_thin));
                 button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+
+                // Increment button counter
                 buttonCounter++;
 
+                // Add on click listener
                 button.setOnClickListener(new Button.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        // Display level info
                         int levelId = levelButtons.indexOf(view);
                         selectedLevel = levelId;
                         int trackColor = levelModels.get(levelId).TrackColorInt;
                         int difficulty = levelModels.get(levelId).Difficulty;
                         int imageId = levelModels.get(levelId).ImageId;
 
-
-                        TableRow levelInfoRow = (TableRow) findViewById(R.id.levelInfoRow);
-                        levelInfoRow.setVisibility(View.VISIBLE);
-                        TableRow playLevel = (TableRow) findViewById(R.id.playLevelButtonRow);
-                        playLevel.setVisibility(View.VISIBLE);
-                        TableRow levelImageRow = (TableRow) findViewById(R.id.levelImageRow);
-                        levelImageRow.setVisibility(View.VISIBLE);
-
+                        // Set info of level
                         TextView levelInfo = (TextView) findViewById(R.id.levelInfo);
 
                         String beforeDropColorString = "Difficulty: " + difficulty + "\nDrop color: ";
-
                         Spannable spanna = new SpannableString(beforeDropColorString + "    ");
                         spanna.setSpan(new BackgroundColorSpan(trackColor), beforeDropColorString.length(), beforeDropColorString.length() + 4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                         levelInfo.setText(spanna);
 
-
+                        // Set Image of level
                         ImageView levelImage = (ImageView) findViewById(R.id.levelImage);
                         levelImage.setImageResource(imageId);
 
                     }
                 });
 
-                linearLayout.addView(button);
+                // Add button in the layout
+                tr.addView(button);
                 levelButtons.add(button);
                 if (buttonCounter == levelCount)
                     break;
             }
         }
 
+        // Add event on play button
         Button playButton = (Button) findViewById(R.id.playLevelButton);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +125,6 @@ public class LevelActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     @Override
