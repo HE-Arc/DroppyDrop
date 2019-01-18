@@ -38,7 +38,6 @@ public class LevelActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level);
 
-
         levelButtons = new ArrayList<Button>();
         levelModels = new ArrayList<LevelModel>();
 
@@ -46,9 +45,7 @@ public class LevelActivity extends AppCompatActivity {
         int buttonCounter = 0;
         int levelCount = getResources().getStringArray(R.array.names).length;
 
-
         TableLayout table = (TableLayout) findViewById(R.id.levelTableLayout);
-
 
         for (int i = 0; i < Math.ceil(levelCount / (double) buttonsPerRow); i++) {
 
@@ -65,8 +62,8 @@ public class LevelActivity extends AppCompatActivity {
 
                 Button button = new Button(this);
                 button.setGravity(Gravity.CENTER);
-                button.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
-                button.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+                //button.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+                //button.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
                 levelModels.add(new LevelModel(this, buttonCounter));
 
                 // set text
@@ -103,6 +100,8 @@ public class LevelActivity extends AppCompatActivity {
                         ImageView levelImage = (ImageView) findViewById(R.id.levelImage);
                         levelImage.setImageResource(imageId);
 
+                        Button playButton = (Button) findViewById(R.id.playLevelButton);
+                        playButton.setVisibility(View.VISIBLE);
                     }
                 });
 

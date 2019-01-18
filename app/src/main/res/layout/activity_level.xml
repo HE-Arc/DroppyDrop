@@ -14,8 +14,10 @@
         android:layout_gravity="center_horizontal"
         android:fontFamily="@font/mona_free"
         android:textAlignment="center"
-        android:textSize="30sp"
-        tools:text="@string/select_a_level" />
+        android:textSize="40sp"
+        android:layout_margin="5sp"
+        android:visibility="visible"
+        android:text="@string/select_a_level" />
 
     <TableLayout
         android:id="@+id/levelTableLayout"
@@ -24,9 +26,7 @@
         android:layout_gravity="fill_horizontal"
         android:layout_margin="5sp"
         android:gravity="center_horizontal"
-        android:orientation="horizontal">
-
-    </TableLayout>
+        android:orientation="horizontal" />
 
     <ImageView
         android:id="@+id/levelImage"
@@ -50,7 +50,7 @@
         android:textAppearance="@android:style/TextAppearance.Material.Headline"
         android:textSize="30sp"
         android:textAlignment="center"
-        tools:text="" />
+        android:text="" />
 
     <Button
         android:id="@+id/playLevelButton"
@@ -60,6 +60,7 @@
         android:fontFamily="@font/mona_free"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
+        android:visibility="invisible"
         android:text="@string/play"
         android:textSize="30sp" />
 
