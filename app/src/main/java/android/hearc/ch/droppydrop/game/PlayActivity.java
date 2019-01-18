@@ -14,7 +14,7 @@ import android.hearc.ch.droppydrop.sensor.VibratorService;
 public class PlayActivity extends Activity {
 
     private GameView game;
-    private boolean isPause;
+    private int levelId;
 
 
     @Override
@@ -27,7 +27,6 @@ public class PlayActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         int levelId = getIntent().getIntExtra("selectedLevel", 0);
         game = new GameView(this, levelId);
-        isPause = true;
         setContentView(game);
     }
 
@@ -45,28 +44,35 @@ public class PlayActivity extends Activity {
         int action = event.getActionMasked();
 
         switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                //Toast.makeText(this, "ON PAUSE", Toast.LENGTH_LONG).show();
-                break;
             case MotionEvent.ACTION_UP:
                 game.setOnPause();
                 new AlertDialog.Builder(this)
                         .setTitle("Game on pause")
-                        .setMessage("Reprendre la partie ?")
-                        .setPositiveButton("Resume", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                game.setOnResume();
-                            }
-                        })
-                        .setNegativeButton("Quit game", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Quit", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 onBackPressed();
                             }
                         })
-                        .setIcon(android.R.drawable.ic_dialog_alert
-                        ).show();
+                        .setNeutralButton("Resume", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                game.setOnResume();
+                            }
+                        })
+                        .setNegativeButton("Restart", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent mIntent = getIntent();
+                                finish();
+                                startActivity(mIntent);
+                                game.destroy();
+
+                            }
+                        })
+                        .setCancelable(false)
+                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .show();
                 break;
         }
         return super.onTouchEvent(event);
