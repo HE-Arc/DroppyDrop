@@ -123,7 +123,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         collisionMargin = circle_radius - 1;
 
-        pixelColorCheckTreshold = 0xff/2;
+        pixelColorCheckTreshold = 50;
 
 
         doNotDrawNextLine = false;
@@ -183,13 +183,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         //Bitmap b = ((BitmapDrawable) image).getBitmap();
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(b, xNew, yNew, false);
-
+        pixels = new int[viewWidth * viewHeight];
+        scaledBitmap.getPixels(pixels, 0, viewWidth, 0, 0, viewWidth, viewHeight);
+        
         bitmap = createTransparentBitmapFromBitmap(scaledBitmap, Color.WHITE); //white pixels replaced with transparent ones
         bitmap.setHasAlpha(true);
-        image = new BitmapDrawable(getContext().getResources(), bitmap); //TODO: TROUVER COMMENT FAIRE
+        image = new BitmapDrawable(getContext().getResources(), bitmap);
         image.setBounds(0, 0, xNew, yNew);
-        pixels = new int[viewWidth * viewHeight];
-        bitmap.getPixels(pixels, 0, viewWidth, 0, 0, viewWidth, viewHeight);
+
 
         lastPoint = new Point(viewWidth / 2, viewHeight / 2);//TODO if starting point changes, adapt this too
     }
