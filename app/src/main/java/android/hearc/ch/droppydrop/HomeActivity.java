@@ -30,7 +30,7 @@ public class HomeActivity extends AppCompatActivity {
 
         playButton.setOnClickListener(new Button.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Log.i("home", "click on play");
                 Intent intent = new Intent(HomeActivity.this, LevelActivity.class);
                 startActivity(intent);
@@ -44,7 +44,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        optionsButton.setOnClickListener(new Button.OnClickListener(){
+        optionsButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("home", "click on options");
@@ -72,7 +72,7 @@ public class HomeActivity extends AppCompatActivity {
                                 dialogInterface.dismiss();
                             }
                         });
-                        alertDialog.show();
+                alertDialog.show();
             }
         });
     }
