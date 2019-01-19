@@ -40,7 +40,6 @@
         <TextView
             android:id="@+id/vibration_textView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/mona_free"
             android:textSize="30sp"

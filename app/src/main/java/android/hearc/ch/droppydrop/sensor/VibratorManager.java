@@ -37,11 +37,7 @@ public class VibratorManager{
     public void startVibrator() {
         //Require API level 26 or above
         //Android does not allow to handle the intensity of the vibrator -> https://stackoverflow.com/questions/11483168/android-set-power-of-vibration
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator.vibrate(VibrationEffect.createOneShot(100, amplitude));
-        } else {
-            vibrator.vibrate(amplitude);
-        }
+        vibrator.vibrate(amplitude);
     }
 
     public void stopVibrator()

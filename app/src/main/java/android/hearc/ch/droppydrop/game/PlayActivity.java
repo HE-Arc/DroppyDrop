@@ -47,8 +47,8 @@ public class PlayActivity extends Activity {
             case MotionEvent.ACTION_UP:
                 game.setOnPause();
                 new AlertDialog.Builder(this)
-                        .setTitle("Game on pause")
-                        .setPositiveButton("Quit", new DialogInterface.OnClickListener() {
+                        .setTitle("PAUSE")
+                        .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 onBackPressed();
