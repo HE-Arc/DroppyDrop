@@ -2,6 +2,7 @@ package android.hearc.ch.droppydrop.game;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -11,9 +12,13 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.hearc.ch.droppydrop.R;
 import android.hearc.ch.droppydrop.game.Level.LevelModel;
+import android.hearc.ch.droppydrop.score.Score;
+import android.hearc.ch.droppydrop.score.ScoreManager;
 import android.hearc.ch.droppydrop.sensor.AccelerometerPointer;
 import android.hearc.ch.droppydrop.sensor.VibratorService;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -44,6 +49,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private Paint paintWhite;
 
+    private Paint paintGold;
+
     private int viewWidth;
     private int viewHeight;
 
@@ -61,6 +68,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private int collisionMargin;
 
+    private int diagonalCollisionmargin;
+
     private int[] pixels;
 
     private Point lastPoint;
@@ -68,6 +77,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private boolean doNotDrawNextLine;
 
     private List<Integer> pixelList;
+
+    private int score;
+
+    private boolean[][] uniquePassageMatrix;
 
     public GameView(Context context, int levelId) {
         super(context);
@@ -105,9 +118,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         paintWhite.setColor(Color.WHITE);
         paintWhite.setStyle(Paint.Style.FILL);
 
+        paintGold = new Paint();
+
+        paintGold.setColor(Color.rgb(255, 215, 0));
+        paintGold.setStyle(Paint.Style.FILL);
+        paintGold.setTextSize(100);
+        paintGold.setTextAlign(Paint.Align.LEFT);
+
 
         viewWidth = 0;
         viewHeight = 0;
+
+        score = 0;
 
 
         mainThread = new MainThread(getHolder(), this);
@@ -121,7 +143,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 //        image = getResources().getDrawable(level.ImageId, null);
 
 
-        collisionMargin = circle_radius - 4;
+        collisionMargin = circle_radius;
+
+        diagonalCollisionmargin = (int) (collisionMargin * 0.7);
 
         pixelColorCheckTreshold = 50;
 
@@ -152,6 +176,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        saveScore();
         boolean retry = true;
         while (retry) {
             try {
@@ -193,6 +218,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 
         lastPoint = new Point(viewWidth / 2, viewHeight / 2);//TODO if starting point changes, adapt this too
+
+        int uniquePassageMatrixWidth = viewWidth / (2 * circle_radius);
+        int uniquePassageMatrixHeight = viewHeight / (2 * circle_radius);
+
+        uniquePassageMatrix = new boolean[uniquePassageMatrixWidth][uniquePassageMatrixHeight];
+        for (int i = 0; i < uniquePassageMatrixWidth; i++) {
+            for (int j = 0; j < uniquePassageMatrixHeight; j++) {
+                uniquePassageMatrix[i][j] = false;
+            }
+        }
     }
 
     public void update() { //game logic
@@ -206,7 +241,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             canvas.drawPaint(paintWhite);
             if (points.size() > 1) {
 
-                for (int i = 1; i < points.size() ; i++) {
+                for (int i = 1; i < points.size(); i++) {
                     Point p = points.elementAt(i);
                     Point lastP = points.elementAt(i - 1);
 
@@ -223,11 +258,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
 
             if (image != null) {
-
                 image.draw(canvas);
             } else {
                 canvas.drawColor(Color.MAGENTA);
             }
+            canvas.drawText(String.valueOf(score), (int) (viewWidth * 0.65), 100, paintGold);
         }
     }
 
@@ -240,6 +275,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         if (redValue < pixelColorCheckTreshold && blueValue < pixelColorCheckTreshold && greenValue < pixelColorCheckTreshold) {
             mcontext.startService(intent);
+            score -= 25;
         } else {
             mcontext.stopService(intent);
             if (pixelList.size() > 0) {
@@ -259,6 +295,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             if (points != null) {
                 if (p.x - circle_radius > 0 && p.y - circle_radius > 0 && p.x + circle_radius < viewWidth && p.y + circle_radius < viewHeight) {
                     points.add(new Point(p));
+                    if (!uniquePassageMatrix[p.x / (2 * circle_radius)][p.y / (2 * circle_radius)]) {
+                        uniquePassageMatrix[p.x / (2 * circle_radius)][p.y / (2 * circle_radius)] = true;
+                        score += 10;
+                    }
                     if (!doNotDrawNextLine)
                         drawLineBools.add(true);
                     else
@@ -269,32 +309,32 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
                         if (p.y < lastPoint.y) { //if drop goes up
                             if (p.x < lastPoint.x) {
-                                pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y - collisionMargin)]); // if drop goes left
+                                pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y - diagonalCollisionmargin)]); // if drop goes left
                                 pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y)]);
                                 pixelList.add(pixels[xyToIndex(p.x, p.y - collisionMargin)]);
-                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y - collisionMargin)]);
-                                pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y + collisionMargin)]);
+                                pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y - diagonalCollisionmargin)]);
+                                pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y + diagonalCollisionmargin)]);
                             } else {
-                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y - collisionMargin)]); // if drop goes right
+                                pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y - diagonalCollisionmargin)]); // if drop goes right
                                 pixelList.add(pixels[xyToIndex(p.x, p.y - collisionMargin)]);
-                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y )]);
-                                pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y - collisionMargin)]);
-                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y + collisionMargin)]);
+                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y)]);
+                                pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y - diagonalCollisionmargin)]);
+                                pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y + diagonalCollisionmargin)]);
 
                             }
                         } else { //if drop goes down
                             if (p.x < lastPoint.x) {
-                                pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y + collisionMargin)]); // if drop goes left
+                                pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y + diagonalCollisionmargin)]); // if drop goes left
                                 pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y)]);
-                                pixelList.add(pixels[xyToIndex(p.x , p.y + collisionMargin)]);
-                                pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y - collisionMargin)]);
-                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y + collisionMargin)]);
+                                pixelList.add(pixels[xyToIndex(p.x, p.y + collisionMargin)]);
+                                pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y - diagonalCollisionmargin)]);
+                                pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y + diagonalCollisionmargin)]);
                             } else {
-                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y + collisionMargin)]); // if drop goes right
-                                pixelList.add(pixels[xyToIndex(p.x , p.y + collisionMargin)]);
-                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y )]);
-                                pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y + collisionMargin)]);
-                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y - collisionMargin)]);
+                                pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y + diagonalCollisionmargin)]); // if drop goes right
+                                pixelList.add(pixels[xyToIndex(p.x, p.y + collisionMargin)]);
+                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y)]);
+                                pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y + diagonalCollisionmargin)]);
+                                pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y - diagonalCollisionmargin)]);
                             }
                         }
 
@@ -343,7 +383,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         mainThread.onResume();
     }
 
+    private void saveScore() {
+        String default_username = getResources().getString(R.string.default_username);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String username = sharedPreferences.getString(getResources().getString(R.string.username), default_username);
+        ScoreManager.getInstance(getContext()).saveScore(new Score(level.levelId + 1, score, username));
+    }
+
     public void destroy() {
+        saveScore();
         System.exit(0);
     }
 

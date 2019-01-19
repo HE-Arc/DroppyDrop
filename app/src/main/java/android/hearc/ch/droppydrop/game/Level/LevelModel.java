@@ -11,12 +11,12 @@ public class LevelModel {
 
     public String LevelName;
     public int ImageId;
-
+    public int levelId;
     private Context context;
 
     public LevelModel(Context context, int levelId) {
         this.context = context;
-
+        this.levelId=levelId;
         this.LevelName = context.getResources().getStringArray(R.array.names)[levelId];
         this.Difficulty = context.getResources().getIntArray(R.array.difficulties)[levelId];
         this.TrackColorInt = context.getResources().obtainTypedArray(R.array.dropColors).getColor(levelId, 0);
