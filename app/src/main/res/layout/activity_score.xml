@@ -5,32 +5,29 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:visibility="visible"
+    android:background="@color/colorBrownGreyLight"
     tools:context=".score.ScoreActivity">
+
+    <TextView
+        android:id="@+id/scoreTableTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/AppTheme.TitleActivity"
+        android:text="@string/score_tab"
+        android:textColor="@android:color/black"
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/scoreImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="50dp"
         android:layout_marginRight="50dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/score_icon"
         android:scaleType="centerInside"
         app:srcCompat="@drawable/cup_icon" />
 
-    <TextView
-        android:id="@+id/scoreTableTV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/score_tab"
-        android:layout_marginTop="5dp"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:fontFamily="@font/mona_free"
-        android:textSize="30sp"
-        android:textStyle="bold" />
     <TextView
         android:id="@+id/noScoreTV"
         android:layout_width="match_parent"

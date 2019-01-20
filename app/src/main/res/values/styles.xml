@@ -23,7 +23,7 @@
     <style name="AppTheme.button.home" parent="AppTheme.button">
         <item name="android:minWidth">200dp</item>
     </style>
-    <style name="AppTheme.textview" parent="AppTheme">
+    <style name="AppTheme.TitleActivity" parent="AppTheme">
         <item name="android:fontFamily">@font/mona_free</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">40sp</item>

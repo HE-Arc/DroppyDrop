@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".OptionsActivity"
-    android:layout_margin="10dp">
+    android:background="@color/colorBrownGreyLight">
 
     <TableRow
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
 
         <TextView
             android:id="@+id/txtSelectLevel"
-            style="@style/AppTheme.textview"
+            style="@style/AppTheme.TitleActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/options" />
@@ -24,8 +24,9 @@
     <TableRow
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/sensibility_textView"
@@ -33,9 +34,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/mona_free"
-            android:textSize="30sp"
+            android:text="@string/sensibility"
             android:textColor="@android:color/black"
-            android:text="@string/sensibility" />
+            android:textSize="30sp" />
 
         <SeekBar
             android:id="@+id/sensibility_seekBar"
@@ -50,17 +51,18 @@
     <TableRow
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/vibration_textView"
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:fontFamily="@font/mona_free"
-            android:textSize="30sp"
+            android:text="@string/vibration"
             android:textColor="@android:color/black"
-            android:text="@string/vibration" />
+            android:textSize="30sp" />
 
         <SeekBar
             android:id="@+id/vibration_seekBar"
@@ -76,6 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <TextView

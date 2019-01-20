@@ -5,13 +5,14 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/colorBrownGreyLight"
     tools:context=".game.Level.LevelActivity">
 
     <TextView
     android:id="@+id/txtSelectLevel"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/AppTheme.textview"
+    style="@style/AppTheme.TitleActivity"
     android:text="@string/select_a_level" />
 
     <TableLayout
