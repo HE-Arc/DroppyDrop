@@ -56,12 +56,10 @@
         android:id="@+id/playLevelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:fontFamily="@font/mona_free"
+        style="@style/AppTheme.button.home"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:visibility="invisible"
-        android:text="@string/play"
-        android:textSize="30sp" />
+        android:text="@string/play" />
 
 </LinearLayout>

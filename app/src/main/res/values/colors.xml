@@ -13,4 +13,5 @@
     <color name="colorDarkMagenta">#AA00AA</color>
     <color name="colorYellow">#FFFF00</color>
     <color name="colorDarkYellow">#AAAA00</color>
+    <color name="colorBrownGreyLight">#666</color>
 </resources>
