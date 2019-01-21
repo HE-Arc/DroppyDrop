@@ -14,8 +14,6 @@ import android.hearc.ch.droppydrop.sensor.VibratorService;
 public class PlayActivity extends Activity {
 
     private GameView game;
-    private int levelId;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,7 +69,7 @@ public class PlayActivity extends Activity {
                             }
                         })
                         .setCancelable(false)
-                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .setIcon(android.R.drawable.ic_menu_info_details)
                         .show();
                 break;
         }

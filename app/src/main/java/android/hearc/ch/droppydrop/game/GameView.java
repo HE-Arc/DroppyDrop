@@ -9,7 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.hearc.ch.droppydrop.R;
@@ -20,7 +19,6 @@ import android.hearc.ch.droppydrop.sensor.AccelerometerPointer;
 import android.hearc.ch.droppydrop.sensor.VibratorService;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
@@ -81,6 +79,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private int score;
 
     private boolean[][] uniquePassageMatrix;
+
+    private int difficulty;
+    private SharedPreferences sharedPreferences;
 
     public GameView(Context context, int levelId) {
         super(context);
@@ -154,6 +155,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         pixelList = new ArrayList<>();
 
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+
+        difficulty = sharedPreferences.getInt("Difficulty", 0) + 1;
     }
 
 
@@ -275,7 +279,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         if (redValue < pixelColorCheckTreshold && blueValue < pixelColorCheckTreshold && greenValue < pixelColorCheckTreshold) {
             mcontext.startService(intent);
-            score -= 25;
+            score -= 25 * difficulty;
         } else {
             mcontext.stopService(intent);
             if (pixelList.size() > 0) {

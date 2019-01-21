@@ -8,9 +8,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ public class OptionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_options);
+
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -92,6 +95,24 @@ public class OptionsActivity extends AppCompatActivity {
                 // nothing to be done
             }
         });
+
+        Spinner difficultySpinner = findViewById(R.id.difficulty_spinner);
+
+        difficultySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                int difficulty = position;
+                editor.putInt("Difficulty", difficulty);
+
+                editor.apply();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void loadAndDisplayPreferences()
@@ -115,6 +136,12 @@ public class OptionsActivity extends AppCompatActivity {
         String username = sharedPreferences.getString(getString(R.string.username), default_username);
         EditText usernameEditText = findViewById(R.id.username_editText);
         usernameEditText.setText(username);
+
+        //Difficulty
+        int default_difficulty = 0;
+        int difficulty = sharedPreferences.getInt("Difficulty", default_difficulty);
+        Spinner difficultySpinner = findViewById(R.id.difficulty_spinner);
+        difficultySpinner.setSelection(difficulty);
     }
 
 }

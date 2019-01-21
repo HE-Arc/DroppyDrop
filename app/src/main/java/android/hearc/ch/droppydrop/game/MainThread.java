@@ -6,9 +6,7 @@ import android.graphics.Point;
 import android.hearc.ch.droppydrop.R;
 import android.hearc.ch.droppydrop.sensor.AccelerometerPointer;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.SurfaceHolder;
-import android.widget.Toast;
 
 public class MainThread extends Thread {
     private SurfaceHolder surfaceHolder;
