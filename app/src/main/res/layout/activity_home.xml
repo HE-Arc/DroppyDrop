@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/colorBrownGreyLight"
     tools:context=".HomeActivity">
 
     <ImageView
@@ -17,33 +18,29 @@
 
     <Button
         android:id="@+id/playButton"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/mona_free"
-        android:textSize="30sp"
+        style="@style/AppTheme.button.home"
         android:text="@string/play" />
 
     <Button
         android:id="@+id/scoreButton"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/mona_free"
-        android:textSize="30sp"
+        style="@style/AppTheme.button.home"
         android:text="@string/scores" />
 
     <Button
         android:id="@+id/optionsButton"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/mona_free"
-        android:textSize="30sp"
+        style="@style/AppTheme.button.home"
         android:text="@string/options" />
 
     <Button
         android:id="@+id/creditsButton"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/mona_free"
-        android:textSize="30sp"
+        style="@style/AppTheme.button.home"
         android:text="@string/credits" />
 </LinearLayout>

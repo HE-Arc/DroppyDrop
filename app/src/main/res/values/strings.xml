@@ -16,11 +16,13 @@
     <string name="level_image">Level Image</string>
     <string name="select_a_level">Select a level</string>
 
-
-    <string name="difficulty_prompt">Choose a difficulty</string>
     <string-array name="difficulty_arrays">
         <item>Easy</item>
         <item>Medium</item>
+        <item>Hard</item>
+        <item>Very hard</item>
+        <item>Expert</item>
         <item>Legendary</item>
     </string-array>
+    <string name="no_scores">No score have been registered</string>
 </resources>

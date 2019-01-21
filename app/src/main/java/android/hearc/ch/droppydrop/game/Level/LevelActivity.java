@@ -3,20 +3,17 @@ package android.hearc.ch.droppydrop.game.Level;
 import android.content.Intent;
 import android.hearc.ch.droppydrop.game.PlayActivity;
 import android.hearc.ch.droppydrop.R;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
 import android.util.Log;
-import android.util.TypedValue;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -41,7 +38,7 @@ public class LevelActivity extends AppCompatActivity {
         levelButtons = new ArrayList<Button>();
         levelModels = new ArrayList<LevelModel>();
 
-        int buttonsPerRow = 3;
+        int buttonsPerRow = 2;
         int buttonCounter = 0;
         int levelCount = getResources().getStringArray(R.array.names).length;
 
@@ -60,18 +57,13 @@ public class LevelActivity extends AppCompatActivity {
             // Add 3 levels per row
             for (int x = 0; x < buttonsPerRow; x++) {
 
-                Button button = new Button(this);
-                button.setGravity(Gravity.CENTER);
-                //button.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
-                //button.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+                Button button = new Button(new ContextThemeWrapper(this, R.style.AppTheme_button));
                 levelModels.add(new LevelModel(this, buttonCounter));
 
                 // set text
                 String levelName = levelModels.get(buttonCounter).LevelName;
                 Log.i("BUTTON", "onCreate: " + levelName + "/");
                 button.setText(levelName);
-                button.setTypeface(ResourcesCompat.getFont(this, R.font.finland_rounded_thin));
-                button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
 
                 // Increment button counter
                 buttonCounter++;

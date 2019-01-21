@@ -3,8 +3,10 @@ package android.hearc.ch.droppydrop.score;
 import android.hearc.ch.droppydrop.R;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ExpandableListView;
 import android.util.Log;
+import android.widget.TextView;
 
 public class ScoreActivity extends AppCompatActivity {
 
@@ -21,7 +23,6 @@ public class ScoreActivity extends AppCompatActivity {
 
         this.scoreManager = ScoreManager.getInstance(this);
 
-
         retrieveView();
         setUpViews();
 
@@ -35,10 +36,16 @@ public class ScoreActivity extends AppCompatActivity {
     private void setUpViews() {
         Log.d(TAG, "Setting up views...");
 
-        addFalseScore();
+        // addFalseScore();
+        if(scoreManager.countScores() > 0) {
+            scoreExpandableAdapter = new ScoreExpandableAdapter(this, scoreManager);
+            scoreListView.setAdapter(scoreExpandableAdapter);
+        }
+        else {
+            TextView noScoreTV = findViewById(R.id.noScoreTV);
+            noScoreTV.setVisibility(View.VISIBLE);
+        }
 
-        scoreExpandableAdapter = new ScoreExpandableAdapter(this, scoreManager);
-        scoreListView.setAdapter(scoreExpandableAdapter);
 
         Log.d(TAG, "Setting up views -> done");
     }

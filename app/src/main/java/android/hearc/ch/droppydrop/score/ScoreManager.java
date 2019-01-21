@@ -6,7 +6,6 @@ import android.util.Log;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.SortedSet;
@@ -85,6 +84,23 @@ public class ScoreManager {
     public Map<Integer, SortedSet<Score>> getAllScores()
     {
         return scoresMap;
+    }
+
+    /**
+     * Count the number of scores saved
+     * @return number of scores
+     */
+    public int countScores()
+    {
+        if(scoresMap.size() > 0)
+        {
+            int nbScores = 0;
+            for (SortedSet ss : scoresMap.values()) {
+                nbScores += ss.size();
+            }
+            return nbScores;
+        }
+        return 0;
     }
 
     /**

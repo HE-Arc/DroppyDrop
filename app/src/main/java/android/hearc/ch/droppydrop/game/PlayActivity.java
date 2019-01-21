@@ -69,7 +69,7 @@ public class PlayActivity extends Activity {
                             }
                         })
                         .setCancelable(false)
-                        .setIcon(android.R.drawable.ic_menu_info_details)
+                        .setIcon(android.R.drawable.star_big_off)
                         .show();
                 break;
         }
