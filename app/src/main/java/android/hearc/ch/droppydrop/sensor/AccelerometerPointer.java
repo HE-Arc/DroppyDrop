@@ -25,9 +25,6 @@ public class AccelerometerPointer implements SensorEventListener {
     public AccelerometerPointer(Context context, int height, int width) {
         super();
 
-
-        Log.i(TAG, "AccelerometerPointer: is in constructor");
-
         senSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_GAME);
@@ -51,7 +48,7 @@ public class AccelerometerPointer implements SensorEventListener {
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = sensorEvent.values[0];
             float y = sensorEvent.values[1];
-            float z = sensorEvent.values[2];
+            //float z = sensorEvent.values[2];
             synchronized (pointer) {
                 pointer.x -= x;
                 pointer.y += y;
@@ -79,7 +76,6 @@ public class AccelerometerPointer implements SensorEventListener {
 
         pointer.x = width / 2;
         pointer.y = height / 2;
-        //Log.i(TAG, "AccelerometerPointer: origin: " + origin.toString());
     }
 
     public Point getPointer() {
@@ -98,11 +94,15 @@ public class AccelerometerPointer implements SensorEventListener {
     }
 
     public void setPointerX(int x) {
-        pointer.x = x;
+        synchronized (pointer) {
+            pointer.x = x;
+        }
     }
 
     public void setPointerY(int y) {
-        pointer.y = y;
+        synchronized (pointer) {
+            pointer.y = y;
+        }
     }
 
 

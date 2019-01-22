@@ -8,6 +8,7 @@ import android.hearc.ch.droppydrop.sensor.AccelerometerPointer;
 import android.preference.PreferenceManager;
 import android.view.SurfaceHolder;
 
+//inspired by https://www.androidauthority.com/android-game-java-785331/
 public class MainThread extends Thread {
     private SurfaceHolder surfaceHolder;
     private GameView gameView;
@@ -89,7 +90,7 @@ public class MainThread extends Thread {
 
                 synchronized (surfaceHolder) {
 
-                    gameView.addPoint(actualPoint,canvas);
+                    gameView.addPoint(actualPoint);
 
                     this.gameView.update();
 

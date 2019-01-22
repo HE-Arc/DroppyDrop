@@ -19,6 +19,7 @@ import android.hearc.ch.droppydrop.sensor.AccelerometerPointer;
 import android.hearc.ch.droppydrop.sensor.VibratorService;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
@@ -83,6 +84,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private int difficulty;
     private SharedPreferences sharedPreferences;
 
+    private boolean firstSizeChanged;
+
     public GameView(Context context, int levelId) {
         super(context);
 
@@ -132,6 +135,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         score = 0;
 
+        firstSizeChanged = true;
 
         mainThread = new MainThread(getHolder(), this);
         setFocusable(true);
@@ -163,12 +167,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        mainThread.setRunning(false);
+        mainThread.onPause();
         if (mainThread.accPointer == null)
             mainThread.accPointer = new AccelerometerPointer(getContext(), height, width);
         else
             mainThread.accPointer.resetPointer(height, width);
-        mainThread.setRunning(true);
+        mainThread.onResume();
 
     }
 
@@ -203,33 +207,35 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {
         super.onSizeChanged(xNew, yNew, xOld, yOld);
+        //To init many things we need the real viewWidth and viewHeight
+        if (firstSizeChanged) {
+            firstSizeChanged = false;
 
-        viewWidth = xNew;
-        viewHeight = yNew;
+            viewWidth = xNew;
+            viewHeight = yNew;
+
+            Bitmap b = BitmapFactory.decodeResource(getContext().getResources(), level.ImageId);
+
+            Bitmap scaledBitmap = Bitmap.createScaledBitmap(b, xNew, yNew, false);
+            pixels = new int[viewWidth * viewHeight];
+            scaledBitmap.getPixels(pixels, 0, viewWidth, 0, 0, viewWidth, viewHeight);
+
+            bitmap = createTransparentBitmapFromBitmap(scaledBitmap, Color.WHITE); //white pixels replaced with transparent ones
+            bitmap.setHasAlpha(true);
+            image = new BitmapDrawable(getContext().getResources(), bitmap);
+            image.setBounds(0, 0, xNew, yNew);
 
 
-        Bitmap b = BitmapFactory.decodeResource(getContext().getResources(), level.ImageId);
+            lastPoint = new Point(viewWidth / 2, viewHeight / 2);//TODO if starting point changes, adapt this too
 
-        //Bitmap b = ((BitmapDrawable) image).getBitmap();
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(b, xNew, yNew, false);
-        pixels = new int[viewWidth * viewHeight];
-        scaledBitmap.getPixels(pixels, 0, viewWidth, 0, 0, viewWidth, viewHeight);
+            int uniquePassageMatrixWidth = viewWidth / (2 * circle_radius);
+            int uniquePassageMatrixHeight = viewHeight / (2 * circle_radius);
 
-        bitmap = createTransparentBitmapFromBitmap(scaledBitmap, Color.WHITE); //white pixels replaced with transparent ones
-        bitmap.setHasAlpha(true);
-        image = new BitmapDrawable(getContext().getResources(), bitmap);
-        image.setBounds(0, 0, xNew, yNew);
-
-
-        lastPoint = new Point(viewWidth / 2, viewHeight / 2);//TODO if starting point changes, adapt this too
-
-        int uniquePassageMatrixWidth = viewWidth / (2 * circle_radius);
-        int uniquePassageMatrixHeight = viewHeight / (2 * circle_radius);
-
-        uniquePassageMatrix = new boolean[uniquePassageMatrixWidth][uniquePassageMatrixHeight];
-        for (int i = 0; i < uniquePassageMatrixWidth; i++) {
-            for (int j = 0; j < uniquePassageMatrixHeight; j++) {
-                uniquePassageMatrix[i][j] = false;
+            uniquePassageMatrix = new boolean[uniquePassageMatrixWidth][uniquePassageMatrixHeight];
+            for (int i = 0; i < uniquePassageMatrixWidth; i++) {
+                for (int j = 0; j < uniquePassageMatrixHeight; j++) {
+                    uniquePassageMatrix[i][j] = false;
+                }
             }
         }
     }
@@ -250,14 +256,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     Point lastP = points.elementAt(i - 1);
 
                     // Paint a line between each points
-                    if (i > 1 && drawLineBools.elementAt(i)) //otherwise it is ugly
+                    if (i > 1 && drawLineBools.elementAt(i))//do not draw lines across the screen
                         canvas.drawLine(lastP.x, lastP.y, p.x, p.y, paintTrack);
-                    //this.getDrawingCache().getPixel(p.x,p.y);
 
                     // Paint a dot to make it look round
                     canvas.drawCircle(p.x, p.y, circle_radius, paintTrack);
                 }
-                // Paint the last point for the pointer position
+                // Paint the last point for the drop position
                 canvas.drawCircle(points.lastElement().x, points.lastElement().y, circle_radius, paintDrop);
             }
 
@@ -293,85 +298,82 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         return x + viewWidth * y;
     }
 
-    public void addPoint(Point p, Canvas canvas) {
+    public void addPoint(Point p) {
 
-        synchronized (points) {
-            if (points != null) {
-                if (p.x - circle_radius > 0 && p.y - circle_radius > 0 && p.x + circle_radius < viewWidth && p.y + circle_radius < viewHeight) {
-                    points.add(new Point(p));
-                    if (!uniquePassageMatrix[p.x / (2 * circle_radius)][p.y / (2 * circle_radius)]) {
-                        uniquePassageMatrix[p.x / (2 * circle_radius)][p.y / (2 * circle_radius)] = true;
-                        score += 10;
-                    }
-                    if (!doNotDrawNextLine)
-                        drawLineBools.add(true);
-                    else
-                        doNotDrawNextLine = false;
-                    if (bitmap != null) {
+        if (points != null && bitmap != null) {
+            if (p.x - circle_radius > 0 && p.y - circle_radius > 0 && p.x + circle_radius < viewWidth && p.y + circle_radius < viewHeight) {
 
-                        pixelList.clear();
+                points.add(p);
 
-                        if (p.y < lastPoint.y) { //if drop goes up
-                            if (p.x < lastPoint.x) {
-                                pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y - diagonalCollisionmargin)]); // if drop goes left
-                                pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y)]);
-                                pixelList.add(pixels[xyToIndex(p.x, p.y - collisionMargin)]);
-                                pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y - diagonalCollisionmargin)]);
-                                pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y + diagonalCollisionmargin)]);
-                            } else {
-                                pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y - diagonalCollisionmargin)]); // if drop goes right
-                                pixelList.add(pixels[xyToIndex(p.x, p.y - collisionMargin)]);
-                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y)]);
-                                pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y - diagonalCollisionmargin)]);
-                                pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y + diagonalCollisionmargin)]);
+                int discreteX = p.x / (2 * circle_radius);
+                int discreteY = p.y / (2 * circle_radius);
 
-                            }
-                        } else { //if drop goes down
-                            if (p.x < lastPoint.x) {
-                                pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y + diagonalCollisionmargin)]); // if drop goes left
-                                pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y)]);
-                                pixelList.add(pixels[xyToIndex(p.x, p.y + collisionMargin)]);
-                                pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y - diagonalCollisionmargin)]);
-                                pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y + diagonalCollisionmargin)]);
-                            } else {
-                                pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y + diagonalCollisionmargin)]); // if drop goes right
-                                pixelList.add(pixels[xyToIndex(p.x, p.y + collisionMargin)]);
-                                pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y)]);
-                                pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y + diagonalCollisionmargin)]);
-                                pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y - diagonalCollisionmargin)]);
-                            }
-                        }
+                if (!uniquePassageMatrix[discreteX][discreteY]) { //gains score only for areas never painted before
+                    uniquePassageMatrix[discreteX][discreteY] = true;
+                    score += 10;
+                }
 
-                        pixelList.add(pixels[xyToIndex(p.x, p.y)]);
-                        checkCollision(pixelList);
+                if (doNotDrawNextLine)
+                    doNotDrawNextLine = false;
+                else
+                    drawLineBools.add(true);
 
+                pixelList.clear();
+
+                if (p.y < lastPoint.y) { //if drop goes up
+                    if (p.x < lastPoint.x) {
+                        pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y - diagonalCollisionmargin)]); // if drop goes left
+                        pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y)]);
+                        pixelList.add(pixels[xyToIndex(p.x, p.y - collisionMargin)]);
+                        pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y - diagonalCollisionmargin)]);
+                        pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y + diagonalCollisionmargin)]);
+                    } else {
+                        pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y - diagonalCollisionmargin)]); // if drop goes right
+                        pixelList.add(pixels[xyToIndex(p.x, p.y - collisionMargin)]);
+                        pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y)]);
+                        pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y - diagonalCollisionmargin)]);
+                        pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y + diagonalCollisionmargin)]);
 
                     }
-                } else {
-                    if (p.y + circle_radius >= viewHeight) {
-                        mainThread.accPointer.setPointerY(circle_radius);
-                        drawLineBools.add(false); //to avoid draw a line across the screen
-                        doNotDrawNextLine = true;
-                    }
-                    if (p.y - circle_radius < 0) {
-                        mainThread.accPointer.setPointerY(viewHeight - circle_radius);
-                        drawLineBools.add(false); //to avoid draw a line across the screen
-                        doNotDrawNextLine = true;
-                    }
-                    if (p.x - circle_radius < 0) {
-                        mainThread.accPointer.setPointerX(viewWidth - circle_radius);
-                        drawLineBools.add(false); //to avoid draw a line across the screen
-                        doNotDrawNextLine = true;
-                    }
-                    if (p.x + circle_radius >= viewWidth) {
-                        mainThread.accPointer.setPointerX(circle_radius);
-                        drawLineBools.add(false); //to avoid draw a line across the screen
-                        doNotDrawNextLine = true;
+                } else { //if drop goes down
+                    if (p.x < lastPoint.x) {
+                        pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y + diagonalCollisionmargin)]); // if drop goes left
+                        pixelList.add(pixels[xyToIndex(p.x - collisionMargin, p.y)]);
+                        pixelList.add(pixels[xyToIndex(p.x, p.y + collisionMargin)]);
+                        pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y - diagonalCollisionmargin)]);
+                        pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y + diagonalCollisionmargin)]);
+                    } else {
+                        pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y + diagonalCollisionmargin)]); // if drop goes right
+                        pixelList.add(pixels[xyToIndex(p.x, p.y + collisionMargin)]);
+                        pixelList.add(pixels[xyToIndex(p.x + collisionMargin, p.y)]);
+                        pixelList.add(pixels[xyToIndex(p.x - diagonalCollisionmargin, p.y + diagonalCollisionmargin)]);
+                        pixelList.add(pixels[xyToIndex(p.x + diagonalCollisionmargin, p.y - diagonalCollisionmargin)]);
                     }
                 }
+
+                pixelList.add(pixels[xyToIndex(p.x, p.y)]);
+
+                checkCollision(pixelList);
                 lastPoint.set(p.x, p.y);
+
+            } else {
+                drawLineBools.add(false); //to avoid draw a line across the screen
+                doNotDrawNextLine = true;
+
+                if (p.y + circle_radius >= viewHeight) {
+                    mainThread.accPointer.setPointerY(circle_radius);
+                } else if (p.y - circle_radius <= 0) {
+                    mainThread.accPointer.setPointerY(viewHeight - circle_radius);
+                }
+                if (p.x - circle_radius <= 0) {
+                    mainThread.accPointer.setPointerX(viewWidth - circle_radius);
+                } else if (p.x + circle_radius >= viewWidth) {
+                    mainThread.accPointer.setPointerX(circle_radius);
+                }
+
             }
         }
+
     }
 
     private int convertDpToPixel(float dp) {
