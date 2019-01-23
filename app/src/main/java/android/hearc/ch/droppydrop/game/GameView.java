@@ -72,6 +72,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private int[] pixels;
 
     private Point lastPoint;
+    private Point drop;
 
     private boolean doNotDrawNextLine;
 
@@ -85,6 +86,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private SharedPreferences sharedPreferences;
 
     private boolean firstSizeChanged;
+
+    //idea comes from Maxime Grava from inf3dlm-a
+    private Canvas bmpCanvas;
+    private Bitmap viewBitmap;
 
     public GameView(Context context, int levelId) {
         super(context);
@@ -214,6 +219,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             viewWidth = xNew;
             viewHeight = yNew;
 
+            viewBitmap = Bitmap.createBitmap(viewWidth, viewHeight, Bitmap.Config.ARGB_8888);
+            bmpCanvas = new Canvas(viewBitmap);
+            bmpCanvas.drawPaint(paintWhite);
+
             Bitmap b = BitmapFactory.decodeResource(getContext().getResources(), level.ImageId);
 
             Bitmap scaledBitmap = Bitmap.createScaledBitmap(b, xNew, yNew, false);
@@ -240,70 +249,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public void update() { //game logic
-
-    }
-
-    @Override
-    public void draw(Canvas canvas) { //rendering
-        super.draw(canvas);
-        if (canvas != null) {
-            canvas.drawPaint(paintWhite);
-            if (points.size() > 1) {
-
-                for (int i = 1; i < points.size(); i++) {
-                    Point p = points.elementAt(i);
-                    Point lastP = points.elementAt(i - 1);
-
-                    // Paint a line between each points
-                    if (i > 1 && drawLineBools.elementAt(i))//do not draw lines across the screen
-                        canvas.drawLine(lastP.x, lastP.y, p.x, p.y, paintTrack);
-
-                    // Paint a dot to make it look round
-                    canvas.drawCircle(p.x, p.y, circle_radius, paintTrack);
-                }
-                // Paint the last point for the drop position
-                canvas.drawCircle(points.lastElement().x, points.lastElement().y, circle_radius, paintDrop);
-            }
-
-            if (image != null) {
-                image.draw(canvas);
-            } else {
-                canvas.drawColor(Color.MAGENTA);
-            }
-            canvas.drawText(String.valueOf(score), (int) (viewWidth * 0.65), 100, paintGold);
-        }
-    }
-
-
-    private void checkCollision(List<Integer> pixelList) {
-        int pixelColor = pixelList.remove(0);
-        int redValue = Color.red(pixelColor);
-        int blueValue = Color.blue(pixelColor);
-        int greenValue = Color.green(pixelColor);
-
-        if (redValue < pixelColorCheckTreshold && blueValue < pixelColorCheckTreshold && greenValue < pixelColorCheckTreshold) {
-            mcontext.startService(intent);
-            score -= 25 * difficulty;
-        } else {
-            mcontext.stopService(intent);
-            if (pixelList.size() > 0) {
-                checkCollision(pixelList);
-            }
-
-        }
-    }
-
-    private int xyToIndex(int x, int y) {
-        return x + viewWidth * y;
-    }
-
-    public void addPoint(Point p) {
+    public void update(Point p) { //game logic
 
         if (points != null && bitmap != null) {
             if (p.x - circle_radius > 0 && p.y - circle_radius > 0 && p.x + circle_radius < viewWidth && p.y + circle_radius < viewHeight) {
-
-                points.add(p);
+                drop = p;
 
                 int discreteX = p.x / (2 * circle_radius);
                 int discreteY = p.y / (2 * circle_radius);
@@ -312,11 +262,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     uniquePassageMatrix[discreteX][discreteY] = true;
                     score += 10;
                 }
-
-                if (doNotDrawNextLine)
-                    doNotDrawNextLine = false;
-                else
-                    drawLineBools.add(true);
 
                 pixelList.clear();
 
@@ -354,27 +299,77 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 pixelList.add(pixels[xyToIndex(p.x, p.y)]);
 
                 checkCollision(pixelList);
-                lastPoint.set(p.x, p.y);
+
 
             } else {
-                drawLineBools.add(false); //to avoid draw a line across the screen
-                doNotDrawNextLine = true;
+
+                doNotDrawNextLine = true; //to avoid draw a line across the screen
 
                 if (p.y + circle_radius >= viewHeight) {
                     mainThread.accPointer.setPointerY(circle_radius);
+                    drop.set(p.x,circle_radius);
                 } else if (p.y - circle_radius <= 0) {
                     mainThread.accPointer.setPointerY(viewHeight - circle_radius);
+                    drop.set(p.x,viewHeight-circle_radius);
                 }
                 if (p.x - circle_radius <= 0) {
                     mainThread.accPointer.setPointerX(viewWidth - circle_radius);
+                    drop.set(viewWidth-circle_radius,p.y);
                 } else if (p.x + circle_radius >= viewWidth) {
                     mainThread.accPointer.setPointerX(circle_radius);
+                    drop.set(circle_radius,p.y);
                 }
 
             }
         }
-
     }
+
+    @Override
+    public void draw(Canvas canvas) { //rendering
+        super.draw(canvas);
+        if (canvas != null) {
+
+            if (!doNotDrawNextLine)
+                bmpCanvas.drawLine(lastPoint.x, lastPoint.y, drop.x, drop.y, paintTrack);
+            else
+                doNotDrawNextLine=false;
+
+            bmpCanvas.drawCircle(lastPoint.x, lastPoint.y, circle_radius, paintTrack);
+            bmpCanvas.drawCircle(drop.x, drop.y, circle_radius, paintDrop);
+            lastPoint.set(drop.x, drop.y);
+            canvas.drawBitmap(viewBitmap, 0, 0, null);
+            if (image != null) {
+                image.draw(canvas);
+            } else {
+                canvas.drawColor(Color.MAGENTA);
+            }
+            canvas.drawText(String.valueOf(score), (int) (viewWidth * 0.65), 100, paintGold);
+        }
+    }
+
+
+    private void checkCollision(List<Integer> pixelList) {
+        int pixelColor = pixelList.remove(0);
+        int redValue = Color.red(pixelColor);
+        int blueValue = Color.blue(pixelColor);
+        int greenValue = Color.green(pixelColor);
+
+        if (redValue < pixelColorCheckTreshold && blueValue < pixelColorCheckTreshold && greenValue < pixelColorCheckTreshold) {
+            mcontext.startService(intent);
+            score -= 25 * difficulty;
+        } else {
+            mcontext.stopService(intent);
+            if (pixelList.size() > 0) {
+                checkCollision(pixelList);
+            }
+
+        }
+    }
+
+    private int xyToIndex(int x, int y) {
+        return x + viewWidth * y;
+    }
+
 
     private int convertDpToPixel(float dp) {
         return (int) (dp * (DEVICE_DENSITY_DPI / 160f));

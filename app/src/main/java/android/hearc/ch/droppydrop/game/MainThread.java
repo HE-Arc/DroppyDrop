@@ -90,9 +90,9 @@ public class MainThread extends Thread {
 
                 synchronized (surfaceHolder) {
 
-                    gameView.addPoint(actualPoint);
+                    //gameView.addPoint();
 
-                    this.gameView.update();
+                    this.gameView.update(actualPoint);
 
                     this.gameView.draw(canvas);
                 }
