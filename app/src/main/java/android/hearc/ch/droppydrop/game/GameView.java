@@ -148,7 +148,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         mcontext = context;
         intent = new Intent(this.getContext(), VibratorService.class);
-        
+
         collisionMargin = circle_radius;
 
         diagonalCollisionmargin = (int) (collisionMargin * 0.7);

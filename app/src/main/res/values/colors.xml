@@ -7,8 +7,8 @@
     <color name="colorDarkRed">#AA0000</color>
     <color name="colorGreen">#00FF00</color>
     <color name="colorDarkGreen">#00AA00</color>
-    <color name="colorBlue">#0000FF</color>
-    <color name="colorDarkBlue">#0000AA</color>
+    <color name="colorBlue">#00FFFF</color>
+    <color name="colorDarkBlue">#00AAAA</color>
     <color name="colorMagenta">#FF00FF</color>
     <color name="colorDarkMagenta">#AA00AA</color>
     <color name="colorYellow">#FFFF00</color>
