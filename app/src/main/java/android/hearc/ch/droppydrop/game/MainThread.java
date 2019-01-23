@@ -39,8 +39,6 @@ public class MainThread extends Thread {
         //fps = 40; //try to adjust for maximum comfort, we could use this for the difficulty
         fps = sharedPreferences.getInt(this.gameView.getContext().getString(R.string.sensibility), 0) + 30;
 
-
-
         mPauseLock = new Object();
         mPaused = false;
 
@@ -89,8 +87,6 @@ public class MainThread extends Thread {
                 Point actualPoint = accPointer.getPointer();
 
                 synchronized (surfaceHolder) {
-
-                    //gameView.addPoint();
 
                     this.gameView.update(actualPoint);
 

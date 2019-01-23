@@ -86,6 +86,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private SharedPreferences sharedPreferences;
 
     private boolean firstSizeChanged;
+    private boolean dialogPaused;
 
     //idea comes from Maxime Grava from inf3dlm-a
     private Canvas bmpCanvas;
@@ -142,6 +143,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         firstSizeChanged = true;
 
+        dialogPaused = false;
+
         mainThread = new MainThread(getHolder(), this);
         setFocusable(true);
 
@@ -168,6 +171,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
         mainThread.onPause();
         if (mainThread.accPointer == null)
             mainThread.accPointer = new AccelerometerPointer(getContext(), height, width);
@@ -179,23 +183,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        mainThread.setRunning(true);
-        mainThread.start();
+        Log.i("DBGEVENT", "surfaceCreated");
+        if (!mainThread.isAlive()) {
+            mainThread.setRunning(true);
+            mainThread.start();
+        } else if(!dialogPaused){
+            setOnResume();
+        }
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        Log.i("DBGEVENT", "surfaceDestroyed");
+        if (!dialogPaused)
+            setOnPause();
         saveScore();
-        boolean retry = true;
-        while (retry) {
-            try {
-                mainThread.setRunning(false);
-                mainThread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            retry = false;
-        }
+
     }
 
     @Override
@@ -377,7 +380,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
+    public void setOnPauseFromDialog() {
+        dialogPaused = true;
+        setOnPause();
+    }
+
+    public void setOnResumeFromDialog()
+    {
+        dialogPaused = false;
+        setOnResume();
+    }
+
     public void setOnResume() {
+     /*   if(!mainThread.isAlive()) {
+            mainThread.setRunning(true);
+            mainThread.start();
+        }*/
         mainThread.onResume();
     }
 
@@ -389,7 +407,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void destroy() {
+
         saveScore();
+       /* if (mainThread.isAlive()) {
+            boolean retry = true;
+            while (retry) {
+                try {
+                    mainThread.setRunning(false);
+                    mainThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                retry = false;
+            }
+        }*/
         System.exit(0);
     }
 

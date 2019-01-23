@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
@@ -15,9 +16,11 @@ public class PlayActivity extends Activity {
 
     private GameView game;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -43,37 +46,46 @@ public class PlayActivity extends Activity {
 
         switch (action) {
             case MotionEvent.ACTION_UP:
-                game.setOnPause();
-                new AlertDialog.Builder(this)
-                        .setTitle("PAUSE")
-                        .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                onBackPressed();
-                            }
-                        })
-                        .setNeutralButton("Resume", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                game.setOnResume();
-                            }
-                        })
-                        .setNegativeButton("Restart", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent mIntent = getIntent();
-                                finish();
-                                startActivity(mIntent);
-                                game.destroy();
-
-                            }
-                        })
-                        .setCancelable(false)
-                        .setIcon(android.R.drawable.star_big_off)
-                        .show();
+                pauseMenu();
                 break;
         }
         return super.onTouchEvent(event);
     }
+
+    private void pauseMenu()
+    {
+        game.setOnPauseFromDialog();
+
+        new AlertDialog.Builder(this)
+                .setTitle("PAUSE")
+                .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onBackPressed();
+                    }
+                })
+                .setNeutralButton("Resume", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        game.setOnResumeFromDialog();
+                    }
+                })
+                .setNegativeButton("Restart", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent mIntent = getIntent();
+                        finish();
+                        startActivity(mIntent);
+                        game.destroy();
+
+                    }
+                })
+                .setCancelable(false)
+                .setIcon(android.R.drawable.star_big_off)
+                .show();
+    }
+
+
+
 
 }
