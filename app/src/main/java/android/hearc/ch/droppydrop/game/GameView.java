@@ -148,11 +148,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         mcontext = context;
         intent = new Intent(this.getContext(), VibratorService.class);
-
-
-//        image = getResources().getDrawable(level.ImageId, null);
-
-
+        
         collisionMargin = circle_radius;
 
         diagonalCollisionmargin = (int) (collisionMargin * 0.7);
@@ -307,17 +303,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
                 if (p.y + circle_radius >= viewHeight) {
                     mainThread.accPointer.setPointerY(circle_radius);
-                    drop.set(p.x,circle_radius);
+                    drop.set(p.x, circle_radius);
                 } else if (p.y - circle_radius <= 0) {
                     mainThread.accPointer.setPointerY(viewHeight - circle_radius);
-                    drop.set(p.x,viewHeight-circle_radius);
+                    drop.set(p.x, viewHeight - circle_radius);
                 }
                 if (p.x - circle_radius <= 0) {
                     mainThread.accPointer.setPointerX(viewWidth - circle_radius);
-                    drop.set(viewWidth-circle_radius,p.y);
+                    drop.set(viewWidth - circle_radius, p.y);
                 } else if (p.x + circle_radius >= viewWidth) {
                     mainThread.accPointer.setPointerX(circle_radius);
-                    drop.set(circle_radius,p.y);
+                    drop.set(circle_radius, p.y);
                 }
 
             }
@@ -332,7 +328,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             if (!doNotDrawNextLine)
                 bmpCanvas.drawLine(lastPoint.x, lastPoint.y, drop.x, drop.y, paintTrack);
             else
-                doNotDrawNextLine=false;
+                doNotDrawNextLine = false;
 
             bmpCanvas.drawCircle(lastPoint.x, lastPoint.y, circle_radius, paintTrack);
             bmpCanvas.drawCircle(drop.x, drop.y, circle_radius, paintDrop);
@@ -349,22 +345,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 
     private void checkCollision(List<Integer> pixelList) {
-        int pixelColor = pixelList.remove(0);
-        int redValue = Color.red(pixelColor);
-        int blueValue = Color.blue(pixelColor);
-        int greenValue = Color.green(pixelColor);
+        int redValue;
+        int greenValue;
+        int blueValue;
+        for (Integer pixelColor : pixelList) {
+            redValue = Color.red(pixelColor);
+            blueValue = Color.blue(pixelColor);
+            greenValue = Color.green(pixelColor);
 
-        if (redValue < pixelColorCheckTreshold && blueValue < pixelColorCheckTreshold && greenValue < pixelColorCheckTreshold) {
-            mcontext.startService(intent);
-            score -= 25 * difficulty;
-        } else {
-            mcontext.stopService(intent);
-            if (pixelList.size() > 0) {
-                checkCollision(pixelList);
+            if (redValue < pixelColorCheckTreshold && blueValue < pixelColorCheckTreshold && greenValue < pixelColorCheckTreshold) {
+                mcontext.startService(intent);
+                score -= 25 * difficulty;
+                break;
             }
-
         }
+
     }
+
 
     private int xyToIndex(int x, int y) {
         return x + viewWidth * y;
