@@ -86,6 +86,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private SharedPreferences sharedPreferences;
 
     private boolean firstSizeChanged;
+
     private boolean dialogPaused;
 
     //idea comes from Maxime Grava from inf3dlm-a
@@ -184,7 +185,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.i("DBGEVENT", "surfaceCreated");
-        if (!mainThread.isAlive()) {
+        if (!mainThread.isAlive() && !dialogPaused) {
             mainThread.setRunning(true);
             mainThread.start();
         } else if(!dialogPaused){
@@ -195,8 +196,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.i("DBGEVENT", "surfaceDestroyed");
-        if (!dialogPaused)
-            setOnPause();
+
+        setOnPause();
         saveScore();
 
     }
