@@ -358,7 +358,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
             if (redValue < pixelColorCheckTreshold && blueValue < pixelColorCheckTreshold && greenValue < pixelColorCheckTreshold) {
                 mcontext.startService(intent);
-                score -= 25 * difficulty;
+                score -= 25 * level.Difficulty;
                 break;
             }
         }
