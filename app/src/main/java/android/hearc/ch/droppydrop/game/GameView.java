@@ -82,9 +82,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private boolean[][] uniquePassageMatrix;
 
-    private int difficulty;
-    private SharedPreferences sharedPreferences;
-
     private boolean firstSizeChanged;
 
     private boolean dialogPaused;
@@ -163,10 +160,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         doNotDrawNextLine = false;
 
         pixelList = new ArrayList<>();
-
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-
-        difficulty = sharedPreferences.getInt("Difficulty", 0) + 1;
+        
     }
 
 

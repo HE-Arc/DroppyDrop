@@ -98,30 +98,5 @@
             tools:text="@string/default_username" />
     </TableRow>
 
-    <TableRow>
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_margin="10dp">
-
-        <TextView
-            android:id="@+id/difficulty_textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/mona_free"
-            android:textSize="30sp"
-            android:text="Difficulty" />
-
-        <Spinner
-            android:id="@+id/difficulty_spinner"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/mona_free"
-            android:drawSelectorOnTop="true"
-            android:entries="@array/difficulty_arrays"
-            />
-
-    </TableRow>
 
 </TableLayout>

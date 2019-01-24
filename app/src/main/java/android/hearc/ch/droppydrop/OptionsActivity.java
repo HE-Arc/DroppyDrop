@@ -95,24 +95,6 @@ public class OptionsActivity extends AppCompatActivity {
                 // nothing to be done
             }
         });
-
-        Spinner difficultySpinner = findViewById(R.id.difficulty_spinner);
-
-        difficultySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                int difficulty = position;
-                editor.putInt("Difficulty", difficulty);
-
-                editor.apply();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
     private void loadAndDisplayPreferences()
@@ -137,11 +119,6 @@ public class OptionsActivity extends AppCompatActivity {
         EditText usernameEditText = findViewById(R.id.username_editText);
         usernameEditText.setText(username);
 
-        //Difficulty
-        int default_difficulty = 0;
-        int difficulty = sharedPreferences.getInt("Difficulty", default_difficulty);
-        Spinner difficultySpinner = findViewById(R.id.difficulty_spinner);
-        difficultySpinner.setSelection(difficulty);
     }
 
 }
