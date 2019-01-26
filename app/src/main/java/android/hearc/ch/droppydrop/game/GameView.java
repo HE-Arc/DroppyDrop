@@ -43,7 +43,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private Paint paintTrack;
     private Paint paintWhite;
     private Paint paintGold;
-    
+
     private int line_width;
     private int circle_radius;
     private Vector<Point> points;
