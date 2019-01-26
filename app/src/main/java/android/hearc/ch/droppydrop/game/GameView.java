@@ -29,15 +29,21 @@ import java.util.List;
 import java.util.Vector;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
+    // View attributes
+    private static final String TAG = GameView.class.getSimpleName();
+    private int viewWidth;
+    private int viewHeight;
 
+    // Game attributes
     private MainThread mainThread;
+    private LevelModel level;
 
-
-    private static final String TAG = "LEVEL"; // Level.class.getSimpleName();
-
+    // Painting attributes
     private Paint paintDrop;
     private Paint paintTrack;
-
+    private Paint paintWhite;
+    private Paint paintGold;
+    
     private int line_width;
     private int circle_radius;
     private Vector<Point> points;
@@ -45,15 +51,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private int DEVICE_DENSITY_DPI;
 
-
-    private Paint paintWhite;
-
-    private Paint paintGold;
-
-    private int viewWidth;
-    private int viewHeight;
-
-    private LevelModel level;
 
     //Vibrator service
     Context mcontext;
