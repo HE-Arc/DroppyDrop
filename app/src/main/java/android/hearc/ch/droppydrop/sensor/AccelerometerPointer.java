@@ -40,12 +40,7 @@ public class AccelerometerPointer implements SensorEventListener {
         origin = new Point();
         pointer = new Point();
 
-        origin.x = width / 2;
-        origin.y = height / 2;
-
-        pointer.x = width / 2;
-        pointer.y = height / 2;
-
+        resetPointer(height, width);
     }
 
     /**
@@ -55,7 +50,6 @@ public class AccelerometerPointer implements SensorEventListener {
      */
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-
         Sensor mySensor = sensorEvent.sensor;
 
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
@@ -87,7 +81,6 @@ public class AccelerometerPointer implements SensorEventListener {
      * @param width width of the new zone
      */
     public void resetPointer(int height, int width) {
-
         origin.x = width / 2;
         origin.y = height / 2;
 
@@ -137,6 +130,4 @@ public class AccelerometerPointer implements SensorEventListener {
             pointer.y = y;
         }
     }
-
-
 }
