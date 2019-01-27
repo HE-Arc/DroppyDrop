@@ -7,7 +7,6 @@ import android.hearc.ch.droppydrop.game.Level.LevelActivity;
 import android.hearc.ch.droppydrop.score.ScoreActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -30,9 +29,7 @@ public class HomeActivity extends AppCompatActivity {
 
         playButton.setOnClickListener(new Button.OnClickListener() {
             @Override
-            public void onClick(View v){
-                Log.i("home", "click on play");
-                // TODO show LevelActivity
+            public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity.this, LevelActivity.class);
                 startActivity(intent);
             }
@@ -40,17 +37,13 @@ public class HomeActivity extends AppCompatActivity {
         scoresButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("home", "click on scores");
-                // TODO show ScoreActivity
                 Intent intent = new Intent(HomeActivity.this, ScoreActivity.class);
                 startActivity(intent);
             }
         });
-        optionsButton.setOnClickListener(new Button.OnClickListener(){
+        optionsButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("home", "click on options");
-                // TODO show OptionsActivity
                 Intent intent = new Intent(HomeActivity.this, OptionsActivity.class);
                 startActivity(intent);
             }
@@ -58,8 +51,6 @@ public class HomeActivity extends AppCompatActivity {
         creditsButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("home", "click on credits");
-                // TODO popup credits
                 AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this).create();
                 alertDialog.setTitle("Credits");
                 alertDialog.setMessage("Android game for a student project !\n" +
@@ -76,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
                                 dialogInterface.dismiss();
                             }
                         });
-                        alertDialog.show();
+                alertDialog.show();
             }
         });
     }

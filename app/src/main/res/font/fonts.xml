@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/mona_free" /> <!-- source : https://freedesignresources.net/mona-free-handdrawn-font/ -->
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/finland_rounded_thin" /> <!-- source : https://www.pixelsurplus.com/freebies/finland-rounded-thin-geometric-font -->
+
+</font-family>

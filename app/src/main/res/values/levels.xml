@@ -15,11 +15,11 @@
         <item>@drawable/lvl5</item>
     </string-array>
     <integer-array name="difficulties">
+        <item>3</item>
         <item>1</item>
-        <item>1</item>
-        <item>2</item>
         <item>2</item>
         <item>3</item>
+        <item>1</item>
     </integer-array>
     <string-array name="dropColors">
         <item>@color/colorRed</item>
@@ -35,6 +35,4 @@
         <item>@color/colorDarkMagenta</item>
         <item>@color/colorDarkYellow</item>
     </string-array>
-
-
 </resources>
