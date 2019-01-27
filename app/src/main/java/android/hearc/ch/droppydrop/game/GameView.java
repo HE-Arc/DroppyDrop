@@ -159,7 +159,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         doNotDrawNextLine = false;
 
         pixelList = new ArrayList<>();
-        
+
     }
 
 

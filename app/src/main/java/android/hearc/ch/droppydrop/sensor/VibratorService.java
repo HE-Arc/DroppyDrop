@@ -9,6 +9,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+/**
+ * Classe for handling the service of the vibrator
+ */
 public class VibratorService extends Service {
 
     private static final String TAG = "Vibrator Service";
@@ -17,7 +20,6 @@ public class VibratorService extends Service {
 
     @Override
     public void onCreate() {
-        //Toast.makeText(this, "Mon service Created", Toast.LENGTH_LONG).show();
         Log.d(TAG, "onCreate");
         vibratorManager = new VibratorManager(this);
         vibratorManager.setAmplitudeWithPreference();
@@ -25,7 +27,6 @@ public class VibratorService extends Service {
 
     @Override
     public void onDestroy() {
-        //Toast.makeText(this, "Mon service Stopped", Toast.LENGTH_LONG).show();
         Log.d(TAG, "onDestroy");
         vibratorManager.stopVibrator();
     }
