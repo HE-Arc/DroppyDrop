@@ -22,15 +22,16 @@ public class MainThread extends Thread {
     private int fps;
     private Object mPauseLock;
     private boolean mPaused;
-    private SharedPreferences sharedPreferences;
+
 
     public static Canvas canvas;
     public AccelerometerPointer accPointer;
 
     /**
      * Constructor of MainThread
+     *
      * @param surfaceHolder surfaceHoldeer to draw on
-     * @param gameView GameView
+     * @param gameView      GameView
      */
     public MainThread(SurfaceHolder surfaceHolder, GameView gameView) {
         super();
@@ -39,10 +40,8 @@ public class MainThread extends Thread {
         this.gameView = gameView;
         lastPoint = new Point(-1, -1);
         previousTime = System.currentTimeMillis();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.gameView.getContext());
-
-        //fps = 40; //try to adjust for maximum comfort, we could use this for the difficulty
-        fps = sharedPreferences.getInt(this.gameView.getContext().getString(R.string.sensibility), 0) + 30;
+        
+        fps = 60;
 
         mPauseLock = new Object();
         mPaused = false;
@@ -71,6 +70,7 @@ public class MainThread extends Thread {
 
     /**
      * Set isRunning State
+     *
      * @param isRunning
      */
     public void setRunning(boolean isRunning) {
@@ -97,8 +97,7 @@ public class MainThread extends Thread {
                 if (canvas == null) {
                     Thread.sleep(1);
                     continue;
-                }
-                else if (sleepTimeMs > 0) {
+                } else if (sleepTimeMs > 0) {
                     Thread.sleep(sleepTimeMs);
                 }
                 Point actualPoint = accPointer.getPointer();
@@ -108,9 +107,8 @@ public class MainThread extends Thread {
 
                     this.gameView.draw(canvas);
                 }
-            }
-            catch (Exception e) {}
-            finally {
+            } catch (Exception e) {
+            } finally {
                 if (canvas != null) {
                     try {
 

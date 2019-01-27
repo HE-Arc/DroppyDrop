@@ -1,13 +1,15 @@
 package android.hearc.ch.droppydrop.sensor;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
-import android.widget.Toast;
+import android.hearc.ch.droppydrop.R;
+import android.preference.PreferenceManager;
+
 
 /**
  * Class AccelerometerPointer
@@ -24,18 +26,25 @@ public class AccelerometerPointer implements SensorEventListener {
     private Point origin;
     private Point pointer;
 
+    private SharedPreferences sharedPreferences;
+
+    private int sensibility;
+
     /**
      * Constructor of AccelerometerPointer
+     *
      * @param context parent context
-     * @param height height of the view used for origin point
-     * @param width width of the screen used for origin point
+     * @param height  height of the view used for origin point
+     * @param width   width of the screen used for origin point
      */
     public AccelerometerPointer(Context context, int height, int width) {
         super();
-
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         senSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_GAME);
+
+        sensibility = sharedPreferences.getInt(context.getString(R.string.sensibility), 0) / 6 + 1;
 
         origin = new Point();
         pointer = new Point();
@@ -46,6 +55,7 @@ public class AccelerometerPointer implements SensorEventListener {
     /**
      * When value of sensor changed, a the pointer is displaced
      * depending on the accelerometer values
+     *
      * @param sensorEvent sensorEvent
      */
     @Override
@@ -57,16 +67,17 @@ public class AccelerometerPointer implements SensorEventListener {
             float y = sensorEvent.values[1];
             //float z = sensorEvent.values[2];
             synchronized (pointer) {
-                pointer.x -= x;
-                pointer.y += y;
+                pointer.x -= x * sensibility;
+                pointer.y += y * sensibility;
             }
-            //Log.i(TAG, "onSensorChanged: x: " + x + " y: "+ y + " z: "+ z);
+
         }
     }
 
     /**
      * When the accuracy changed, noting is done
-     * @param sensor sensor
+     *
+     * @param sensor   sensor
      * @param accuracy accuracy
      */
     @Override
@@ -77,8 +88,9 @@ public class AccelerometerPointer implements SensorEventListener {
     /**
      * Reset the pointer to the center of the screen
      * by computing a new origin point
+     *
      * @param height height of the new zone
-     * @param width width of the new zone
+     * @param width  width of the new zone
      */
     public void resetPointer(int height, int width) {
         origin.x = width / 2;
@@ -90,10 +102,11 @@ public class AccelerometerPointer implements SensorEventListener {
 
     /**
      * Return a new point at the position of the pointer
+     *
      * @return Point
      */
     public Point getPointer() {
-        //Log.i(TAG, "getPointer: " + pointer.toString());
+
         return new Point(pointer);
     }
 
@@ -113,6 +126,7 @@ public class AccelerometerPointer implements SensorEventListener {
 
     /**
      * Displace the actual x value of the pointer
+     *
      * @param x new x position
      */
     public void setPointerX(int x) {
@@ -123,6 +137,7 @@ public class AccelerometerPointer implements SensorEventListener {
 
     /**
      * Displace the actual y value of the pointer
+     *
      * @param y new y position
      */
     public void setPointerY(int y) {

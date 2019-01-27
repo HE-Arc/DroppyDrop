@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 
 /**
- * Source : https://developer.android.com/reference/android/os/Vibrator
+ * Classe for handling the vibration
  */
 public class VibratorManager{
 
@@ -21,34 +21,43 @@ public class VibratorManager{
 
     private Vibrator vibrator;
     private Context context;
-    private long[] pattern = {0, 150};
     private int amplitude = 1;
     private SharedPreferences sharedPreferences;
 
 
-
+    /**
+     * Instanciation of the vibrator and sharedPreferences object
+     * @param context
+     */
     public VibratorManager(Context context) {
         this.context = context;
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context);
-
     }
 
+
+    /**
+     * Start the vibration of vibrator
+     */
     public void startVibrator() {
-        //Require API level 26 or above
         //Android does not allow to handle the intensity of the vibrator -> https://stackoverflow.com/questions/11483168/android-set-power-of-vibration
         vibrator.vibrate(amplitude);
     }
 
+    /**
+     * Stop the vibration of vibrator
+     */
     public void stopVibrator()
     {
         vibrator.cancel();
     }
 
+    /**
+     * Set amplitude with the Vibration SharedPreference parameter
+     */
     public void setAmplitudeWithPreference() {
         //Value must be between 0 to 255 for amplitude
-        int _amplitude = sharedPreferences.getInt(this.context.getString(R.string.vibration), 100);
-        //Toast.makeText(this.context, Integer.toString(_amplitude), Toast.LENGTH_LONG).show();
+        int _amplitude = sharedPreferences.getInt(this.context.getString(R.string.vibration), 127);
         amplitude = _amplitude;
     }
 
