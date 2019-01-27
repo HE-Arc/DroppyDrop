@@ -118,7 +118,6 @@ public class LevelActivity extends AppCompatActivity {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //We have to find a way to pass the level information
                 Intent intent = new Intent(LevelActivity.this, PlayActivity.class);
                 intent.putExtra("selectedLevel", selectedLevel);
                 startActivity(intent);
