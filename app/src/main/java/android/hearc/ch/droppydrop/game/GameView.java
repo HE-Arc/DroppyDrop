@@ -29,14 +29,20 @@ import java.util.List;
 import java.util.Vector;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
+    // View attributes
+    private static final String TAG = GameView.class.getSimpleName();
+    private int viewWidth;
+    private int viewHeight;
 
+    // Game attributes
     private MainThread mainThread;
+    private LevelModel level;
 
-
-    private static final String TAG = "LEVEL"; // Level.class.getSimpleName();
-
+    // Painting attributes
     private Paint paintDrop;
     private Paint paintTrack;
+    private Paint paintWhite;
+    private Paint paintGold;
 
     private int line_width;
     private int circle_radius;
@@ -45,15 +51,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private int DEVICE_DENSITY_DPI;
 
-
-    private Paint paintWhite;
-
-    private Paint paintGold;
-
-    private int viewWidth;
-    private int viewHeight;
-
-    private LevelModel level;
 
     //Vibrator service
     Context mcontext;
@@ -83,6 +80,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private boolean[][] uniquePassageMatrix;
 
     private boolean firstSizeChanged;
+
     private boolean dialogPaused;
 
     //idea comes from Maxime Grava from inf3dlm-a
@@ -178,7 +176,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.i("DBGEVENT", "surfaceCreated");
-        if (!mainThread.isAlive()) {
+        if (!mainThread.isAlive() && !dialogPaused) {
             mainThread.setRunning(true);
             mainThread.start();
         } else if(!dialogPaused){
@@ -189,8 +187,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.i("DBGEVENT", "surfaceDestroyed");
-        if (!dialogPaused)
-            setOnPause();
+
+        setOnPause();
         saveScore();
 
     }
@@ -336,7 +334,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             } else {
                 canvas.drawColor(Color.MAGENTA);
             }
-            canvas.drawText(String.valueOf(score), (int) (viewWidth * 0.65), 100, paintGold);
+            canvas.drawText(String.valueOf(score), 10, 100, paintGold);
         }
     }
 

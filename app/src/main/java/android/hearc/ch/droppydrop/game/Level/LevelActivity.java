@@ -23,6 +23,9 @@ import android.view.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Level Activity
+ */
 public class LevelActivity extends AppCompatActivity {
 
     private List<Button> levelButtons;
@@ -30,6 +33,11 @@ public class LevelActivity extends AppCompatActivity {
     private int selectedLevel;
 
 
+    /**
+     * Create Level Activity
+     * Add buttons for each level contains in res/values/levels.xmls
+     * @param savedInstanceState state of the saved instance
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
