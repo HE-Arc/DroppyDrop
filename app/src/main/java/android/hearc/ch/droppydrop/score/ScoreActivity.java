@@ -8,14 +8,20 @@ import android.widget.ExpandableListView;
 import android.util.Log;
 import android.widget.TextView;
 
+/**
+ * ScoreActivity
+ */
 public class ScoreActivity extends AppCompatActivity {
-
     private static final String TAG = ScoreActivity.class.getSimpleName();
 
     private ExpandableListView scoreListView;
     private ScoreExpandableAdapter scoreExpandableAdapter;
     private ScoreManager scoreManager;
 
+    /**
+     * OnCreate set content view and set up views
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,27 +35,37 @@ public class ScoreActivity extends AppCompatActivity {
         // cup icon from : http://icons.iconarchive.com/icons/thesquid.ink/free-flat-sample/128/cup-icon.png
     }
 
+    /**
+     * Retrive Views from resources
+     */
     private void retrieveView() {
         scoreListView = findViewById(R.id.scoreListView);
     }
 
+    /**
+     * Set up view
+     */
     private void setUpViews() {
         Log.d(TAG, "Setting up views...");
 
-        // addFalseScore();
-        if(scoreManager.countScores() > 0) {
+        // addFalseScore(); // False scores to test
+        if(scoreManager.countScores() > 0) {    // if scores are saved
+            // Show with expandable listView
             scoreExpandableAdapter = new ScoreExpandableAdapter(this, scoreManager);
             scoreListView.setAdapter(scoreExpandableAdapter);
         }
         else {
+            // Show No Score label
             TextView noScoreTV = findViewById(R.id.noScoreTV);
             noScoreTV.setVisibility(View.VISIBLE);
         }
 
-
         Log.d(TAG, "Setting up views -> done");
     }
 
+    /**
+     * Add five scores for level 1
+     */
     private void addFalseScore()
     {
         scoreManager.saveScore(new Score(1, 2000, "Joueur 1"));

@@ -5,12 +5,20 @@ import android.util.Log;
 
 import java.util.Arrays;
 
+/**
+ * Score
+ */
 public class Score implements Comparable<Score> {
-
     public int value;
     public String username;
     public int level;
 
+    /**
+     * Constructor of Score
+     * @param level level of the score
+     * @param value points scored
+     * @param username username of whom performed it
+     */
     public Score(int level, int value, String username)
     {
         this.level = level;
@@ -28,6 +36,10 @@ public class Score implements Comparable<Score> {
         return new Score(level, Integer.parseInt(content[0]), content[1]);
     }
 
+    /**
+     * To String Function
+     * @return score as a string
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -37,6 +49,11 @@ public class Score implements Comparable<Score> {
         return  builder.toString();
     }
 
+    /**
+     * CompareTo another score considering the value attribute
+     * @param other_score score compared to
+     * @return 1 if bigger, 0 if same and -1 if smaller
+     */
     @Override
     public int compareTo(@NonNull Score other_score) {
         return Integer.compare(value, other_score.value);

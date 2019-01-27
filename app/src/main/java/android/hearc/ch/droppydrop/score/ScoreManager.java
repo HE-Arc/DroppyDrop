@@ -24,6 +24,10 @@ public class ScoreManager {
 
     private Map<Integer, SortedSet<Score>> scoresMap;
 
+    /**
+     * Constructor of ScoreManager
+     * @param context parent context
+     */
     private ScoreManager(Context context)
     {
         ScoreManager.context = context;
