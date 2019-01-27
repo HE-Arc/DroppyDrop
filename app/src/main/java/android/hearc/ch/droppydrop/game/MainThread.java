@@ -9,7 +9,7 @@ import android.preference.PreferenceManager;
 import android.view.SurfaceHolder;
 
 /**
- *
+ * MainThread
  */
 public class MainThread extends Thread {
     private static final String TAG = MainThread.class.getName();
