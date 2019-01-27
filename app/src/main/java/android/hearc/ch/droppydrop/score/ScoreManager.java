@@ -1,7 +1,6 @@
 package android.hearc.ch.droppydrop.score;
 import android.content.Context;
 import android.hearc.ch.droppydrop.R;
-import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -52,7 +51,6 @@ public class ScoreManager {
      */
     public void saveScore(Score score)
     {
-        Log.i(TAG, "saveScore");
         SortedSet<Score> levelScores = scoresMap.get(score.level);
         if(levelScores != null && levelScores.size() >= 1) {
             levelScores.add(score);
@@ -147,7 +145,6 @@ public class ScoreManager {
             fis.close();
             String content = fileContent.toString();
             String[] lines = content.split("\n");
-            Log.i(TAG, "readScores: " + content);
 
             for(String line : lines)
             {
@@ -167,7 +164,6 @@ public class ScoreManager {
                 }
                 scoresMap.put(lvl, scores);
             }
-            Log.i(TAG, "readScores: has read all correctly");
         } catch (IOException e) {
             try {
                 fos = ScoreManager.context.openFileOutput(ScoreManager.filename, Context.MODE_PRIVATE);
@@ -181,8 +177,7 @@ public class ScoreManager {
             }
             catch (IOException io)
             {
-                // Not file can be written
-                Log.i("Score", "readAll: " + io.toString());
+                // No file can be written
             }
         }
     }
@@ -192,12 +187,10 @@ public class ScoreManager {
      */
     public void saveAll(){
 
-        Log.i(TAG, "saveAll: " + ScoreManager.filename);
 
         FileOutputStream fos;
         try {
             fos = ScoreManager.context.openFileOutput(ScoreManager.filename, Context.MODE_PRIVATE);
-            Log.i(TAG, "saveAll: fos opened");
             StringBuilder sb;
             for (Map.Entry<Integer, SortedSet<Score>> entry: scoresMap.entrySet()) {
                 sb = new StringBuilder();
@@ -207,13 +200,10 @@ public class ScoreManager {
                 }
                 sb.append("\n");
                 fos.write(sb.toString().getBytes());
-                Log.i(TAG, "saveAll: fos has write");
             }
             fos.close();
-            Log.i(TAG, "saveAll: fos closed");
         }
         catch (IOException io) {
-            Log.i(TAG, "saveAll: " + io.toString());
         }
     }
 }

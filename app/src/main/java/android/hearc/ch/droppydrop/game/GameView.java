@@ -19,7 +19,6 @@ import android.hearc.ch.droppydrop.sensor.AccelerometerPointer;
 import android.hearc.ch.droppydrop.sensor.VibratorService;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
@@ -175,7 +174,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        Log.i("DBGEVENT", "surfaceCreated");
         if (!mainThread.isAlive() && !dialogPaused) {
             mainThread.setRunning(true);
             mainThread.start();
@@ -186,11 +184,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        Log.i("DBGEVENT", "surfaceDestroyed");
-
         setOnPause();
         saveScore();
-
     }
 
     @Override

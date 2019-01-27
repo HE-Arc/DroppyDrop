@@ -9,8 +9,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.hearc.ch.droppydrop.R;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.widget.Toast;
+
 
 /**
  * Class AccelerometerPointer
@@ -71,7 +70,7 @@ public class AccelerometerPointer implements SensorEventListener {
                 pointer.x -= x * sensibility;
                 pointer.y += y * sensibility;
             }
-            //Log.i(TAG, "onSensorChanged: x: " + x + " y: "+ y + " z: "+ z);
+
         }
     }
 
@@ -107,7 +106,7 @@ public class AccelerometerPointer implements SensorEventListener {
      * @return Point
      */
     public Point getPointer() {
-        //Log.i(TAG, "getPointer: " + pointer.toString());
+
         return new Point(pointer);
     }
 

@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
@@ -36,6 +35,7 @@ public class LevelActivity extends AppCompatActivity {
     /**
      * Create Level Activity
      * Add buttons for each level contains in res/values/levels.xmls
+     *
      * @param savedInstanceState state of the saved instance
      */
     @Override
@@ -70,7 +70,6 @@ public class LevelActivity extends AppCompatActivity {
 
                 // set text
                 String levelName = levelModels.get(buttonCounter).LevelName;
-                Log.i("BUTTON", "onCreate: " + levelName + "/");
                 button.setText(levelName);
 
                 // Increment button counter

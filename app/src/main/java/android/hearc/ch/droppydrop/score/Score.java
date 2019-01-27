@@ -1,9 +1,7 @@
 package android.hearc.ch.droppydrop.score;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import java.util.Arrays;
 
 public class Score implements Comparable<Score> {
 

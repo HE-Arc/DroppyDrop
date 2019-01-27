@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.util.Log;
 import android.widget.TextView;
 
 public class ScoreActivity extends AppCompatActivity {
@@ -34,7 +33,6 @@ public class ScoreActivity extends AppCompatActivity {
     }
 
     private void setUpViews() {
-        Log.d(TAG, "Setting up views...");
 
         // addFalseScore();
         if(scoreManager.countScores() > 0) {
@@ -47,20 +45,19 @@ public class ScoreActivity extends AppCompatActivity {
         }
 
 
-        Log.d(TAG, "Setting up views -> done");
     }
 
     private void addFalseScore()
     {
         scoreManager.saveScore(new Score(1, 2000, "Joueur 1"));
-        Log.i(TAG, "addFalseScore: 1 ok");
+
         scoreManager.saveScore(new Score(1, 2300, "Joueur 2"));
-        Log.i(TAG, "addFalseScore: 2 ok");
+
         scoreManager.saveScore(new Score(1, 4500, "Joueur 3"));
-        Log.i(TAG, "addFalseScore: 3 ok");
+
         scoreManager.saveScore(new Score(1, 1290, "Joueur 4"));
-        Log.i(TAG, "addFalseScore: 4 ok");
+
         scoreManager.saveScore(new Score(1, 999, "Joueur 5"));
-        Log.i(TAG, "addFalseScore: 5 ok");
+
     }
 }
