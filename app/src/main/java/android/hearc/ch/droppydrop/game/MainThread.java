@@ -8,25 +8,30 @@ import android.hearc.ch.droppydrop.sensor.AccelerometerPointer;
 import android.preference.PreferenceManager;
 import android.view.SurfaceHolder;
 
-//inspired by https://www.androidauthority.com/android-game-java-785331/
+/**
+ *
+ */
 public class MainThread extends Thread {
+    private static final String TAG = MainThread.class.getName();
+
     private SurfaceHolder surfaceHolder;
     private GameView gameView;
     private boolean running;
-    public static Canvas canvas;
-    public AccelerometerPointer accPointer;
     private Point lastPoint;
     private long previousTime;
     private int fps;
-
-    //https://stackoverflow.com/questions/6776327/how-to-pause-resume-thread-in-android
     private Object mPauseLock;
     private boolean mPaused;
-
-    private static final String TAG = "MainThread";
-
     private SharedPreferences sharedPreferences;
 
+    public static Canvas canvas;
+    public AccelerometerPointer accPointer;
+
+    /**
+     * Constructor of MainThread
+     * @param surfaceHolder surfaceHoldeer to draw on
+     * @param gameView GameView
+     */
     public MainThread(SurfaceHolder surfaceHolder, GameView gameView) {
         super();
         accPointer = new AccelerometerPointer(gameView.getContext(), gameView.getHeight(), gameView.getWidth());
@@ -41,9 +46,11 @@ public class MainThread extends Thread {
 
         mPauseLock = new Object();
         mPaused = false;
-
     }
 
+    /**
+     * OnPause, stop the accelerometer sensor
+     */
     public void onPause() {
         synchronized (mPauseLock) {
             mPaused = true;
@@ -51,6 +58,9 @@ public class MainThread extends Thread {
         }
     }
 
+    /**
+     * OnResume, restrat the accelerometer sensor
+     */
     public void onResume() {
         synchronized (mPauseLock) {
             mPaused = false;
@@ -59,43 +69,48 @@ public class MainThread extends Thread {
         }
     }
 
+    /**
+     * Set isRunning State
+     * @param isRunning
+     */
     public void setRunning(boolean isRunning) {
         running = isRunning;
     }
 
+    /**
+     * Get the new pointer position and ask GameView to redraw itself
+     */
     @Override
     public void run() {
+        long currentTimeMillis;
+        long elapsedTimeMs;
+        long sleepTimeMs;
 
         while (running) {
             canvas = null;
-            long currentTimeMillis = System.currentTimeMillis();
-            long elapsedTimeMs = currentTimeMillis - previousTime;
-            long sleepTimeMs = (long) (1000f / fps - elapsedTimeMs);
+            currentTimeMillis = System.currentTimeMillis();
+            elapsedTimeMs = currentTimeMillis - previousTime;
+            sleepTimeMs = (long) (1000f / fps - elapsedTimeMs);
 
             try {
                 canvas = this.surfaceHolder.lockCanvas();
                 if (canvas == null) {
                     Thread.sleep(1);
-
                     continue;
-
-                } else if (sleepTimeMs > 0) {
-
+                }
+                else if (sleepTimeMs > 0) {
                     Thread.sleep(sleepTimeMs);
-
                 }
                 Point actualPoint = accPointer.getPointer();
 
                 synchronized (surfaceHolder) {
-
                     this.gameView.update(actualPoint);
 
                     this.gameView.draw(canvas);
                 }
-
-
-            } catch (Exception e) {
-            } finally {
+            }
+            catch (Exception e) {}
+            finally {
                 if (canvas != null) {
                     try {
 
@@ -107,6 +122,7 @@ public class MainThread extends Thread {
                     }
                 }
             }
+
             synchronized (mPauseLock) {
                 while (mPaused) {
                     try {
@@ -116,6 +132,5 @@ public class MainThread extends Thread {
                 }
             }
         }
-
     }
 }
